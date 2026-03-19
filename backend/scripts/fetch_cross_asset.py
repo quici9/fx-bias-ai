@@ -9,6 +9,7 @@ Exit codes: 0=success, 1=partial, 2=failed
 """
 
 import json
+import os
 import sys
 import time
 from datetime import date
@@ -17,7 +18,7 @@ from typing import Optional
 import requests
 
 # Add parent directory to path for imports
-sys.path.insert(0, "/Users/ttdh/WebstormProjects/fx-bias-ai")
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from backend.utils.file_io import EXIT_FAILED, EXIT_PARTIAL, EXIT_SUCCESS, setup_logging, write_output
 

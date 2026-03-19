@@ -16,7 +16,7 @@ from typing import Optional
 import requests
 
 # Add parent directory to path for imports
-sys.path.insert(0, "/Users/ttdh/WebstormProjects/fx-bias-ai")
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from backend.utils.file_io import EXIT_PARTIAL, EXIT_SUCCESS, setup_logging
 
