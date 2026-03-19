@@ -159,10 +159,10 @@
 
 ### B2-02 — Download Historical COT Data
 
-- [ ] 🔴 **B2-02a** — Download CFTC Legacy bulk files 2006–nay từ `cftc.gov` (annual zip files)
-- [ ] 🔴 **B2-02b** — Download CFTC TFF bulk files 2006–nay (TFF available từ 2006)
-- [ ] 🔴 **B2-02c** — Parse và standardize format: align với schema của `cot-latest.json`
-- [ ] 🔴 **B2-02d** — Save `training/data/cot_historical_2006_2026.csv`
+- [x] 🔴 **B2-02a** — Download CFTC Legacy bulk files 2006–nay từ `cftc.gov` (annual zip files)
+- [x] 🔴 **B2-02b** — Download CFTC TFF bulk files 2006–nay (TFF available từ 2006)
+- [x] 🔴 **B2-02c** — Parse và standardize format: align với schema của `cot-latest.json`
+- [x] 🔴 **B2-02d** — Save `training/data/cot_historical_2006_2026.csv`
 
 ### B2-03 — feature_engineering.py
 
