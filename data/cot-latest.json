@@ -1,0 +1,339 @@
+{
+  "reportDate": "2026-03-10",
+  "publishDate": "2026-03-13",
+  "source": "CFTC_LEGACY_TFF",
+  "legacy": [
+    {
+      "currency": "EUR",
+      "noncomm_long": 265686,
+      "noncomm_short": 160542,
+      "open_interest": 969374,
+      "net": 105144,
+      "net_delta_1w": -31354,
+      "cot_index_52w": 41.5,
+      "extreme_flag": false,
+      "flip_flag": false
+    },
+    {
+      "currency": "GBP",
+      "noncomm_long": 49270,
+      "noncomm_short": 133467,
+      "open_interest": 392591,
+      "net": -84197,
+      "net_delta_1w": -11511,
+      "cot_index_52w": 6.23,
+      "extreme_flag": true,
+      "flip_flag": false
+    },
+    {
+      "currency": "JPY",
+      "noncomm_long": 119411,
+      "noncomm_short": 160798,
+      "open_interest": 427718,
+      "net": -41387,
+      "net_delta_1w": -24812,
+      "cot_index_52w": 1.68,
+      "extreme_flag": true,
+      "flip_flag": true
+    },
+    {
+      "currency": "AUD",
+      "noncomm_long": 121394,
+      "noncomm_short": 67197,
+      "open_interest": 315898,
+      "net": 54197,
+      "net_delta_1w": -13565,
+      "cot_index_52w": 91.94,
+      "extreme_flag": true,
+      "flip_flag": false
+    },
+    {
+      "currency": "CAD",
+      "noncomm_long": 93899,
+      "noncomm_short": 57740,
+      "open_interest": 288392,
+      "net": 36159,
+      "net_delta_1w": 15109,
+      "cot_index_52w": 100.0,
+      "extreme_flag": true,
+      "flip_flag": false
+    },
+    {
+      "currency": "CHF",
+      "noncomm_long": 12152,
+      "noncomm_short": 53244,
+      "open_interest": 110897,
+      "net": -41092,
+      "net_delta_1w": 191,
+      "cot_index_52w": 12.87,
+      "extreme_flag": false,
+      "flip_flag": false
+    },
+    {
+      "currency": "NZD",
+      "noncomm_long": 10944,
+      "noncomm_short": 48055,
+      "open_interest": 84215,
+      "net": -37111,
+      "net_delta_1w": -2777,
+      "cot_index_52w": 31.88,
+      "extreme_flag": false,
+      "flip_flag": false
+    },
+    {
+      "currency": "USD",
+      "noncomm_long": 16384,
+      "noncomm_short": 22266,
+      "open_interest": 32012,
+      "net": -5882,
+      "net_delta_1w": -893,
+      "cot_index_52w": 43.94,
+      "extreme_flag": false,
+      "flip_flag": false
+    }
+  ],
+  "tff": [
+    {
+      "currency": "EUR",
+      "lev_funds_long": 0,
+      "lev_funds_short": 0,
+      "lev_funds_net": 0,
+      "asset_mgr_long": 0,
+      "asset_mgr_short": 0,
+      "asset_mgr_net": 0,
+      "dealer_long": 62742,
+      "dealer_short": 481320,
+      "dealer_net": -418578,
+      "lev_vs_assetmgr_divergence": 0.0
+    },
+    {
+      "currency": "GBP",
+      "lev_funds_long": 0,
+      "lev_funds_short": 0,
+      "lev_funds_net": 0,
+      "asset_mgr_long": 0,
+      "asset_mgr_short": 0,
+      "asset_mgr_net": 0,
+      "dealer_long": 110682,
+      "dealer_short": 7567,
+      "dealer_net": 103115,
+      "lev_vs_assetmgr_divergence": 0.0
+    },
+    {
+      "currency": "JPY",
+      "lev_funds_long": 0,
+      "lev_funds_short": 0,
+      "lev_funds_net": 0,
+      "asset_mgr_long": 0,
+      "asset_mgr_short": 0,
+      "asset_mgr_net": 0,
+      "dealer_long": 88905,
+      "dealer_short": 81349,
+      "dealer_net": 7556,
+      "lev_vs_assetmgr_divergence": 0.0
+    },
+    {
+      "currency": "AUD",
+      "lev_funds_long": 0,
+      "lev_funds_short": 0,
+      "lev_funds_net": 0,
+      "asset_mgr_long": 0,
+      "asset_mgr_short": 0,
+      "asset_mgr_net": 0,
+      "dealer_long": 27336,
+      "dealer_short": 133072,
+      "dealer_net": -105736,
+      "lev_vs_assetmgr_divergence": 0.0
+    },
+    {
+      "currency": "CAD",
+      "lev_funds_long": 0,
+      "lev_funds_short": 0,
+      "lev_funds_net": 0,
+      "asset_mgr_long": 0,
+      "asset_mgr_short": 0,
+      "asset_mgr_net": 0,
+      "dealer_long": 34267,
+      "dealer_short": 86568,
+      "dealer_net": -52301,
+      "lev_vs_assetmgr_divergence": 0.0
+    },
+    {
+      "currency": "CHF",
+      "lev_funds_long": 0,
+      "lev_funds_short": 0,
+      "lev_funds_net": 0,
+      "asset_mgr_long": 0,
+      "asset_mgr_short": 0,
+      "asset_mgr_net": 0,
+      "dealer_long": 60041,
+      "dealer_short": 6601,
+      "dealer_net": 53440,
+      "lev_vs_assetmgr_divergence": 0.0
+    },
+    {
+      "currency": "NZD",
+      "lev_funds_long": 0,
+      "lev_funds_short": 0,
+      "lev_funds_net": 0,
+      "asset_mgr_long": 0,
+      "asset_mgr_short": 0,
+      "asset_mgr_net": 0,
+      "dealer_long": 42017,
+      "dealer_short": 1523,
+      "dealer_net": 40494,
+      "lev_vs_assetmgr_divergence": 0.0
+    },
+    {
+      "currency": "USD",
+      "lev_funds_long": 0,
+      "lev_funds_short": 0,
+      "lev_funds_net": 0,
+      "asset_mgr_long": 0,
+      "asset_mgr_short": 0,
+      "asset_mgr_net": 0,
+      "dealer_long": 2823,
+      "dealer_short": 778,
+      "dealer_net": 2045,
+      "lev_vs_assetmgr_divergence": 0.0
+    }
+  ],
+  "cot_indices": {
+    "EUR": {
+      "index": 41.5,
+      "trend_12w": [
+        0.0,
+        41.72,
+        68.8,
+        92.25,
+        100.0,
+        77.46,
+        35.91,
+        8.72,
+        36.6,
+        76.73,
+        69.61,
+        72.84
+      ]
+    },
+    "GBP": {
+      "index": 6.23,
+      "trend_12w": [
+        0.0,
+        16.38,
+        38.59,
+        59.46,
+        83.07,
+        100.0,
+        96.8,
+        88.52,
+        83.84,
+        76.34,
+        72.55,
+        61.18
+      ]
+    },
+    "JPY": {
+      "index": 1.68,
+      "trend_12w": [
+        6.38,
+        48.27,
+        95.73,
+        98.12,
+        43.99,
+        43.8,
+        18.96,
+        0.57,
+        0.0,
+        91.13,
+        100.0,
+        78.31
+      ]
+    },
+    "AUD": {
+      "index": 91.94,
+      "trend_12w": [
+        84.82,
+        100.0,
+        83.08,
+        75.57,
+        61.33,
+        53.4,
+        32.17,
+        8.49,
+        3.08,
+        2.95,
+        0.43,
+        0.0
+      ]
+    },
+    "CAD": {
+      "index": 100.0,
+      "trend_12w": [
+        100.0,
+        83.57,
+        90.67,
+        88.76,
+        75.11,
+        62.99,
+        43.23,
+        15.23,
+        14.73,
+        16.54,
+        16.62,
+        0.0
+      ]
+    },
+    "CHF": {
+      "index": 12.87,
+      "trend_12w": [
+        78.99,
+        74.14,
+        76.6,
+        84.36,
+        49.31,
+        88.53,
+        33.19,
+        25.2,
+        20.5,
+        100.0,
+        0.0,
+        5.32
+      ]
+    },
+    "NZD": {
+      "index": 31.88,
+      "trend_12w": [
+        62.36,
+        76.22,
+        100.0,
+        72.83,
+        73.3,
+        76.42,
+        9.3,
+        0.0,
+        3.79,
+        31.17,
+        31.71,
+        27.82
+      ]
+    },
+    "USD": {
+      "index": 43.94,
+      "trend_12w": [
+        7.95,
+        21.18,
+        68.62,
+        100.0,
+        84.33,
+        82.51,
+        29.84,
+        0.0,
+        39.85,
+        38.35,
+        36.44,
+        35.53
+      ]
+    }
+  }
+}
