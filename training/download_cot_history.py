@@ -71,14 +71,16 @@ logger = logging.getLogger(__name__)
 # Socrata paginated fetch
 # ---------------------------------------------------------------------------
 
-def fetch_all_pages(dataset_id: str, contract_code: str, select_fields: list[str]) -> list[dict]:
+def fetch_all_pages(dataset_id: str, contract_code: str) -> list[dict]:
     """
     Fetch all pages of a Socrata dataset for one contract from START_DATE.
+
+    Note: No $select used -- some CFTC datasets reject $select with $where
+    combination. Fetch all fields and parse needed ones from response.
 
     Args:
         dataset_id:     Socrata dataset identifier
         contract_code:  CFTC_CONTRACT_MARKET_CODE value
-        select_fields:  List of field names to retrieve
 
     Returns:
         All records as a list of dicts
@@ -88,7 +90,6 @@ def fetch_all_pages(dataset_id: str, contract_code: str, select_fields: list[str
         f"cftc_contract_market_code='{contract_code}' "
         f"AND report_date_as_yyyy_mm_dd >= '{START_DATE}'"
     )
-    select_clause = ", ".join(select_fields)
 
     all_records: list[dict] = []
     offset = 0
@@ -96,7 +97,6 @@ def fetch_all_pages(dataset_id: str, contract_code: str, select_fields: list[str
     while True:
         params = {
             "$where":  where_clause,
-            "$select": select_clause,
             "$order":  "report_date_as_yyyy_mm_dd ASC",
             "$limit":  PAGE_SIZE,
             "$offset": offset,
@@ -216,24 +216,6 @@ def parse_tff(records: list[dict], currency: str) -> pd.DataFrame:
 # Per-currency download
 # ---------------------------------------------------------------------------
 
-LEGACY_FIELDS = [
-    "report_date_as_yyyy_mm_dd",
-    "noncomm_positions_long_all",
-    "noncomm_positions_short_all",
-    "open_interest_all",
-]
-
-TFF_FIELDS = [
-    "report_date_as_yyyy_mm_dd",
-    "lev_money_positions_long_all",
-    "lev_money_positions_short_all",
-    "asset_mgr_positions_long_all",
-    "asset_mgr_positions_short_all",
-    "dealer_positions_long_all",
-    "dealer_positions_short_all",
-]
-
-
 def download_currency(currency: str, contract_code: str) -> pd.DataFrame:
     """
     Download and merge Legacy + TFF history for one currency.
@@ -247,13 +229,13 @@ def download_currency(currency: str, contract_code: str) -> pd.DataFrame:
 
     # Legacy
     logger.info("  Fetching Legacy COT...")
-    leg_raw = fetch_all_pages(LEGACY_DATASET_ID, contract_code, LEGACY_FIELDS)
+    leg_raw = fetch_all_pages(LEGACY_DATASET_ID, contract_code)
     df_leg  = parse_legacy(leg_raw, currency)
     logger.info("  Legacy: %d weekly records", len(df_leg))
 
     # TFF
     logger.info("  Fetching TFF...")
-    tff_raw = fetch_all_pages(TFF_DATASET_ID, contract_code, TFF_FIELDS)
+    tff_raw = fetch_all_pages(TFF_DATASET_ID, contract_code)
     df_tff  = parse_tff(tff_raw, currency)
     logger.info("  TFF: %d weekly records", len(df_tff))
 
