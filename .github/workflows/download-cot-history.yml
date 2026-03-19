@@ -1,0 +1,51 @@
+name: Download COT History
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  download-cot:
+    name: Download CFTC COT History (Legacy + TFF)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download historical COT data from CFTC Socrata
+        run: python training/download_cot_history.py
+
+      - name: Verify output
+        run: |
+          if [ ! -f "training/data/cot_historical_2006_2026.csv" ]; then
+            echo "ERROR: cot_historical_2006_2026.csv was not created"
+            exit 1
+          fi
+          ROWS=$(wc -l < training/data/cot_historical_2006_2026.csv)
+          echo "Rows: $ROWS"
+          head -3 training/data/cot_historical_2006_2026.csv
+
+      - name: Commit COT history CSV
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add training/data/cot_historical_2006_2026.csv
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "training: add COT history 2006-$(date +%Y) [B2-02]"
+            git push
+          fi
