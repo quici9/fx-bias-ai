@@ -1,0 +1,227 @@
+name: Fetch Data
+
+on:
+  workflow_dispatch:  # Manual trigger for testing
+  schedule:
+    # Run every Friday at 16:00 UTC (after CFTC publishes at ~15:30 ET)
+    - cron: '0 16 * * 5'
+
+permissions:
+  contents: write  # Required for committing output files
+
+jobs:
+  # Job 1: Fetch COT data
+  fetch-cot:
+    name: Fetch COT Data
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run fetch_cot.py
+        run: |
+          python backend/scripts/fetch_cot.py
+        continue-on-error: true  # Don't fail entire workflow
+
+      - name: Upload COT data artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cot-data
+          path: data/cot-latest.json
+          retention-days: 7
+
+  # Job 2: Fetch macro data
+  fetch-macro:
+    name: Fetch Macro Data
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run fetch_macro.py
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: |
+          python backend/scripts/fetch_macro.py
+        continue-on-error: true
+
+      - name: Upload macro data artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: macro-data
+          path: data/macro-latest.json
+          retention-days: 7
+
+  # Job 3: Fetch cross-asset data (depends on macro for yield differentials)
+  fetch-cross-asset:
+    name: Fetch Cross-Asset Data
+    runs-on: ubuntu-latest
+    needs: fetch-macro  # Needs macro data for yield differentials
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Download macro data
+        uses: actions/download-artifact@v4
+        with:
+          name: macro-data
+          path: data/
+
+      - name: Run fetch_cross_asset.py
+        run: |
+          python backend/scripts/fetch_cross_asset.py
+        continue-on-error: true
+
+      - name: Upload cross-asset data artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-asset-data
+          path: data/cross-asset-latest.json
+          retention-days: 7
+
+  # Job 4: Fetch calendar data
+  fetch-calendar:
+    name: Fetch Calendar Data
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run fetch_calendar.py
+        run: |
+          python backend/scripts/fetch_calendar.py
+        continue-on-error: true
+
+      - name: Upload calendar data artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: calendar-data
+          path: data/calendar-latest.json
+          retention-days: 7
+
+  # Job 5: Commit all data files
+  commit-data:
+    name: Commit Data Files
+    runs-on: ubuntu-latest
+    needs: [fetch-cot, fetch-macro, fetch-cross-asset, fetch-calendar]
+    if: always()  # Run even if some fetches failed
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Move artifacts to data folder
+        run: |
+          mkdir -p data
+          find artifacts -name "*.json" -exec cp {} data/ \;
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/*.json
+
+          # Only commit if there are changes
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Data update: $(date -u '+%Y-%m-%d %H:%M UTC')
+
+          🤖 Generated with FX Bias AI
+
+          Co-Authored-By: Claude Sonnet 4.5 <noreply@anthropic.com>"
+
+            git push
+          fi
+
+  # Job 6: Send notification (optional, runs after commit)
+  notify:
+    name: Send Telegram Notification
+    runs-on: ubuntu-latest
+    needs: commit-data
+    if: always()  # Always notify, even on failure
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Send notification (if bias data exists)
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+        run: |
+          # Only send if bias-latest.json exists (will be created in Phase B4)
+          if [ -f "data/bias-latest.json" ]; then
+            python backend/scripts/notify.py
+          else
+            echo "Bias data not yet available — skipping notification"
+          fi
+        continue-on-error: true  # Don't fail if notification fails

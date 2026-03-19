@@ -1,0 +1,17 @@
+[
+  {
+    "type": "CALENDAR_SOURCE_FALLBACK",
+    "message": "Using static calendar for 2026 \u2014 MQL5 unavailable",
+    "severity": "LOW"
+  },
+  {
+    "type": "MISSING_DATA",
+    "message": "CFTC API request failed: 403 Client Error: Forbidden for url: https://publicreporting.cftc.gov/resource/jun7-fc8e.json?%24where=cftc_contract_market_code%3D%27099741%27&%24order=report_date_as_yyyy_mm_dd+DESC&%24limit=1",
+    "severity": "HIGH"
+  },
+  {
+    "type": "MISSING_DATA",
+    "message": "CFTC API request failed: 403 Client Error: Forbidden for url: https://publicreporting.cftc.gov/resource/jun7-fc8e.json?%24where=cftc_contract_market_code%3D%27099741%27&%24order=report_date_as_yyyy_mm_dd+DESC&%24limit=1",
+    "severity": "HIGH"
+  }
+]
