@@ -93,4 +93,20 @@
 
 ---
 
+## ADR-007: Training Label Definition — AND vs OR Condition
+
+**Date:** 2026-03-19
+**Status:** Pending (will be finalized in B2-04 after COT historical data available)
+**Context:** BULL/BEAR/NEUTRAL labels require combining COT direction and price direction. Two definitions were implemented in `training/build_labels.py`:
+- **AND condition** (`build_label`): BULL = COT↑ AND price↑ — stricter, more NEUTRAL by design
+- **OR condition** (`build_label_or`): BULL = COT↑ OR price↑ (non-conflicting) — more labels, less NEUTRAL
+**Decision:** TBD after B2-04 walk-forward comparison. Use AND condition as default.
+**Trigger to revisit:** If NEUTRAL > 60% in `training/data/features_2006_2026.csv`, run walk-forward accuracy comparison between both definitions and use whichever gives higher accuracy.
+**Rationale for AND as default:**
+- Stricter signal = higher precision, fewer false positives
+- Aligned with RPD Section 3.3 primary definition
+- OR condition kept as implemented fallback, not an assumption
+
+---
+
 *Add new decisions below. Include context, decision, and rationale for each.*

@@ -149,13 +149,13 @@
 
 ### B2-01 — build_labels.py
 
-- [ ] 🔴 **B2-01a** — Download FRED FX price series historical: `DEXUSEU`, `DEXUSUK`, `DEXJPUS`, `DEXUSAL`, `DEXCAUS`, `DEXSZUS`, `DEXUSNZ` (2006–nay)
-- [ ] 🔴 **B2-01b** — Resample daily → weekly (Friday close): xử lý missing ngày holiday
-- [ ] 🔴 **B2-01c** — Implement `build_label()`: BULL/BEAR/NEUTRAL logic từ RPD Section 3.3 (AND condition: COT direction AND price direction)
-- [ ] 🔴 **B2-01d** — Enforce `LABEL_CONFIRMATION_LAG = 1`: chỉ label đến tuần T-1
-- [ ] 🔴 **B2-01e** — Save `training/data/prices_2006_2026.csv`
-- [ ] 🟡 **B2-01f** — Kiểm tra class distribution: log % BULL/BEAR/NEUTRAL
-- [ ] 🟡 **B2-01g** — Nếu NEUTRAL >60%: implement OR condition variant, so sánh accuracy 2 definitions, document lựa chọn trong `DECISIONS.md`
+- [x] 🔴 **B2-01a** — Download FRED FX price series historical: `DEXUSEU`, `DEXUSUK`, `DEXJPUS`, `DEXUSAL`, `DEXCAUS`, `DEXSZUS`, `DEXUSNZ` (2006–nay)
+- [x] 🔴 **B2-01b** — Resample daily → weekly (Friday close): xử lý missing ngày holiday
+- [x] 🔴 **B2-01c** — Implement `build_label()`: BULL/BEAR/NEUTRAL logic từ RPD Section 3.3 (AND condition: COT direction AND price direction)
+- [x] 🔴 **B2-01d** — Enforce `LABEL_CONFIRMATION_LAG = 1`: chỉ label đến tuần T-1
+- [x] 🔴 **B2-01e** — Save `training/data/prices_2006_2026.csv`
+- [x] 🟡 **B2-01f** — Kiểm tra class distribution: log % BULL/BEAR/NEUTRAL
+- [x] 🟡 **B2-01g** — Nếu NEUTRAL >60%: implement OR condition variant, so sánh accuracy 2 definitions, document lựa chọn trong `DECISIONS.md`
 
 ### B2-02 — Download Historical COT Data
 
@@ -193,7 +193,7 @@
 
 - [ ] 🟡 **B2-06a** — `tests/unit/test_lag_rules.py`: test assertions từ System Design (CPI lag = T-2, etc.)
 - [ ] 🟡 **B2-06b** — `tests/unit/test_feature_engineering.py`: tính COT Index cho sample data, verify kết quả đúng
-- [ ] 🟡 **B2-06c** — `tests/unit/test_label_builder.py`: test BULL/BEAR/NEUTRAL cho các combinations
+- [x] 🟡 **B2-06c** — `tests/unit/test_label_builder.py`: test BULL/BEAR/NEUTRAL cho các combinations
 - [ ] 🟢 **B2-06d** — `tests/integration/test_full_pipeline.py`: end-to-end với mock data (không gọi real APIs)
 
 ---
