@@ -1,11 +1,11 @@
 name: Build Training Data
 
-# One-time setup workflow — run manually when:
+# One-time setup workflow -- run manually when:
 #   - Initial setup (first time)
 #   - Adding new historical data (annual refresh)
 #   - After FRED series IDs change
 #
-# NOT scheduled — this is a setup step, not a weekly pipeline.
+# NOT scheduled -- this is a setup step, not a weekly pipeline.
 # Output: training/data/prices_2006_2026.csv committed to repo.
 
 on:
@@ -56,9 +56,9 @@ jobs:
           git add training/data/prices_2006_2026.csv
 
           if git diff --staged --quiet; then
-            echo "No changes — prices_2006_2026.csv is already up to date"
+            echo "No changes -- prices_2006_2026.csv is already up to date"
           else
-            git commit -m "training: download FX price history 2006–$(date +%Y)
+            git commit -m "training: download FX price history 2006-$(date +%Y)
 
 Downloads weekly Friday closes for EUR, GBP, JPY, AUD, CAD, CHF, NZD
 from FRED exchange rate series. Used for building BULL/BEAR/NEUTRAL labels
