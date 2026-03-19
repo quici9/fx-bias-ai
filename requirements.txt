@@ -1,0 +1,10 @@
+# FX Bias AI — Python Dependencies
+# Install: pip install -r requirements.txt
+
+requests>=2.31
+pandas>=2.1
+numpy>=1.26
+scikit-learn>=1.4
+joblib>=1.3
+jsonschema>=4.21
+python-dateutil>=2.8

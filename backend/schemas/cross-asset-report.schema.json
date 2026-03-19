@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "cross-asset-report.schema.json",
+  "title": "CrossAssetReport",
+  "description": "Cross-asset data — commodities COT and yield differentials",
+  "type": "object",
+  "required": ["fetchDate", "commodities", "yield_differentials"],
+  "properties": {
+    "fetchDate": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date when data was fetched"
+    },
+    "commodities": {
+      "type": "object",
+      "required": ["gold", "oil", "sp500"],
+      "properties": {
+        "gold": { "$ref": "#/definitions/CommodityCotRecord" },
+        "oil": { "$ref": "#/definitions/CommodityCotRecord" },
+        "sp500": { "$ref": "#/definitions/CommodityCotRecord" }
+      },
+      "additionalProperties": false
+    },
+    "yield_differentials": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/YieldDifferential" }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "CommodityCotRecord": {
+      "type": "object",
+      "required": ["cot_index", "trend_12w", "trend_direction", "fx_impact"],
+      "properties": {
+        "cot_index": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "trend_12w": {
+          "type": "array",
+          "items": { "type": "number" },
+          "minItems": 12,
+          "maxItems": 12,
+          "description": "Last 12 weekly values for sparkline"
+        },
+        "trend_direction": {
+          "type": "string",
+          "enum": ["RISING", "FALLING", "FLAT"]
+        },
+        "fx_impact": {
+          "type": "string",
+          "description": "e.g. Inverse USD, Direct CAD, Risk-on proxy"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YieldDifferential": {
+      "type": "object",
+      "required": ["pair", "spread", "delta_4w", "direction"],
+      "properties": {
+        "pair": {
+          "type": "string",
+          "description": "e.g. US-DE"
+        },
+        "spread": { "type": "number" },
+        "delta_4w": { "type": "number" },
+        "direction": {
+          "type": "string",
+          "enum": ["WIDENING", "NARROWING", "STABLE"]
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,200 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "bias-report.schema.json",
+  "title": "BiasReport",
+  "description": "Primary output of the FX Bias AI pipeline — weekly bias predictions",
+  "type": "object",
+  "required": ["meta", "predictions", "pair_recommendations", "weekly_alerts"],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "weekLabel",
+        "generatedAt",
+        "modelVersion",
+        "featureVersion",
+        "overallConfidence",
+        "dataSourceStatus",
+        "pipelineRuntime"
+      ],
+      "properties": {
+        "weekLabel": {
+          "type": "string",
+          "pattern": "^\\d{4}-W\\d{2}$",
+          "description": "ISO week label, e.g. 2026-W12"
+        },
+        "generatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp"
+        },
+        "modelVersion": {
+          "type": "string",
+          "description": "Model identifier, e.g. rf-v2.1"
+        },
+        "featureVersion": {
+          "type": "string",
+          "description": "Feature set version, e.g. v2.1-28f"
+        },
+        "overallConfidence": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"]
+        },
+        "dataSourceStatus": {
+          "type": "object",
+          "required": ["cot", "macro", "cross_asset", "calendar"],
+          "properties": {
+            "cot": { "type": "string", "enum": ["OK", "STALE", "FAILED"] },
+            "macro": { "type": "string", "enum": ["OK", "STALE", "FAILED"] },
+            "cross_asset": { "type": "string", "enum": ["OK", "STALE", "FAILED"] },
+            "calendar": { "type": "string", "enum": ["OK", "FALLBACK", "FAILED"] }
+          },
+          "additionalProperties": false
+        },
+        "pipelineRuntime": {
+          "type": "number",
+          "description": "Pipeline runtime in seconds"
+        }
+      },
+      "additionalProperties": false
+    },
+    "predictions": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/CurrencyPrediction" },
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "pair_recommendations": {
+      "type": "object",
+      "required": ["strong_long", "strong_short", "avoid"],
+      "properties": {
+        "strong_long": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/PairRecommendation" }
+        },
+        "strong_short": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/PairRecommendation" }
+        },
+        "avoid": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/PairRecommendation" }
+        }
+      },
+      "additionalProperties": false
+    },
+    "weekly_alerts": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Alert" }
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "CurrencyCode": {
+      "type": "string",
+      "enum": ["USD", "EUR", "GBP", "JPY", "AUD", "CAD", "CHF", "NZD"]
+    },
+    "AlertType": {
+      "type": "string",
+      "enum": [
+        "EXTREME_POSITIONING",
+        "FLIP_DETECTED",
+        "MODEL_DRIFT",
+        "MODEL_ROLLBACK",
+        "MISSING_DATA",
+        "RISK_OFF_REGIME",
+        "DATA_SOURCE_STALE",
+        "FEATURE_VERSION_MISMATCH",
+        "LOW_CONFIDENCE",
+        "MACRO_COT_CONFLICT",
+        "MOMENTUM_DECEL",
+        "OI_DIVERGENCE",
+        "CALENDAR_SOURCE_FALLBACK"
+      ]
+    },
+    "CurrencyPrediction": {
+      "type": "object",
+      "required": ["currency", "bias", "probability", "confidence", "rank", "key_drivers", "alerts"],
+      "properties": {
+        "currency": { "$ref": "#/definitions/CurrencyCode" },
+        "bias": {
+          "type": "string",
+          "enum": ["BULL", "BEAR", "NEUTRAL"]
+        },
+        "probability": {
+          "type": "object",
+          "required": ["bull", "neutral", "bear"],
+          "properties": {
+            "bull": { "type": "number", "minimum": 0, "maximum": 1 },
+            "neutral": { "type": "number", "minimum": 0, "maximum": 1 },
+            "bear": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
+        },
+        "confidence": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"]
+        },
+        "rank": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8
+        },
+        "key_drivers": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "alerts": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/AlertType" }
+        },
+        "historical_accuracy_12w": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "PairRecommendation": {
+      "type": "object",
+      "required": ["pair", "spread", "base_currency", "quote_currency", "confidence"],
+      "properties": {
+        "pair": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}/[A-Z]{3}$",
+          "description": "e.g. USD/JPY"
+        },
+        "spread": {
+          "type": "number",
+          "description": "Directional spread score"
+        },
+        "base_currency": { "type": "string" },
+        "quote_currency": { "type": "string" },
+        "confidence": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "Alert": {
+      "type": "object",
+      "required": ["type", "message", "severity"],
+      "properties": {
+        "type": { "$ref": "#/definitions/AlertType" },
+        "currency": { "type": "string" },
+        "message": { "type": "string" },
+        "severity": {
+          "type": "string",
+          "enum": ["HIGH", "MEDIUM", "LOW"]
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

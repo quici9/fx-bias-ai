@@ -1,0 +1,79 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "model-metrics.schema.json",
+  "title": "ModelMetrics",
+  "description": "Weekly model performance metrics and retrain/rollback records",
+  "type": "object",
+  "required": ["week", "modelVersion", "featureVersion", "action", "accuracy", "baselines"],
+  "properties": {
+    "week": {
+      "type": "string",
+      "pattern": "^\\d{4}-W\\d{2}$",
+      "description": "ISO week label, e.g. 2026-W12"
+    },
+    "modelVersion": { "type": "string" },
+    "featureVersion": { "type": "string" },
+    "action": {
+      "type": "string",
+      "enum": ["INFERENCE_ONLY", "RETRAIN_DEPLOYED", "RETRAIN_REJECTED", "ROLLBACK"]
+    },
+    "accuracy": {
+      "type": "object",
+      "required": ["current_week", "rolling_4w", "rolling_12w", "by_currency", "by_confidence"],
+      "properties": {
+        "current_week": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rolling_4w": { "type": "number", "minimum": 0, "maximum": 1 },
+        "rolling_12w": { "type": "number", "minimum": 0, "maximum": 1 },
+        "by_currency": {
+          "type": "object",
+          "patternProperties": {
+            "^[A-Z]{3}$": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
+        },
+        "by_confidence": {
+          "type": "object",
+          "required": ["HIGH", "MEDIUM", "LOW"],
+          "properties": {
+            "HIGH": { "type": "number", "minimum": 0, "maximum": 1 },
+            "MEDIUM": { "type": "number", "minimum": 0, "maximum": 1 },
+            "LOW": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "baselines": {
+      "type": "object",
+      "required": ["random", "always_bull", "cot_rule_only", "vs_cot_rule_delta"],
+      "properties": {
+        "random": { "type": "number" },
+        "always_bull": { "type": "number" },
+        "cot_rule_only": { "type": "number" },
+        "vs_cot_rule_delta": { "type": "number" }
+      },
+      "additionalProperties": false
+    },
+    "retrain": {
+      "type": "object",
+      "properties": {
+        "pre_accuracy": { "type": "number" },
+        "post_accuracy": { "type": "number" },
+        "deployed": { "type": "boolean" },
+        "reason_rejected": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "rollback": {
+      "type": "object",
+      "properties": {
+        "from_version": { "type": "string" },
+        "to_version": { "type": "string" },
+        "trigger_accuracy": { "type": "number" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

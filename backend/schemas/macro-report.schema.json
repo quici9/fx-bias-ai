@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "macro-report.schema.json",
+  "title": "MacroReport",
+  "description": "Macro economic data — policy rates, CPI, yields, VIX",
+  "type": "object",
+  "required": ["fetchDate", "policy_rates", "cpi_yoy", "yields_10y", "vix"],
+  "properties": {
+    "fetchDate": {
+      "type": "string",
+      "format": "date",
+      "description": "ISO date when data was fetched"
+    },
+    "policy_rates": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/MacroSeriesRecord" }
+    },
+    "cpi_yoy": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/MacroSeriesRecord" }
+    },
+    "yields_10y": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/YieldRecord" }
+    },
+    "vix": {
+      "type": "object",
+      "required": ["value", "regime", "delta_1w"],
+      "properties": {
+        "value": { "type": "number" },
+        "regime": {
+          "type": "string",
+          "enum": ["LOW", "NORMAL", "ELEVATED", "EXTREME"]
+        },
+        "delta_1w": { "type": "number" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "MacroSeriesRecord": {
+      "type": "object",
+      "required": [
+        "currency",
+        "value",
+        "diff_vs_usd",
+        "trend_3m",
+        "last_update",
+        "publication_lag_applied",
+        "freshness_days",
+        "is_stale"
+      ],
+      "properties": {
+        "currency": { "type": "string" },
+        "value": { "type": "number" },
+        "diff_vs_usd": { "type": "number" },
+        "trend_3m": {
+          "type": "string",
+          "enum": ["RISING", "FALLING", "STABLE"]
+        },
+        "last_update": {
+          "type": "string",
+          "format": "date",
+          "description": "ISO date of source record"
+        },
+        "publication_lag_applied": {
+          "type": "integer",
+          "description": "Months lag applied"
+        },
+        "freshness_days": {
+          "type": "integer",
+          "description": "Days since last_update"
+        },
+        "is_stale": {
+          "type": "boolean",
+          "description": "True if freshness_days > 14"
+        }
+      },
+      "additionalProperties": false
+    },
+    "YieldRecord": {
+      "type": "object",
+      "required": ["country", "yield", "spread_vs_us", "delta_1w", "direction", "last_update"],
+      "properties": {
+        "country": { "type": "string" },
+        "yield": { "type": "number" },
+        "spread_vs_us": { "type": "number" },
+        "delta_1w": { "type": "number" },
+        "direction": {
+          "type": "string",
+          "enum": ["WIDENING", "NARROWING", "STABLE"]
+        },
+        "last_update": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

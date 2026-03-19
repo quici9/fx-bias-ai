@@ -1,0 +1,258 @@
+{
+  "version": "v2.1-28f",
+  "total_features": 28,
+  "groups": [
+    {
+      "name": "Group A — COT Features từ Legacy Report",
+      "features": [
+        {
+          "id": 1,
+          "name": "cot_index",
+          "description": "COT Index 52 tuần",
+          "formula": "(Net − Min52) / (Max52 − Min52) × 100",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 2,
+          "name": "cot_index_4w_change",
+          "description": "Thay đổi COT Index 4 tuần",
+          "formula": "cot_index[t] − cot_index[t−4]",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 3,
+          "name": "net_pct_change_1w",
+          "description": "% thay đổi Net Position tuần này",
+          "formula": "(Net[t] − Net[t−1]) / |Net[t−1]| × 100",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 4,
+          "name": "momentum_acceleration",
+          "description": "Tăng tốc / Giảm tốc",
+          "formula": "delta[t] − delta[t−1] (dương = tăng tốc)",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 5,
+          "name": "oi_delta_direction",
+          "description": "OI đang tăng hay giảm",
+          "formula": "sign(OI[t] − OI[t−1])",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 6,
+          "name": "oi_net_confluence",
+          "description": "OI × Net confluence",
+          "formula": "4 regime: Strong / Covering / NewShort / Liquidation",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 7,
+          "name": "flip_flag",
+          "description": "Net Position đổi chiều",
+          "formula": "1 nếu sign(Net[t]) ≠ sign(Net[t−1])",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 8,
+          "name": "extreme_flag",
+          "description": "COT ở vùng extreme",
+          "formula": "1 nếu cot_index < 10 hoặc > 90",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 9,
+          "name": "usd_index_cot",
+          "description": "USD Index COT Index",
+          "formula": "Cùng công thức COT Index cho USD",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 10,
+          "name": "rank_in_8",
+          "description": "Rank sức mạnh trong 8 pairs",
+          "formula": "1 (mạnh nhất) đến 8 (yếu nhất)",
+          "optional": false,
+          "source": "DERIVED"
+        },
+        {
+          "id": 11,
+          "name": "spread_vs_usd",
+          "description": "COT Index spread so với USD",
+          "formula": "cot_index − usd_index_cot",
+          "optional": false,
+          "source": "DERIVED"
+        },
+        {
+          "id": 12,
+          "name": "weeks_since_flip",
+          "description": "Số tuần kể từ flip gần nhất",
+          "formula": "Count tuần since last flip_flag == 1",
+          "optional": false,
+          "source": "DERIVED"
+        }
+      ]
+    },
+    {
+      "name": "Group B — TFF OI Features",
+      "features": [
+        {
+          "id": 13,
+          "name": "lev_funds_net_index",
+          "description": "Leveraged Funds Net normalized 52w",
+          "formula": "(LevNet − Min52) / (Max52 − Min52) × 100",
+          "optional": false,
+          "source": "CFTC_TFF"
+        },
+        {
+          "id": 14,
+          "name": "asset_mgr_net_direction",
+          "description": "Institutional flow đang xoay chiều?",
+          "formula": "sign(AssetMgr_Net[t] − AssetMgr_Net[t−4])",
+          "optional": false,
+          "source": "CFTC_TFF"
+        },
+        {
+          "id": 15,
+          "name": "dealer_net_contrarian",
+          "description": "Dealer positioning — contrarian signal",
+          "formula": "Dealer_Net normalized; cực âm = market long crowded",
+          "optional": false,
+          "source": "CFTC_TFF"
+        },
+        {
+          "id": 16,
+          "name": "lev_vs_assetmgr_divergence",
+          "description": "Phân kỳ speculative vs institutional",
+          "formula": "LevFunds_Net_norm − AssetMgr_Net_norm",
+          "optional": false,
+          "source": "CFTC_TFF"
+        }
+      ]
+    },
+    {
+      "name": "Group C — Macro Features",
+      "features": [
+        {
+          "id": 17,
+          "name": "rate_diff_vs_usd",
+          "description": "Rate differential vs Fed",
+          "formula": "CB_rate − Fed_rate",
+          "optional": false,
+          "source": "FRED",
+          "publication_lag": 0
+        },
+        {
+          "id": 18,
+          "name": "rate_diff_trend_3m",
+          "description": "Trend rate differential 3 tháng",
+          "formula": "diff[t] − diff[t−12w]",
+          "optional": false,
+          "source": "FRED",
+          "publication_lag": 0
+        },
+        {
+          "id": 19,
+          "name": "rate_hike_expectation",
+          "description": "Kỳ vọng thay đổi rate",
+          "formula": "Proxy từ FRED Fed Funds Futures",
+          "optional": false,
+          "source": "FRED",
+          "publication_lag": 0
+        },
+        {
+          "id": 20,
+          "name": "cpi_diff_vs_usd",
+          "description": "CPI differential vs US",
+          "formula": "CPI_country − CPI_US",
+          "optional": false,
+          "source": "FRED",
+          "publication_lag": -2
+        },
+        {
+          "id": 21,
+          "name": "cpi_trend",
+          "description": "Trend CPI trong nước",
+          "formula": "CPI[t] − CPI[t−3M]: tăng / giảm / flat",
+          "optional": false,
+          "source": "FRED",
+          "publication_lag": -2
+        },
+        {
+          "id": 22,
+          "name": "pmi_composite_diff",
+          "description": "PMI composite differential",
+          "formula": "PMI_country − PMI_US",
+          "optional": true,
+          "source": "ECB",
+          "publication_lag": -1
+        },
+        {
+          "id": 23,
+          "name": "yield_10y_diff",
+          "description": "10Y yield spread vs US",
+          "formula": "yield_country − yield_US",
+          "optional": false,
+          "source": "FRED",
+          "publication_lag": 0
+        },
+        {
+          "id": 24,
+          "name": "vix_regime",
+          "description": "VIX regime bucket",
+          "formula": "0=Low, 1=Normal, 2=Elevated, 3=Extreme",
+          "optional": false,
+          "source": "FRED",
+          "publication_lag": 0
+        }
+      ]
+    },
+    {
+      "name": "Group D — Cross-Asset & Seasonal",
+      "features": [
+        {
+          "id": 25,
+          "name": "gold_cot_index",
+          "description": "Gold Futures COT Index (inverse USD signal)",
+          "formula": "COT Index formula applied to Gold Futures",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 26,
+          "name": "oil_cot_direction",
+          "description": "Oil COT trend (direct CAD signal, inverse USD)",
+          "formula": "COT Index trend direction for Oil Futures",
+          "optional": false,
+          "source": "CFTC_LEGACY"
+        },
+        {
+          "id": 27,
+          "name": "month",
+          "description": "Tháng trong năm (1–12) — seasonality",
+          "formula": "Calendar month 1–12",
+          "optional": false,
+          "source": "CALENDAR"
+        },
+        {
+          "id": 28,
+          "name": "quarter",
+          "description": "Quý (1–4) — quarterly flow patterns",
+          "formula": "Calendar quarter 1–4",
+          "optional": false,
+          "source": "CALENDAR"
+        }
+      ]
+    }
+  ]
+}

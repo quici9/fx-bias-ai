@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "cot-report.schema.json",
+  "title": "CotReport",
+  "description": "CFTC COT data — Legacy + TFF reports for 8 currencies",
+  "type": "object",
+  "required": ["reportDate", "publishDate", "source", "legacy", "tff", "cot_indices"],
+  "properties": {
+    "reportDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Tuesday close date, e.g. 2026-03-17"
+    },
+    "publishDate": {
+      "type": "string",
+      "format": "date",
+      "description": "Friday publish date, e.g. 2026-03-21"
+    },
+    "source": {
+      "type": "string",
+      "const": "CFTC_LEGACY_TFF"
+    },
+    "legacy": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/CotLegacyRecord" },
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "tff": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/CotTffRecord" },
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "cot_indices": {
+      "type": "object",
+      "description": "Pre-computed 52w indices per currency",
+      "patternProperties": {
+        "^[A-Z]{3}$": {
+          "type": "object",
+          "required": ["index", "trend_12w"],
+          "properties": {
+            "index": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "trend_12w": {
+              "type": "array",
+              "items": { "type": "number" },
+              "minItems": 12,
+              "maxItems": 12
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "CotLegacyRecord": {
+      "type": "object",
+      "required": [
+        "currency",
+        "noncomm_long",
+        "noncomm_short",
+        "open_interest",
+        "net",
+        "net_delta_1w",
+        "cot_index_52w",
+        "extreme_flag",
+        "flip_flag"
+      ],
+      "properties": {
+        "currency": { "type": "string" },
+        "noncomm_long": { "type": "integer" },
+        "noncomm_short": { "type": "integer" },
+        "open_interest": { "type": "integer" },
+        "net": { "type": "integer" },
+        "net_delta_1w": { "type": "integer" },
+        "cot_index_52w": { "type": "number", "minimum": 0, "maximum": 100 },
+        "extreme_flag": { "type": "boolean" },
+        "flip_flag": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    },
+    "CotTffRecord": {
+      "type": "object",
+      "required": [
+        "currency",
+        "lev_funds_long",
+        "lev_funds_short",
+        "lev_funds_net",
+        "asset_mgr_long",
+        "asset_mgr_short",
+        "asset_mgr_net",
+        "dealer_long",
+        "dealer_short",
+        "dealer_net",
+        "lev_vs_assetmgr_divergence"
+      ],
+      "properties": {
+        "currency": { "type": "string" },
+        "lev_funds_long": { "type": "integer" },
+        "lev_funds_short": { "type": "integer" },
+        "lev_funds_net": { "type": "integer" },
+        "asset_mgr_long": { "type": "integer" },
+        "asset_mgr_short": { "type": "integer" },
+        "asset_mgr_net": { "type": "integer" },
+        "dealer_long": { "type": "integer" },
+        "dealer_short": { "type": "integer" },
+        "dealer_net": { "type": "integer" },
+        "lev_vs_assetmgr_divergence": { "type": "number" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
