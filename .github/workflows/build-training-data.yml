@@ -10,11 +10,6 @@ name: Build Training Data
 
 on:
   workflow_dispatch:
-    inputs:
-      start_date:
-        description: 'Start date for price history (YYYY-MM-DD)'
-        required: false
-        default: '2006-01-01'
 
 permissions:
   contents: write
