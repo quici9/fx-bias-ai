@@ -1,0 +1,70 @@
+name: Build Training Data
+
+# One-time setup workflow -- run manually when:
+#   - Initial setup (first time)
+#   - Adding new historical data (annual refresh)
+#   - After FRED series IDs change
+#
+# NOT scheduled -- this is a setup step, not a weekly pipeline.
+# Output: training/data/prices_2006_2026.csv committed to repo.
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  download-prices:
+    name: Download FX Price History (FRED)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Download FX price series from FRED
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+        run: |
+          python training/build_labels.py
+
+      - name: Verify output file
+        run: |
+          if [ ! -f "training/data/prices_2006_2026.csv" ]; then
+            echo "ERROR: prices_2006_2026.csv was not created"
+            exit 1
+          fi
+          ROWS=$(wc -l < training/data/prices_2006_2026.csv)
+          echo "Output: $ROWS rows in prices_2006_2026.csv"
+          head -3 training/data/prices_2006_2026.csv
+
+      - name: Commit price data to repo
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add training/data/prices_2006_2026.csv
+
+          if git diff --staged --quiet; then
+            echo "No changes -- prices_2006_2026.csv is already up to date"
+          else
+            git commit -m "training: download FX price history 2006-$(date +%Y)
+
+Downloads weekly Friday closes for EUR, GBP, JPY, AUD, CAD, CHF, NZD
+from FRED exchange rate series. Used for building BULL/BEAR/NEUTRAL labels
+in Phase B2 training pipeline.
+
+Task: B2-01e
+Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>"
+            git push
+          fi
