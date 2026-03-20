@@ -33,6 +33,16 @@ FRED_API_KEY = os.getenv("FRED_API_KEY", "")
 # ECB Data Portal configuration
 ECB_API_BASE_URL = "https://data-api.ecb.europa.eu/service/data"
 
+# e-Stat Japan API configuration
+# Register free key at: https://www.e-stat.go.jp/api/
+ESTAT_API_BASE_URL = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData"
+ESTAT_API_KEY = os.getenv("ESTAT_API_KEY", "")
+
+# Japan National CPI (All Items), 2020=100, monthly — Statistics Bureau of Japan
+# statsDataId 0003427716 = 消費者物価指数（全国）2020年基準
+ESTAT_JAPAN_CPI_STATS_ID = "0003427716"
+ESTAT_JAPAN_CPI_CAT01 = "0001"  # 総合 (All Items)
+
 # FRED series IDs
 # Policy rates — OECD "Immediate Rates: Central Bank Rates" (monthly, M156N suffix)
 POLICY_RATE_SERIES = {
@@ -52,9 +62,8 @@ CPI_SERIES = {
     "USD": "CPIAUCSL",                # US CPI All Items (monthly, index → compute YoY) ✅
     "EUR": "CP0000EZ19M086NEST",      # Eurozone HICP All Items (monthly, index 2015=100) ✅
     # NOTE: FRED stopped publishing Japan CPI after 2022-04. CPALCY01JPM661N (YoY%) is
-    # the most recent FRED series available. For production post-2022, supplement via
-    # Japan Statistics Bureau e-Stat API or accept gap in jpyCpi_yoy feature.
-    "JPY": "CPALCY01JPM661N",         # Japan CPI YoY% (monthly OECD, ends 2022-04) ⚠️
+    # kept as FRED fallback only. Primary source is e-Stat Japan API (ESTAT_API_KEY).
+    "JPY": "CPALCY01JPM661N",         # Japan CPI YoY% (FRED fallback, ends 2022-04) ⚠️
     "AUD": "CPALTT01AUQ657N",         # Australia CPI YoY% (quarterly, OECD) ✅
     "CAD": "CPALCY01CAM661N",         # Canada CPI YoY% (monthly, OECD) ✅
     "GBP": "GBRCPIALLMINMEI",         # UK CPI (monthly, index → compute YoY) ✅
@@ -331,6 +340,131 @@ def compute_vix_regime(vix_value: float) -> str:
         return "EXTREME"
 
 
+def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
+    """
+    Fetch Japan National CPI (All Items, 2020=100) from e-Stat API.
+
+    Returns FRED-compatible observations sorted descending by date:
+        [{"date": "YYYY-MM-01", "value": "107.5"}, ...]
+    Values are the CPI level index — call compute_yoy_from_level() to get YoY%.
+
+    Args:
+        lookback_years: Years of history to fetch (default 4 covers YoY + 3m trend).
+
+    Raises:
+        ValueError: If ESTAT_API_KEY is not set.
+        requests.RequestException: On API failure after retries.
+    """
+    if not ESTAT_API_KEY:
+        raise ValueError("ESTAT_API_KEY environment variable not set")
+
+    start_year = date.today().year - lookback_years
+    cd_time_from = f"{start_year}01"
+
+    params = {
+        "appId": ESTAT_API_KEY,
+        "statsDataId": ESTAT_JAPAN_CPI_STATS_ID,
+        "cdCat01": ESTAT_JAPAN_CPI_CAT01,
+        "cdTimeFrom": cd_time_from,
+        "metaGetFlg": "N",
+        "cntGetFlg": "N",
+    }
+
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            logger.info("Fetching Japan CPI from e-Stat (attempt %d/%d)", attempt, MAX_RETRIES)
+            response = requests.get(ESTAT_API_BASE_URL, params=params, timeout=REQUEST_TIMEOUT)
+
+            if response.status_code == 429:
+                logger.warning("e-Stat rate limited — retrying after %ds", RETRY_DELAY * attempt)
+                time.sleep(RETRY_DELAY * attempt)
+                continue
+
+            if response.status_code >= 500:
+                logger.warning("e-Stat server error (%d) — retrying", response.status_code)
+                time.sleep(RETRY_DELAY)
+                continue
+
+            response.raise_for_status()
+            data = response.json()
+
+            values = (
+                data.get("GET_STATS_DATA", {})
+                .get("STATISTICAL_DATA", {})
+                .get("DATA_INF", {})
+                .get("VALUE", [])
+            )
+
+            if not values:
+                raise ValueError("e-Stat returned empty VALUE list — check statsDataId or cdCat01")
+
+            observations = []
+            for v in values:
+                # @time format: YYYYMM (6 chars) padded to 10 chars in some API versions
+                time_str = v.get("@time", "")
+                raw_value = v.get("$", "")
+                # Skip missing/suppressed values
+                if len(time_str) < 6 or raw_value in ("", "-", "***", "－", "…"):
+                    continue
+                year, month = time_str[:4], time_str[4:6]
+                observations.append({"date": f"{year}-{month}-01", "value": raw_value})
+
+            observations.sort(key=lambda x: x["date"], reverse=True)
+            logger.info("e-Stat: fetched %d Japan CPI level observations", len(observations))
+            return observations
+
+        except requests.Timeout:
+            logger.warning("e-Stat request timeout — attempt %d/%d", attempt, MAX_RETRIES)
+            if attempt < MAX_RETRIES:
+                time.sleep(RETRY_DELAY)
+                continue
+            raise
+
+        except requests.RequestException as e:
+            logger.error("e-Stat API request failed: %s", e)
+            if attempt < MAX_RETRIES:
+                time.sleep(RETRY_DELAY)
+                continue
+            raise
+
+    raise requests.RequestException(f"Failed to fetch e-Stat Japan CPI after {MAX_RETRIES} attempts")
+
+
+def compute_yoy_from_level(observations: list[dict]) -> list[dict]:
+    """
+    Compute YoY% from CPI level observations (index → percentage change).
+
+    Matches each observation to the one closest to exactly 12 months prior
+    (within a 15-day window to handle monthly alignment).
+
+    Args:
+        observations: Sorted descending by date, values are CPI level index.
+
+    Returns:
+        List of {"date": "YYYY-MM-01", "value": "X.XX"} with YoY%, sorted desc.
+        Only entries where a valid 12-month-ago observation exists are included.
+    """
+    result = []
+    for i, obs in enumerate(observations):
+        try:
+            obs_date = date.fromisoformat(obs["date"])
+            year_ago = obs_date.replace(year=obs_date.year - 1)
+            curr_val = float(obs["value"])
+
+            for past_obs in observations[i + 1:]:
+                past_date = date.fromisoformat(past_obs["date"])
+                if abs((past_date - year_ago).days) <= 15 and past_obs["value"] not in ("", ".", "-"):
+                    prev_val = float(past_obs["value"])
+                    if prev_val != 0:
+                        yoy = round((curr_val / prev_val - 1) * 100, 2)
+                        result.append({"date": obs["date"], "value": str(yoy)})
+                    break
+        except (ValueError, AttributeError):
+            continue
+
+    return result  # inherits descending order from input
+
+
 def main() -> int:
     """Main execution function."""
     logger.info("=== Starting macro data fetch ===")
@@ -405,9 +539,25 @@ def main() -> int:
         cpi_yoy = []
         usd_cpi_value = None
 
+        # Pre-fetch Japan CPI from e-Stat (fresh data vs stale FRED CPALCY01JPM661N)
+        jpy_cpi_observations: Optional[list[dict]] = None
+        if ESTAT_API_KEY:
+            try:
+                level_obs = fetch_estat_japan_cpi()
+                jpy_cpi_observations = compute_yoy_from_level(level_obs)
+                logger.info("Japan CPI (e-Stat): %d YoY observations available", len(jpy_cpi_observations))
+            except Exception as e:
+                logger.warning("e-Stat Japan CPI failed — falling back to FRED: %s", e)
+        else:
+            logger.warning("ESTAT_API_KEY not set — JPY CPI will use stale FRED data (ends 2022-04)")
+
         for currency, series_id in CPI_SERIES.items():
             try:
-                observations = fetch_fred_series(series_id, limit=100)
+                # JPY: prefer e-Stat YoY observations over stale FRED series
+                if currency == "JPY" and jpy_cpi_observations:
+                    observations = jpy_cpi_observations
+                else:
+                    observations = fetch_fred_series(series_id, limit=100)
                 latest = get_latest_value_with_lag(observations, "cpi", fetch_date)
 
                 if not latest:
