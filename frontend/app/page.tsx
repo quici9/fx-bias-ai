@@ -7,6 +7,7 @@ import { fetchBiasData } from "@/lib/fetchers/fetchBiasData";
 import { fetchCotData } from "@/lib/fetchers/fetchCotData";
 import { Badge } from "@/components/shared/Badge";
 import { VersionMismatchBanner } from "@/components/shared/VersionMismatchBanner";
+import { WeekSelector } from "@/components/shared/WeekSelector";
 
 // Dashboard-specific components
 import { AlertBanner } from "@/components/dashboard/AlertBanner";
@@ -31,6 +32,9 @@ export default function DashboardPage() {
   const setCotReport = useAuditStore((s) => s.setCotReport);
   const cotReport = useAuditStore((s) => s.cotReport);
 
+  // ── Week selection ─────────────────────────────────────────────────────────
+  const [selectedWeek, setSelectedWeek] = useState<string>("latest");
+
   // Currency detail panel state
   const [selectedPrediction, setSelectedPrediction] = useState<CurrencyPrediction | null>(null);
 
@@ -38,13 +42,14 @@ export default function DashboardPage() {
   const [_selectedPair, setSelectedPair] = useState<PairRecommendation | null>(null);
   void _selectedPair; // suppress unused warning
 
+  // ── Load bias data whenever selectedWeek changes ───────────────────────────
   useEffect(() => {
-    if (currentReport) return; // already loaded
     setLoadState("loading");
-    fetchBiasData({ week: "latest" })
+    setSelectedPrediction(null); // reset panel on week change
+    fetchBiasData({ week: selectedWeek, force: true })
       .then(setReport)
       .catch((err: Error) => setError(err.message));
-  }, [currentReport, setReport, setLoadState, setError]);
+  }, [selectedWeek, setReport, setLoadState, setError]);
 
   // Pre-fetch COT data for the detail panel sparklines
   useEffect(() => {
@@ -108,20 +113,40 @@ export default function DashboardPage() {
     ? cotReport.cot_indices[selectedPrediction.currency]?.trend_12w
     : undefined;
 
+  const isHistorical = selectedWeek !== "latest";
+
   return (
     <div className="animate-stagger" style={{ display: "flex", flexDirection: "column", gap: 32 }}>
       {/* ── Page header ── */}
       <div>
-        <h1
+        <div
           style={{
-            margin: 0,
-            fontSize: "var(--text-2xl)",
-            fontWeight: 700,
-            color: "var(--text-primary)",
+            display: "flex",
+            alignItems: "flex-start",
+            justifyContent: "space-between",
+            flexWrap: "wrap",
+            gap: 12,
           }}
         >
-          Weekly Bias Dashboard
-        </h1>
+          <h1
+            style={{
+              margin: 0,
+              fontSize: "var(--text-2xl)",
+              fontWeight: 700,
+              color: "var(--text-primary)",
+            }}
+          >
+            Weekly Bias Dashboard
+          </h1>
+
+          {/* ── Week Selector dropdown ── */}
+          <WeekSelector
+            currentWeek={selectedWeek}
+            onWeekChange={setSelectedWeek}
+            isLoading={loadState === "loading"}
+          />
+        </div>
+
         <div
           style={{
             marginTop: 6,
@@ -144,6 +169,25 @@ export default function DashboardPage() {
           <span style={{ fontSize: "var(--text-xs)", color: "var(--text-muted)" }}>
             Generated {new Date(report.meta.generatedAt).toLocaleString()}
           </span>
+          {/* Historical view badge */}
+          {isHistorical && (
+            <>
+              <span style={{ color: "var(--border-strong)" }}>·</span>
+              <span
+                style={{
+                  fontSize: "var(--text-xs)",
+                  fontWeight: 600,
+                  color: "#f59e0b",
+                  background: "rgba(245,158,11,0.1)",
+                  padding: "1px 6px",
+                  borderRadius: 4,
+                  border: "1px solid rgba(245,158,11,0.25)",
+                }}
+              >
+                HISTORICAL VIEW
+              </span>
+            </>
+          )}
         </div>
       </div>
 
