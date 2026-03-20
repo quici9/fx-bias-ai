@@ -381,23 +381,23 @@ def _discover_estat_cpi_stats_id() -> str:
         title = title_obj.get("$", "") if isinstance(title_obj, dict) else str(title_obj)
         cycle = table.get("CYCLE", "")
         logger.info("e-Stat candidate: id=%s cycle=%s title=%s", stats_id, cycle, title)
-        if stats_id and cycle == "月次":  # Monthly
-            candidates.append((stats_id, title))
+        if stats_id:
+            candidates.append((stats_id, title, cycle))
 
     if not candidates:
         raise ValueError(
-            "e-Stat getStatsList: no monthly tables found for 消費者物価指数 全国 2020年基準"
+            "e-Stat getStatsList: no tables found for 消費者物価指数 全国 2020年基準"
         )
 
-    # Prefer tables that mention 品目別 (item-level) or 総合指数 (all items index)
-    for stats_id, title in candidates:
+    # Prefer tables that mention 品目別 (item-level) or 総合 (all items)
+    for stats_id, title, cycle in candidates:
         if any(kw in title for kw in ("品目別", "総合")):
-            logger.info("e-Stat: selected statsDataId=%s (%s)", stats_id, title)
+            logger.info("e-Stat: selected statsDataId=%s cycle=%s (%s)", stats_id, cycle, title)
             return stats_id
 
-    # Fallback to first monthly candidate
-    stats_id, title = candidates[0]
-    logger.info("e-Stat: using first monthly candidate statsDataId=%s (%s)", stats_id, title)
+    # Fallback: first candidate regardless of cycle
+    stats_id, title, cycle = candidates[0]
+    logger.info("e-Stat: using first candidate statsDataId=%s cycle=%s (%s)", stats_id, cycle, title)
     return stats_id
 
 
@@ -589,21 +589,30 @@ def fetch_oecd_japan_cpi(lookback_years: int = 4) -> list[dict]:
     response.raise_for_status()
     data = response.json()
 
-    # Log top-level keys for diagnostics in case of unexpected structure
+    # Log top-level keys for diagnostics
     logger.info("OECD response top-level keys: %s", list(data.keys()))
 
-    datasets = data.get("dataSets", [])
+    # SDMX-JSON 2.0 (sdmx.oecd.org) wraps payload under "data" key.
+    # SDMX-JSON 1.0 (stats.oecd.org legacy) has dataSets at top level.
+    payload = data.get("data", data)
+
+    datasets = payload.get("dataSets", [])
     if not datasets:
         raise ValueError(
-            f"OECD: no dataSets in response (keys={list(data.keys())})"
+            f"OECD: no dataSets in response (top-level keys={list(data.keys())})"
         )
 
     series_map = datasets[0].get("series", {})
     if not series_map:
         raise ValueError("OECD: no series in dataSets[0]")
 
-    # Extract TIME_PERIOD labels from structure
-    obs_dims = data.get("structure", {}).get("dimensions", {}).get("observation", [])
+    # Extract TIME_PERIOD labels — SDMX-JSON 2.0 uses "structures", 1.0 uses "structure"
+    structures_v2 = payload.get("structures", [])
+    if structures_v2:
+        obs_dims = structures_v2[0].get("dimensions", {}).get("observation", [])
+    else:
+        obs_dims = payload.get("structure", {}).get("dimensions", {}).get("observation", [])
+
     time_values: list[dict] = []
     for dim in obs_dims:
         if dim.get("id") == "TIME_PERIOD":
@@ -611,7 +620,7 @@ def fetch_oecd_japan_cpi(lookback_years: int = 4) -> list[dict]:
             break
 
     if not time_values:
-        raise ValueError("OECD: TIME_PERIOD dimension not found in structure")
+        raise ValueError("OECD: TIME_PERIOD dimension not found in structure/structures")
 
     # All series keys map to the single requested series
     series_data = next(iter(series_map.values()))
