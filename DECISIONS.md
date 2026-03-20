@@ -127,3 +127,33 @@
 **Impact:** Lower values allow finer splits (risk overfit); higher values regularize more.
 
 ---
+
+## Hyperparameter Grid Search — B3-02e
+
+**Date:** 2026-03-20 03:05 UTC
+
+**Grid:** min_samples_leaf ∈ [5, 10, 15, 20, 30] × max_depth ∈ [6, 8, 10]
+
+| min_samples_leaf | max_depth | Mean Walk-Forward Accuracy |
+|------------------|-----------|---------------------------|
+| 5 | 6 | 0.5058 |
+| 5 | 8 | 0.5038 |
+| 5 | 10 | 0.4943 |
+| 10 | 6 | 0.4975 |
+| 10 | 8 | 0.4989 |
+| 10 | 10 | 0.5030 |
+| 15 | 6 | 0.4976 |
+| 15 | 8 | 0.5024 |
+| 15 | 10 | 0.4982 |
+| 20 | 6 | 0.4954 |
+| 20 | 8 | 0.5016 |
+| 20 | 10 | 0.5018 |
+| 30 | 6 | 0.4962 |
+| 30 | 8 | 0.5079 ← selected |
+| 30 | 10 | 0.4976 |
+
+**Selected:** `min_samples_leaf = 30`, `max_depth = 8` → acc = 0.5079
+**Reason:** Best mean walk-forward accuracy across all 4 folds in joint grid search.
+**Impact:** Joint tuning prevents sub-optimal local choices from single-dimension search.
+
+---

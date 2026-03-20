@@ -1,53 +1,75 @@
 {
   "phase": "B3-02",
-  "generated_at": "2026-03-20 02:40 UTC",
+  "generated_at": "2026-03-20 03:05 UTC",
   "gate_pass": true,
-  "mean_rf_vs_cot_gap": 0.17,
-  "min_samples_leaf_tuning": {
-    "10": 0.4976,
-    "15": 0.5004
+  "mean_rf_vs_cot_gap": 0.1713,
+  "hyperparam_grid": {
+    "leaf=5_depth=6": 0.5058,
+    "leaf=5_depth=8": 0.5038,
+    "leaf=5_depth=10": 0.4943,
+    "leaf=10_depth=6": 0.4975,
+    "leaf=10_depth=8": 0.4989,
+    "leaf=10_depth=10": 0.503,
+    "leaf=15_depth=6": 0.4976,
+    "leaf=15_depth=8": 0.5024,
+    "leaf=15_depth=10": 0.4982,
+    "leaf=20_depth=6": 0.4954,
+    "leaf=20_depth=8": 0.5016,
+    "leaf=20_depth=10": 0.5018,
+    "leaf=30_depth=6": 0.4962,
+    "leaf=30_depth=8": 0.5079,
+    "leaf=30_depth=10": 0.4976
   },
-  "best_min_samples_leaf": 15,
+  "best_min_samples_leaf": 30,
+  "best_max_depth": 8,
+  "best_grid_accuracy": 0.5079,
+  "min_samples_leaf_tuning": {
+    "5": 0.5038,
+    "10": 0.4989,
+    "15": 0.5024,
+    "20": 0.5016,
+    "30": 0.5079
+  },
   "top_10_features": [
     [
       "net_pct_change_1w",
-      0.366757
+      0.376467
     ],
     [
       "oi_net_confluence",
-      0.345642
+      0.362364
     ],
     [
       "momentum_acceleration",
-      0.070868
+      0.07342
     ],
     [
       "cot_index_4w_change",
-      0.044957
+      0.04354
     ],
     [
       "cot_index",
-      0.026983
+      0.025344
     ],
     [
       "dealer_net_contrarian",
-      0.019562
+      0.01687
     ],
     [
       "usd_index_cot",
-      0.018369
+      0.015507
     ],
     [
       "spread_vs_usd",
-      0.018017
-    ],
-    [
-      "rate_diff_vs_usd",
-      0.011903
+      0.015122
     ],
     [
       "rate_diff_trend_3m",
-      0.011432
+      0.009758
+    ],
+    [
+      "cpi_diff_vs_usd",
+      0.008933
     ]
   ],
   "group_b_in_top10": [
@@ -55,12 +77,12 @@
   ],
   "folds": {
     "Fold1_2021": {
-      "rf": 0.531,
+      "rf": 0.5337,
       "random": 0.3235,
       "always_bull": 0.1887,
       "cot_rule": 0.31,
-      "logistic_regression": 0.5606,
-      "rf_vs_cot_gap": 0.221,
+      "logistic_regression": 0.5553,
+      "rf_vs_cot_gap": 0.2237,
       "gate_pass": true,
       "confidence_accuracy": {
         "HIGH": {
@@ -68,12 +90,12 @@
           "accuracy": null
         },
         "MEDIUM": {
-          "n": 66,
-          "accuracy": 0.5303
+          "n": 74,
+          "accuracy": 0.527
         },
         "LOW": {
-          "n": 305,
-          "accuracy": 0.5311
+          "n": 297,
+          "accuracy": 0.5354
         }
       }
     },
@@ -82,7 +104,7 @@
       "random": 0.3571,
       "always_bull": 0.261,
       "cot_rule": 0.3571,
-      "logistic_regression": 0.4945,
+      "logistic_regression": 0.511,
       "rf_vs_cot_gap": 0.1868,
       "gate_pass": true,
       "confidence_accuracy": {
@@ -91,22 +113,22 @@
           "accuracy": null
         },
         "MEDIUM": {
-          "n": 67,
-          "accuracy": 0.5075
+          "n": 75,
+          "accuracy": 0.4667
         },
         "LOW": {
-          "n": 297,
-          "accuracy": 0.5522
+          "n": 289,
+          "accuracy": 0.564
         }
       }
     },
     "Fold3_2023": {
-      "rf": 0.451,
+      "rf": 0.4426,
       "random": 0.3025,
       "always_bull": 0.2465,
       "cot_rule": 0.3053,
       "logistic_regression": 0.4482,
-      "rf_vs_cot_gap": 0.1457,
+      "rf_vs_cot_gap": 0.1373,
       "gate_pass": true,
       "confidence_accuracy": {
         "HIGH": {
@@ -114,22 +136,22 @@
           "accuracy": 1.0
         },
         "MEDIUM": {
-          "n": 58,
-          "accuracy": 0.4655
+          "n": 47,
+          "accuracy": 0.4255
         },
         "LOW": {
-          "n": 298,
-          "accuracy": 0.4463
+          "n": 309,
+          "accuracy": 0.4434
         }
       }
     },
     "Fold4_2024": {
-      "rf": 0.4643,
+      "rf": 0.4753,
       "random": 0.3242,
       "always_bull": 0.1731,
       "cot_rule": 0.3379,
-      "logistic_regression": 0.4258,
-      "rf_vs_cot_gap": 0.1264,
+      "logistic_regression": 0.4615,
+      "rf_vs_cot_gap": 0.1374,
       "gate_pass": true,
       "confidence_accuracy": {
         "HIGH": {
@@ -137,23 +159,23 @@
           "accuracy": null
         },
         "MEDIUM": {
-          "n": 44,
-          "accuracy": 0.3636
+          "n": 59,
+          "accuracy": 0.3898
         },
         "LOW": {
-          "n": 320,
-          "accuracy": 0.4781
+          "n": 305,
+          "accuracy": 0.4918
         }
       }
     }
   },
   "per_currency_last_fold": {
-    "AUD": 0.5192,
-    "CAD": 0.4231,
-    "CHF": 0.5,
+    "AUD": 0.5385,
+    "CAD": 0.4808,
+    "CHF": 0.5192,
     "EUR": 0.5385,
-    "GBP": 0.5192,
-    "JPY": 0.3462,
-    "NZD": 0.4038
+    "GBP": 0.4231,
+    "JPY": 0.3846,
+    "NZD": 0.4423
   }
 }
