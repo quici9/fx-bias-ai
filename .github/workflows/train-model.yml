@@ -12,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
+    env:
+      FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,7 +26,22 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt matplotlib
+
+      - name: Rebuild features dataset with macro data (B2-04)
+        run: python training/build_dataset.py
+
+      - name: Verify features dataset
+        run: |
+          python3 -c "
+          import pandas as pd
+          df = pd.read_csv('training/data/features_2006_2026.csv')
+          macro_cols = ['rate_diff_vs_usd','cpi_diff_vs_usd','yield_10y_diff','vix_regime']
+          print(f'Rows: {len(df)}')
+          for c in macro_cols:
+              n_nonzero = (df[c] != 0).sum()
+              print(f'  {c}: {n_nonzero} non-zero rows ({n_nonzero/len(df)*100:.1f}%)')
+          "
 
       - name: Run train_model.py (B3-01)
         run: python training/train_model.py
@@ -67,6 +85,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
+          git add training/data/features_2006_2026.csv
           git add models/model.pkl models/calibrator.pkl
           git add models/model_lr_fallback.pkl
           git add models/model_card.md

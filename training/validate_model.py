@@ -185,7 +185,6 @@ def train_logistic_regression(
         class_weight="balanced",
         random_state=42,
         solver="lbfgs",
-        multi_class="multinomial",
     )
     model = CalibratedClassifierCV(lr, method="sigmoid", cv=5)
     model.fit(X_scaled, y_train)
@@ -635,7 +634,6 @@ def train_lr_fallback(
         class_weight="balanced",
         random_state=42,
         solver="lbfgs",
-        multi_class="multinomial",
     )
     lr_cal = CalibratedClassifierCV(lr, method="sigmoid", cv=5)
     lr_cal.fit(X_scaled, y)
