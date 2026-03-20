@@ -36,11 +36,13 @@ ECB_API_BASE_URL = "https://data-api.ecb.europa.eu/service/data"
 # e-Stat Japan API configuration
 # Register free key at: https://www.e-stat.go.jp/api/
 ESTAT_API_BASE_URL = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData"
+ESTAT_LIST_URL = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsList"
 ESTAT_API_KEY = os.getenv("ESTAT_API_KEY", "")
 
 # Japan National CPI (All Items), 2020=100, monthly — Statistics Bureau of Japan
-# statsDataId 0003427716 = 消費者物価指数（全国）2020年基準
-ESTAT_JAPAN_CPI_STATS_ID = "0003427716"
+# Discovered at runtime via getStatsList; this constant is the fallback cache.
+# If empty, fetch_estat_japan_cpi() will call getStatsList to discover the ID.
+ESTAT_JAPAN_CPI_STATS_ID: str = ""  # discovered dynamically
 
 # FRED series IDs
 # Policy rates — OECD "Immediate Rates: Central Bank Rates" (monthly, M156N suffix)
@@ -339,6 +341,66 @@ def compute_vix_regime(vix_value: float) -> str:
         return "EXTREME"
 
 
+def _discover_estat_cpi_stats_id() -> str:
+    """
+    Discover the e-Stat statsDataId for Japan National CPI 2020 base via getStatsList.
+
+    Searches for 消費者物価指数 全国 and returns the first monthly table whose
+    title indicates it covers all items (品目別 or 総合). All found candidates
+    are logged so the correct ID can be hardcoded in future runs.
+
+    Returns:
+        The statsDataId string.
+
+    Raises:
+        ValueError: If no suitable dataset is found.
+    """
+    params = {
+        "appId": ESTAT_API_KEY,
+        "searchWord": "消費者物価指数 全国 2020年基準",
+        "lang": "J",
+        "limit": 20,
+    }
+    logger.info("e-Stat: searching for Japan CPI statsDataId via getStatsList")
+    resp = requests.get(ESTAT_LIST_URL, params=params, timeout=REQUEST_TIMEOUT)
+    resp.raise_for_status()
+    data = resp.json()
+
+    table_list = (
+        data.get("GET_STATS_LIST", {})
+        .get("DATALIST_INF", {})
+        .get("TABLE_INF", [])
+    )
+    if isinstance(table_list, dict):
+        table_list = [table_list]
+
+    candidates = []
+    for table in table_list:
+        stats_id = table.get("@id", "")
+        title_obj = table.get("TITLE", {})
+        title = title_obj.get("$", "") if isinstance(title_obj, dict) else str(title_obj)
+        cycle = table.get("CYCLE", "")
+        logger.info("e-Stat candidate: id=%s cycle=%s title=%s", stats_id, cycle, title)
+        if stats_id and cycle == "月次":  # Monthly
+            candidates.append((stats_id, title))
+
+    if not candidates:
+        raise ValueError(
+            "e-Stat getStatsList: no monthly tables found for 消費者物価指数 全国 2020年基準"
+        )
+
+    # Prefer tables that mention 品目別 (item-level) or 総合指数 (all items index)
+    for stats_id, title in candidates:
+        if any(kw in title for kw in ("品目別", "総合")):
+            logger.info("e-Stat: selected statsDataId=%s (%s)", stats_id, title)
+            return stats_id
+
+    # Fallback to first monthly candidate
+    stats_id, title = candidates[0]
+    logger.info("e-Stat: using first monthly candidate statsDataId=%s (%s)", stats_id, title)
+    return stats_id
+
+
 def _find_all_items_cat_code(stat_data: dict) -> Optional[str]:
     """
     Discover the @cat01 code for '総合' (All Items) from e-Stat CLASS_OBJ metadata.
@@ -405,9 +467,12 @@ def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
     if not ESTAT_API_KEY:
         raise ValueError("ESTAT_API_KEY environment variable not set")
 
+    # Discover statsDataId dynamically if not hardcoded
+    stats_id = ESTAT_JAPAN_CPI_STATS_ID or _discover_estat_cpi_stats_id()
+
     params = {
         "appId": ESTAT_API_KEY,
-        "statsDataId": ESTAT_JAPAN_CPI_STATS_ID,
+        "statsDataId": stats_id,
         "metaGetFlg": "Y",   # Include CLASS_OBJ to discover 総合 category code
         "cntGetFlg": "N",
         "limit": 200,        # enough for ~4 years of monthly data across all categories
@@ -502,37 +567,42 @@ def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
 
 def fetch_oecd_japan_cpi(lookback_years: int = 4) -> list[dict]:
     """
-    Fetch Japan CPI YoY% from OECD Stats API (no API key required).
+    Fetch Japan CPI (All Items, 2015=100, seasonally adjusted) from OECD Stats API.
 
-    Uses the OECD SDMX-JSON endpoint, which is the same underlying source
-    that FRED mirrored in CPALCY01JPM661N (now stale). Returns YoY% directly
-    — no need to call compute_yoy_from_level().
+    Uses the OECD SDMX-JSON endpoint (same underlying source as FRED JPNCPIALLMINMEI).
+    Returns CPI level index — call compute_yoy_from_level() to get YoY%.
 
     Returns FRED-compatible observations sorted descending by date:
-        [{"date": "YYYY-MM-01", "value": "3.2"}, ...]
+        [{"date": "YYYY-MM-01", "value": "107.5"}, ...]
 
     Raises:
-        ValueError: If the response contains no observations.
+        ValueError: If the response structure is unexpected or contains no observations.
         requests.RequestException: On API failure.
     """
     start_time = f"{date.today().year - lookback_years}-01"
-    url = "https://stats.oecd.org/SDMX-JSON/data/PRICES_CPI/JPN.CPALTT01.GY.M/all"
-    params = {"startTime": start_time, "format": "json"}
+    # PRICES_CPI dataset: CPALTT01 = All items, IXOBSA = index seasonally adjusted, M = monthly
+    url = "https://stats.oecd.org/SDMX-JSON/data/PRICES_CPI/JPN.CPALTT01.IXOBSA.M/all"
+    params = {"startTime": start_time}  # No format param — path already specifies SDMX-JSON
 
-    logger.info("Fetching Japan CPI YoY%% from OECD Stats API (from %s)", start_time)
+    logger.info("Fetching Japan CPI level from OECD Stats API (from %s)", start_time)
     response = requests.get(url, params=params, timeout=REQUEST_TIMEOUT)
     response.raise_for_status()
     data = response.json()
 
+    # Log top-level keys for diagnostics in case of unexpected structure
+    logger.info("OECD response top-level keys: %s", list(data.keys()))
+
     datasets = data.get("dataSets", [])
     if not datasets:
-        raise ValueError("OECD: no dataSets in response")
+        raise ValueError(
+            f"OECD: no dataSets in response (keys={list(data.keys())})"
+        )
 
     series_map = datasets[0].get("series", {})
     if not series_map:
         raise ValueError("OECD: no series in dataSets[0]")
 
-    # Extract time period labels from structure
+    # Extract TIME_PERIOD labels from structure
     obs_dims = data.get("structure", {}).get("dimensions", {}).get("observation", [])
     time_values: list[dict] = []
     for dim in obs_dims:
@@ -543,7 +613,7 @@ def fetch_oecd_japan_cpi(lookback_years: int = 4) -> list[dict]:
     if not time_values:
         raise ValueError("OECD: TIME_PERIOD dimension not found in structure")
 
-    # Use the first (and only expected) series
+    # All series keys map to the single requested series
     series_data = next(iter(series_map.values()))
     observations_raw = series_data.get("observations", {})
 
@@ -557,13 +627,13 @@ def fetch_oecd_japan_cpi(lookback_years: int = 4) -> list[dict]:
             continue
         time_id = time_values[idx].get("id", "")  # Format: "2022-01"
         if len(time_id) == 7:
-            observations.append({"date": f"{time_id}-01", "value": str(round(float(value), 2))})
+            observations.append({"date": f"{time_id}-01", "value": str(round(float(value), 4))})
 
     if not observations:
-        raise ValueError("OECD: parsed 0 observations — check series key or time dimension")
+        raise ValueError("OECD: parsed 0 observations — series key or time dimension mismatch")
 
     observations.sort(key=lambda x: x["date"], reverse=True)
-    logger.info("OECD: fetched %d Japan CPI YoY%% observations", len(observations))
+    logger.info("OECD: fetched %d Japan CPI level observations", len(observations))
     return observations
 
 
@@ -689,7 +759,8 @@ def main() -> int:
 
         if not jpy_cpi_observations:
             try:
-                jpy_cpi_observations = fetch_oecd_japan_cpi()
+                oecd_level_obs = fetch_oecd_japan_cpi()
+                jpy_cpi_observations = compute_yoy_from_level(oecd_level_obs)
                 logger.info("Japan CPI (OECD): %d YoY observations", len(jpy_cpi_observations))
             except Exception as e:
                 logger.warning("OECD Japan CPI failed — falling back to stale FRED: %s", e)

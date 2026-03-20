@@ -8,11 +8,15 @@ from unittest.mock import MagicMock, patch
 os.environ.setdefault("FRED_API_KEY", "test_fred_key")
 os.environ.setdefault("ESTAT_API_KEY", "test_estat_key")
 
+import backend.scripts.fetch_macro as fetch_macro_module
 from backend.scripts.fetch_macro import (
     _find_all_items_cat_code,
     compute_yoy_from_level,
     fetch_estat_japan_cpi,
 )
+
+# Patch the stats ID constant so tests bypass the getStatsList discovery call
+_FAKE_STATS_ID = "0099999999"
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -121,6 +125,12 @@ class TestFindAllItemsCatCode:
 # ---------------------------------------------------------------------------
 
 class TestFetchEstatJapanCPI:
+    # All tests in this class patch ESTAT_JAPAN_CPI_STATS_ID to skip discovery
+    @pytest.fixture(autouse=True)
+    def _patch_stats_id(self):
+        with patch.object(fetch_macro_module, "ESTAT_JAPAN_CPI_STATS_ID", _FAKE_STATS_ID):
+            yield
+
     def test_parses_observations_and_sorts_desc(self):
         body = _estat_response(
             ("202301", "103.5"),
