@@ -578,6 +578,21 @@ def append_bias_history(report: dict, now: datetime) -> None:
     logger.info(f"History appended: {out_path}")
 
 
+def write_week_index() -> None:
+    """Rebuild data/history/bias/index.json from files present on disk.
+
+    Frontend reads this file to dynamically discover available weeks
+    without hardcoding them in fetchHistorical.ts.
+    """
+    HISTORY_BIAS_DIR.mkdir(parents=True, exist_ok=True)
+    week_files = sorted(HISTORY_BIAS_DIR.glob("[0-9][0-9][0-9][0-9]-W*.json"), reverse=True)
+    weeks = [f.stem for f in week_files]  # stem = filename without .json
+    index_path = HISTORY_BIAS_DIR / "index.json"
+    with open(index_path, "w") as f:
+        json.dump({"available_weeks": weeks}, f, separators=(",", ":"))
+    logger.info(f"Week index written: {index_path} ({len(weeks)} weeks)")
+
+
 # ---------------------------------------------------------------------------
 # Main pipeline — B4-01a
 # ---------------------------------------------------------------------------
@@ -819,6 +834,7 @@ def main(use_fallback: bool = False) -> int:
 
     # --- B4-01h: Append history ------------------------------------------
     append_bias_history(report, now)
+    write_week_index()
 
     # --- Summary ----------------------------------------------------------
     logger.info("=" * 60)

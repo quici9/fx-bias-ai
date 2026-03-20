@@ -53,6 +53,8 @@ export interface CurrencyPrediction {
   historical_accuracy_12w?: number;
 }
 
+export type PairColumnType = "long" | "short" | "avoid";
+
 export interface PairRecommendation {
   pair: string; // "USD/JPY"
   spread: number;

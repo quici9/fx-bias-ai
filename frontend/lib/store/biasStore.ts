@@ -77,6 +77,8 @@ export const useBiasStore = create<BiasState>((set) => ({
   reset: () =>
     set({
       currentReport: null,
+      historicalReports: {},
+      selectedWeek: "latest",
       loadState: "idle",
       error: null,
       lastFetchedAt: null,

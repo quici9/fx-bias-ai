@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import { useBiasStore } from "@/lib/store/biasStore";
 import { useAuditStore } from "@/lib/store/auditStore";
+import { useUiStore } from "@/lib/store/uiStore";
 import { fetchBiasData } from "@/lib/fetchers/fetchBiasData";
 import { fetchCotData } from "@/lib/fetchers/fetchCotData";
+import { getAvailableWeeks } from "@/lib/fetchers/fetchHistorical";
 import { Badge } from "@/components/shared/Badge";
 import { VersionMismatchBanner } from "@/components/shared/VersionMismatchBanner";
-import { WeekSelector } from "@/components/shared/WeekSelector";
 
 // Dashboard-specific components
 import { AlertBanner } from "@/components/dashboard/AlertBanner";
@@ -15,8 +16,9 @@ import { PairRecommendationGrid } from "@/components/dashboard/PairRecommendatio
 import { CurrencyStrengthChart } from "@/components/dashboard/CurrencyStrengthChart";
 import { AlertDetailSection } from "@/components/dashboard/AlertDetailSection";
 import { CurrencyDetailPanel } from "@/components/dashboard/CurrencyDetailPanel";
+import { PairDetailPanel } from "@/components/dashboard/PairDetailPanel";
 
-import type { CurrencyPrediction, PairRecommendation } from "@/lib/types";
+import type { CurrencyPrediction, PairRecommendation, PairColumnType } from "@/lib/types";
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
@@ -32,15 +34,21 @@ export default function DashboardPage() {
   const setCotReport = useAuditStore((s) => s.setCotReport);
   const cotReport = useAuditStore((s) => s.cotReport);
 
-  // ── Week selection ─────────────────────────────────────────────────────────
-  const [selectedWeek, setSelectedWeek] = useState<string>("latest");
+  // ── Week selection (driven by uiStore / header WeekPicker) ───────────────
+  const selectedWeek = useUiStore((s) => s.selectedWeek);
+  const setAvailableWeeks = useUiStore((s) => s.setAvailableWeeks);
+
+  // Populate available weeks from index.json once on mount
+  useEffect(() => {
+    getAvailableWeeks().then(setAvailableWeeks).catch(() => {});
+  }, [setAvailableWeeks]);
 
   // Currency detail panel state
   const [selectedPrediction, setSelectedPrediction] = useState<CurrencyPrediction | null>(null);
 
-  // Pair slide panel (not yet implemented in detail — placeholder)
-  const [_selectedPair, setSelectedPair] = useState<PairRecommendation | null>(null);
-  void _selectedPair; // suppress unused warning
+  // Pair slide panel (F2-02e)
+  const [selectedPair, setSelectedPair] = useState<PairRecommendation | null>(null);
+  const [selectedPairType, setSelectedPairType] = useState<PairColumnType | null>(null);
 
   // ── Load bias data whenever selectedWeek changes ───────────────────────────
   useEffect(() => {
@@ -139,12 +147,7 @@ export default function DashboardPage() {
             Weekly Bias Dashboard
           </h1>
 
-          {/* ── Week Selector dropdown ── */}
-          <WeekSelector
-            currentWeek={selectedWeek}
-            onWeekChange={setSelectedWeek}
-            isLoading={loadState === "loading"}
-          />
+          {/* Week navigation is in the header WeekPicker */}
         </div>
 
         <div
@@ -208,7 +211,10 @@ export default function DashboardPage() {
         strongLong={report.pair_recommendations.strong_long}
         strongShort={report.pair_recommendations.strong_short}
         avoid={report.pair_recommendations.avoid}
-        onPairSelect={(pair) => setSelectedPair(pair)}
+        onPairSelect={(pair, colType) => {
+          setSelectedPair(pair);
+          setSelectedPairType(colType);
+        }}
       />
 
       {/* ── F2-04: Alert Detail Section (all alerts) ── */}
@@ -220,6 +226,18 @@ export default function DashboardPage() {
         allAlerts={report.weekly_alerts}
         cotTrend={selectedCotTrend}
         onClose={() => setSelectedPrediction(null)}
+      />
+
+      {/* ── F2-02e: Pair Detail Slide Panel ── */}
+      <PairDetailPanel
+        pair={selectedPair}
+        columnType={selectedPairType}
+        predictions={sortedPredictions}
+        allAlerts={report.weekly_alerts}
+        onClose={() => {
+          setSelectedPair(null);
+          setSelectedPairType(null);
+        }}
       />
     </div>
   );

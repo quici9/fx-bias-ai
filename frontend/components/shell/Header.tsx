@@ -13,11 +13,16 @@ function WeekPicker() {
   const setSelectedWeek = useUiStore((s) => s.setSelectedWeek);
   const biasSetSelectedWeek = useBiasStore((s) => s.setSelectedWeek);
 
+  // Array order: newest first → ["latest", "2026-W12", "2026-W10", "2026-W09"]
+  // index 0 = newest (latest), last index = oldest
   const allOptions = ["latest", ...availableWeeks];
   const currentIndex = allOptions.indexOf(selectedWeek);
 
-  const navigate = (direction: -1 | 1) => {
-    const nextIndex = currentIndex + direction;
+  const canGoOlder = currentIndex < allOptions.length - 1; // more past weeks exist
+  const canGoNewer = currentIndex > 0;                     // a newer week exists
+
+  const navigate = (direction: "older" | "newer") => {
+    const nextIndex = direction === "older" ? currentIndex + 1 : currentIndex - 1;
     if (nextIndex < 0 || nextIndex >= allOptions.length) return;
     const next = allOptions[nextIndex];
     if (!next) return;
@@ -32,18 +37,19 @@ function WeekPicker() {
 
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+      {/* ← goes to older (past) weeks */}
       <button
-        onClick={() => navigate(-1)}
-        disabled={currentIndex <= 0}
-        aria-label="Previous week"
+        onClick={() => navigate("older")}
+        disabled={!canGoOlder}
+        aria-label="Previous week (older)"
         style={{
           width: 28,
           height: 28,
           background: "transparent",
           border: "1px solid var(--border)",
           borderRadius: 6,
-          color: currentIndex <= 0 ? "var(--text-muted)" : "var(--text-secondary)",
-          cursor: currentIndex <= 0 ? "not-allowed" : "pointer",
+          color: !canGoOlder ? "var(--text-muted)" : "var(--text-secondary)",
+          cursor: !canGoOlder ? "not-allowed" : "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -69,18 +75,19 @@ function WeekPicker() {
         {displayLabel}
       </div>
 
+      {/* → goes to newer (current) weeks */}
       <button
-        onClick={() => navigate(1)}
-        disabled={currentIndex >= allOptions.length - 1}
-        aria-label="Next week"
+        onClick={() => navigate("newer")}
+        disabled={!canGoNewer}
+        aria-label="Next week (newer)"
         style={{
           width: 28,
           height: 28,
           background: "transparent",
           border: "1px solid var(--border)",
           borderRadius: 6,
-          color: currentIndex >= allOptions.length - 1 ? "var(--text-muted)" : "var(--text-secondary)",
-          cursor: currentIndex >= allOptions.length - 1 ? "not-allowed" : "pointer",
+          color: !canGoNewer ? "var(--text-muted)" : "var(--text-secondary)",
+          cursor: !canGoNewer ? "not-allowed" : "pointer",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -91,6 +98,7 @@ function WeekPicker() {
     </div>
   );
 }
+
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 

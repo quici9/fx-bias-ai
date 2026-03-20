@@ -26,7 +26,13 @@ export function WeekSelector({ currentWeek, onWeekChange, isLoading }: Props) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  const weeks = ["latest", ...getAvailableWeeks()];
+  // Dynamic week list fetched from history/bias/index.json
+  const [historicalWeeks, setHistoricalWeeks] = useState<string[]>([]);
+  useEffect(() => {
+    getAvailableWeeks().then(setHistoricalWeeks).catch(() => {});
+  }, []);
+
+  const weeks = ["latest", ...historicalWeeks];
   const selectedLabel = formatWeekLabel(currentWeek);
 
   // Close on outside click

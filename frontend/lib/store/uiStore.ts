@@ -48,7 +48,7 @@ export const useUiStore = create<UiState>((set) => ({
   slidePanelOpen: false,
   slidePanelCurrency: null,
   selectedWeek: "latest",
-  availableWeeks: ["2026-W12", "2026-W11", "2026-W10", "2026-W09"],
+  availableWeeks: [],
   activeAuditTab: "cot",
   theme: "dark",
   shortcutOverlayOpen: false,

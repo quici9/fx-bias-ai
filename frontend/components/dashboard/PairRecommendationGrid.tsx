@@ -23,7 +23,7 @@ interface PairRecommendationGridProps {
   strongLong: PairRecommendation[];
   strongShort: PairRecommendation[];
   avoid: PairRecommendation[];
-  onPairSelect?: (pair: PairRecommendation) => void;
+  onPairSelect?: (pair: PairRecommendation, columnType: PairColumnType) => void;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -100,7 +100,7 @@ export function PairRecommendationGrid({
                 key={pair.pair}
                 pair={pair}
                 type={type}
-                onSelect={onPairSelect}
+                onSelect={onPairSelect ? (p) => onPairSelect(p, type) : undefined}
               />
             ))}
 

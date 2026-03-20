@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { Badge } from "@/components/shared/Badge";
-import type { PairRecommendation } from "@/lib/types";
+import type { PairRecommendation, PairColumnType } from "@/lib/types";
 
-// ─── Column type ──────────────────────────────────────────────────────────────
+// Re-export so legacy imports like `import { PairColumnType } from "@/components/dashboard/PairCard"` still work
+export type { PairColumnType };
 
-export type PairColumnType = "long" | "short" | "avoid";
+// ─── Column frame styles ───────────────────────────────────────────────────────
 
 const COLUMN_FRAME: Record<
   PairColumnType,

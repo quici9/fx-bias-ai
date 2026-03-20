@@ -4,7 +4,7 @@ import { DATA_BASE_URL } from "./base-url";
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
-const SUPPORTED_FEATURE_VERSION = "v1.2";
+const SUPPORTED_FEATURE_VERSION = "v2.1";
 
 // ─── Cache ────────────────────────────────────────────────────────────────────
 

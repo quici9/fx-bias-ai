@@ -1,19 +1,35 @@
 import type { BiasReport } from "@/lib/types";
 import { fetchBiasData } from "./fetchBiasData";
+import { DATA_BASE_URL } from "./base-url";
 
-// ─── Historical Weeks Index ───────────────────────────────────────────────────
+// ─── Historical Weeks Discovery ───────────────────────────────────────────────
 
-// Historical weeks available in public/data/history/bias/*.json
-// Do NOT include the current week — that is served by "latest" (bias-latest.json).
-// Update this list whenever the backend writes a new weekly snapshot file.
-const AVAILABLE_WEEKS = [
-  "2026-W11",
-  "2026-W10",
-  "2026-W09",
-];
+interface WeekIndex {
+  available_weeks: string[];
+}
 
-export function getAvailableWeeks(): string[] {
-  return AVAILABLE_WEEKS;
+/**
+ * Fetches the list of available historical weeks from the auto-generated
+ * index.json. The backend writes this file after each pipeline run.
+ * Excludes currentWeekLabel (already served by bias-latest.json).
+ */
+export async function getAvailableWeeks(
+  currentWeekLabel?: string
+): Promise<string[]> {
+  try {
+    const url = `${DATA_BASE_URL}/data/history/bias/index.json`;
+    const res = await fetch(url, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const index: WeekIndex = await res.json();
+    const weeks = index.available_weeks ?? [];
+    // Exclude current week — it's already shown via bias-latest.json
+    return currentWeekLabel
+      ? weeks.filter((w) => w !== currentWeekLabel)
+      : weeks;
+  } catch (err) {
+    console.error("[getAvailableWeeks] Failed to load index.json:", err);
+    return [];
+  }
 }
 
 // ─── Fetcher ─────────────────────────────────────────────────────────────────
@@ -24,8 +40,10 @@ export function getAvailableWeeks(): string[] {
  * Failures for individual weeks are silently dropped (logged to console).
  */
 export async function fetchHistoricalBias(
-  weeks: string[] = AVAILABLE_WEEKS
+  weeks: string[]
 ): Promise<Record<string, BiasReport>> {
+  if (weeks.length === 0) return {};
+
   const results = await Promise.allSettled(
     weeks.map((week) => fetchBiasData({ week }))
   );

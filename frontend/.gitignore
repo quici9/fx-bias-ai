@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# local dev symlink — CI creates a real copy via build-frontend.yml
+/public/data
