@@ -1,6 +1,6 @@
 {
   "phase": "B3-02",
-  "generated_at": "2026-03-20 12:20 UTC",
+  "generated_at": "2026-03-20 13:31 UTC",
   "gate_pass": true,
   "mean_rf_vs_cot_gap": 0.1851,
   "hyperparam_grid": {
