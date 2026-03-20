@@ -78,6 +78,8 @@ jobs:
       - name: Build (npm run build → next export)
         run: npm run build
         env:
+          # Set basePath for GitHub Pages sub-path deployment
+          NEXT_PUBLIC_BASE_PATH: /fx-bias-ai
           # Expose the dashboard URL so the build can embed it if needed
           NEXT_PUBLIC_DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
 
@@ -89,7 +91,8 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: frontend/out
+          # working-directory is already set to 'frontend', so path is relative to repo root
+          path: ./frontend/out
 
   # ─────────────────────────────────────────────────────────────────────────
   # Job 2 — Deploy to GitHub Pages
