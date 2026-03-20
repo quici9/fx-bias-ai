@@ -3,10 +3,10 @@ import { fetchBiasData } from "./fetchBiasData";
 
 // ─── Historical Weeks Index ───────────────────────────────────────────────────
 
-// Hardcoded set of available historical weeks — backend should write a manifest
-// file in the future so the frontend doesn't need to know this list.
+// Historical weeks available in public/data/history/bias/*.json
+// Do NOT include the current week — that is served by "latest" (bias-latest.json).
+// Update this list whenever the backend writes a new weekly snapshot file.
 const AVAILABLE_WEEKS = [
-  "2026-W12",
   "2026-W11",
   "2026-W10",
   "2026-W09",
