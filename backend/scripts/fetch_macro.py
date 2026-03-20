@@ -36,25 +36,30 @@ ECB_API_BASE_URL = "https://data-api.ecb.europa.eu/service/data"
 # FRED series IDs
 # Policy rates — OECD "Immediate Rates: Central Bank Rates" (monthly, M156N suffix)
 POLICY_RATE_SERIES = {
-    "USD": "FEDFUNDS",                # Federal Funds Rate (monthly)
-    "GBP": "IRSTCB01GBM156N",         # Bank of England Base Rate (OECD)
-    "JPY": "IRSTCB01JPM156N",         # Bank of Japan Policy Rate (OECD)
-    "AUD": "IRSTCB01AUM156N",         # RBA Cash Rate (OECD)
-    "CAD": "IRSTCB01CAM156N",         # Bank of Canada Overnight Rate (OECD)
-    "CHF": "IRSTCB01CHM156N",         # SNB Policy Rate (OECD)
-    "NZD": "IRSTCB01NZM156N",         # RBNZ Official Cash Rate (OECD)
+    "USD": "FEDFUNDS",                # Federal Funds Rate (monthly) ✅
+    "EUR": "IRSTCB01EZM156N",         # ECB Deposit Facility Rate (OECD, monthly) ✅
+    "GBP": "IRSTCI01GBM156N",         # BoE: OECD Call Money/Interbank ≈ base rate (monthly) ✅
+    "JPY": "IRSTCB01JPM156N",         # Bank of Japan Policy Rate (OECD, monthly) ✅
+    "AUD": "IR3TIB01AUM156N",         # RBA: OECD 3M Interbank ≈ cash rate (monthly) ✅
+    "CAD": "IRSTCB01CAM156N",         # Bank of Canada Overnight Rate (OECD, monthly) ✅
+    "CHF": "IRSTCI01CHM156N",         # SNB: OECD Call Money/Interbank (monthly) ✅
+    "NZD": "IRSTCI01NZM156N",         # RBNZ: OECD Call Money/Interbank ≈ OCR (monthly) ✅
 }
 
 # CPI — prefer YoY % (661N suffix) where available, else index (quarterly series
 # need manual YoY computation). All are monthly unless marked (Q).
 CPI_SERIES = {
-    "USD": "CPIAUCSL",                # US CPI All Items (monthly, index → compute YoY)
-    "JPY": "JPNCPIALLMINMEI",         # Japan CPI (monthly, index → compute YoY)
-    "AUD": "CPALTT01AUQ657N",         # Australia CPI YoY % (quarterly, OECD)
-    "CAD": "CPALCY01CAM661N",         # Canada CPI YoY % (monthly, OECD)
-    "GBP": "GBRCPIALLMINMEI",         # UK CPI (monthly, index → compute YoY)
-    "CHF": "CHECPIALLMINMEI",         # Switzerland CPI (monthly, index → compute YoY)
-    "NZD": "CPALTT01NZQ657N",         # New Zealand CPI YoY % (quarterly, OECD)
+    "USD": "CPIAUCSL",                # US CPI All Items (monthly, index → compute YoY) ✅
+    "EUR": "CP0000EZ19M086NEST",      # Eurozone HICP All Items (monthly, index 2015=100) ✅
+    # NOTE: FRED stopped publishing Japan CPI after 2022-04. CPALCY01JPM661N (YoY%) is
+    # the most recent FRED series available. For production post-2022, supplement via
+    # Japan Statistics Bureau e-Stat API or accept gap in jpyCpi_yoy feature.
+    "JPY": "CPALCY01JPM661N",         # Japan CPI YoY% (monthly OECD, ends 2022-04) ⚠️
+    "AUD": "CPALTT01AUQ657N",         # Australia CPI YoY% (quarterly, OECD) ✅
+    "CAD": "CPALCY01CAM661N",         # Canada CPI YoY% (monthly, OECD) ✅
+    "GBP": "GBRCPIALLMINMEI",         # UK CPI (monthly, index → compute YoY) ✅
+    "CHF": "CHECPIALLMINMEI",         # Switzerland CPI (monthly, index → compute YoY) ✅
+    "NZD": "CPALTT01NZQ657N",         # New Zealand CPI YoY% (quarterly, OECD) ✅
 }
 
 # Yield 10Y — all OECD series are MONTHLY (M156N suffix)
@@ -72,20 +77,23 @@ SERIES_FREQUENCY: dict[str, str] = {
     "IRLTLT01DEM156N": "m",           # Monthly — must use freq=m
     "IRLTLT01GBM156N": "m",
     "IRLTLT01JPM156N": "m",
-    "IRSTCB01GBM156N": "m",
-    "IRSTCB01JPM156N": "m",
-    "IRSTCB01AUM156N": "m",
-    "IRSTCB01CAM156N": "m",
-    "IRSTCB01CHM156N": "m",
-    "IRSTCB01NZM156N": "m",
-    "JPNCPIALLMINMEI": "m",
+    "FEDFUNDS": "m",
+    "IRSTCB01EZM156N": "m",           # EUR ECB Deposit Facility Rate (OECD)
+    "IRSTCI01GBM156N": "m",           # GBP Call Money Rate
+    "IRSTCB01JPM156N": "m",           # JPY Central Bank Rate
+    "IR3TIB01AUM156N": "m",           # AUD 3M Interbank
+    "IRSTCB01CAM156N": "m",           # CAD Central Bank Rate
+    "IRSTCI01CHM156N": "m",           # CHF Call Money Rate
+    "IRSTCI01NZM156N": "m",           # NZD Call Money Rate
+    "CP0000EZ19M086NEST": "m",        # EUR Eurozone HICP (monthly index)
+    "JPNCPIALLMINMEI": "m",           # kept for reference (discontinued)
+    "CPALCY01JPM661N": "m",           # JPY CPI YoY% (active replacement)
     "GBRCPIALLMINMEI": "m",
     "CHECPIALLMINMEI": "m",
     "CPALTT01AUQ657N": "q",           # Quarterly
     "CPALTT01NZQ657N": "q",           # Quarterly
     "CPALCY01CAM661N": "m",
     "CPIAUCSL": "m",
-    "FEDFUNDS": "m",
     "VIXCLS": "d",
 }
 
@@ -334,32 +342,7 @@ def main() -> int:
         logger.info("Fetching policy rates")
         policy_rates = []
 
-        # Try ECB first for EUR
-        try:
-            ecb_data = fetch_ecb_rate()
-            eur_rate = {
-                "currency": "EUR",
-                "value": float(ecb_data["value"]),
-                "diff_vs_usd": 0.0,  # Will compute after USD fetch
-                "trend_3m": "STABLE",  # ECB endpoint may not provide history
-                "last_update": ecb_data["date"],
-                "publication_lag_applied": 0,
-                "freshness_days": 0,
-                "is_stale": False,
-            }
-            policy_rates.append(eur_rate)
-            logger.info("EUR policy rate from ECB: %s", eur_rate["value"])
-        except Exception as e:
-            logger.warning("ECB fetch failed — using FRED fallback for EUR")
-            # Fallback to FRED if available (would need appropriate series ID)
-            emit_alert(
-                "DATA_SOURCE_STALE",
-                "ECB API failed, using fallback",
-                "MEDIUM",
-                currency="EUR",
-            )
-
-        # Fetch from FRED
+        # Fetch all currencies (incl. EUR via IRSTCB01EZM156N) from FRED
         usd_rate_value = None
         for currency, series_id in POLICY_RATE_SERIES.items():
             try:
