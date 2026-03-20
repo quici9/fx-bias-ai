@@ -1,6 +1,6 @@
 # Model Card — FX Bias AI Random Forest
 
-> Generated: 2026-03-20 10:17 UTC  |  Phase: B3-02
+> Generated: 2026-03-20 11:02 UTC  |  Phase: B3-02
 
 ## Model Overview
 
@@ -8,8 +8,8 @@
 |-------|-------|
 | Model type | RandomForestClassifier + Platt Scaling (CalibratedClassifierCV) |
 | n_estimators | 300 |
-| max_depth | 6 (tuned B3-02e) |
-| min_samples_leaf | 15 (tuned B3-02e) |
+| max_depth | 8 (tuned B3-02e) |
+| min_samples_leaf | 10 (tuned B3-02e) |
 | max_features | sqrt |
 | class_weight | balanced |
 | calibration | Sigmoid (Platt) |
@@ -21,49 +21,49 @@
 
 | Fold | RF | COT Rule | LR | Random | RF−COT | Gate |
 |------|----|----------|----|--------|--------|------|
-| Fold1_2021 | 0.5337 | 0.3100 | 0.5256 | 0.3235 | +0.2237 | ✓ |
-| Fold2_2022 | 0.5412 | 0.3571 | 0.5165 | 0.3571 | +0.1841 | ✓ |
-| Fold3_2023 | 0.4538 | 0.3053 | 0.4538 | 0.3025 | +0.1485 | ✓ |
-| Fold4_2024 | 0.4918 | 0.3379 | 0.4478 | 0.3242 | +0.1538 | ✓ |
-| **Mean** | **0.5051** | **0.3276** | **0.4859** | — | **+0.1775** | ✓ PASS |
+| Fold1_2021 | 0.5499 | 0.3100 | 0.5202 | 0.3235 | +0.2399 | ✓ |
+| Fold2_2022 | 0.5385 | 0.3571 | 0.5275 | 0.3571 | +0.1813 | ✓ |
+| Fold3_2023 | 0.4734 | 0.3053 | 0.4566 | 0.3025 | +0.1681 | ✓ |
+| Fold4_2024 | 0.4890 | 0.3379 | 0.4423 | 0.3242 | +0.1511 | ✓ |
+| **Mean** | **0.5127** | **0.3276** | **0.4866** | — | **+0.1851** | ✓ PASS |
 
 **Gate:** RF must beat COT-only baseline by ≥ +5%.
-**Result:** PASS ✓ — RF beats COT by 17.8%
+**Result:** PASS ✓ — RF beats COT by 18.5%
 
 ## Per-Currency Accuracy (last fold)
 
 | Currency | RF Accuracy |
 |----------|-------------|
-| AUD | 0.5769 |
-| CAD | 0.4038 |
-| CHF | 0.5385 |
-| EUR | 0.5769 |
+| AUD | 0.4808 |
+| CAD | 0.4231 |
+| CHF | 0.5577 |
+| EUR | 0.6154 |
 | GBP | 0.5192 |
-| JPY | 0.3462 |
-| NZD | 0.4808 |
+| JPY | 0.3654 |
+| NZD | 0.4615 |
 
 ## Accuracy by Confidence Level (last fold)
 
 | Level | Threshold | n | Accuracy |
 |-------|-----------|---|----------|
-| HIGH | ≥70% | 0 | — |
-| MEDIUM | 55–70% | 58 | 0.4310 |
-| LOW | <55% | 306 | 0.5033 |
+| HIGH | ≥70% | 1 | 0.0000 |
+| MEDIUM | 55–70% | 59 | 0.4407 |
+| LOW | <55% | 304 | 0.5000 |
 
 ## Top 10 Feature Importances
 
 | Rank | Feature | Importance | Group |
 |------|---------|------------|-------|
-| 1 | `net_pct_change_1w` | 0.387720 | A — COT |
-| 2 | `oi_net_confluence` | 0.322978 | A — COT |
-| 3 | `momentum_acceleration` | 0.068331 | A — COT |
-| 4 | `cot_index_4w_change` | 0.040473 | A — COT |
-| 5 | `cot_index` | 0.027241 | A — COT |
-| 6 | `dealer_net_contrarian` | 0.017951 | B — TFF |
-| 7 | `usd_index_cot` | 0.017921 | A — COT |
-| 8 | `spread_vs_usd` | 0.016317 | A — COT |
-| 9 | `lev_vs_assetmgr_divergence` | 0.013429 | B — TFF |
-| 10 | `rate_diff_trend_3m` | 0.012139 | C — Macro |
+| 1 | `net_pct_change_1w` | 0.383896 | A — COT |
+| 2 | `oi_net_confluence` | 0.310319 | A — COT |
+| 3 | `momentum_acceleration` | 0.066547 | A — COT |
+| 4 | `cot_index_4w_change` | 0.040869 | A — COT |
+| 5 | `cot_index` | 0.025755 | A — COT |
+| 6 | `dealer_net_contrarian` | 0.018415 | B — TFF |
+| 7 | `usd_index_cot` | 0.017565 | A — COT |
+| 8 | `spread_vs_usd` | 0.016721 | A — COT |
+| 9 | `lev_vs_assetmgr_divergence` | 0.015391 | B — TFF |
+| 10 | `lev_funds_net_index` | 0.015174 | — |
 
 > Group B TFF features appear at ranks: [6, 9] — positive contribution confirmed.
 
