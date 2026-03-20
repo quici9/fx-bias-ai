@@ -159,20 +159,5 @@
     "context": {
       "source": "STATIC_FALLBACK"
     }
-  },
-  {
-    "type": "MODEL_ROLLBACK",
-    "message": "Model was rolled back this week: accuracy drop",
-    "severity": "HIGH",
-    "context": {
-      "week_label": "2026-W12",
-      "timestamp_utc": "2026-03-20T01:30:35.587724+00:00",
-      "reason": "accuracy drop",
-      "baseline_accuracy": 0.7,
-      "accuracy_4w": 0.58,
-      "drift": 0.12,
-      "threshold": 0.05,
-      "folds_used": 4
-    }
   }
 ]
