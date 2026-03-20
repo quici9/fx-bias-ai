@@ -79,24 +79,24 @@ START_DATE = "2006-01-01"
 # Policy rate series (monthly frequency in FRED)
 POLICY_RATE_SERIES = {
     "USD": "FEDFUNDS",
-    "GBP": "IRSTCB01GBM156N",   # OECD Bank of England Base Rate
+    "GBP": "IR3TIB01GBM156N",   # UK 3M interbank (OECD) — IRSTCB01GBM156N not on FRED
     "JPY": "IRSTCB01JPM156N",
-    "AUD": "IRSTCB01AUM156N",   # OECD RBA Cash Rate
+    "AUD": "IR3TBB01AUM156N",   # AUD 3M T-bill (OECD) — IRSTCB01AUM156N not on FRED
     "CAD": "IRSTCB01CAM156N",
-    "CHF": "IRSTCB01CHM156N",
-    "NZD": "IRSTCB01NZM156N",   # OECD RBNZ Official Cash Rate
+    "CHF": "IR3TIB01CHM156N",   # CHF 3M interbank (OECD) — IRSTCB01CHM156N not on FRED
+    "NZD": "IR3TBB01NZM156N",   # NZD 3M T-bill (OECD) — IRSTCB01NZM156N not on FRED
     # EUR fetched from ECB API separately
 }
 
 # CPI series — these are YoY indices (OECD format, already YoY %)
 CPI_SERIES = {
     "USD": "CPIAUCSL",          # US CPI all-items (monthly level — compute YoY below)
-    "GBP": "GBRCPIALLMINMEI",   # OECD UK CPI YoY
-    "JPY": "JPNCPIALLMINMEI",   # OECD Japan CPI YoY
-    "AUD": "CPALTT01AUQ657N",   # Australia CPI YoY % (quarterly, OECD)
+    "GBP": "GBRCPIALLMINMEI",   # OECD UK CPI (monthly index → YoY computed below)
+    "JPY": "CPALCY01JPM661N",   # Japan CPI YoY % (monthly) — JPNCPIALLMINMEI deprecated
+    "AUD": "CPALTT01AUQ657N",   # Australia CPI YoY % (quarterly — use frequency=q)
     "CAD": "CPALCY01CAM661N",   # Canada CPI YoY
-    "CHF": "CHECPIALLMINMEI",   # OECD Switzerland CPI YoY
-    "NZD": "CPALTT01NZQ657N",   # New Zealand CPI YoY % (quarterly, OECD)
+    "CHF": "CHECPIALLMINMEI",   # OECD Switzerland CPI (monthly index → YoY computed below)
+    "NZD": "CPALTT01NZQ657N",   # New Zealand CPI YoY % (quarterly — use frequency=q)
     # EUR fetched from ECB API separately
 }
 
@@ -263,10 +263,13 @@ def download_macro_data() -> dict:
         us_cpi_yoy = us_cpi_raw.pct_change(12) * 100
         cpi_series["USD"] = us_cpi_yoy
 
+    # AUD/NZD CPI are quarterly series — must request frequency=q
+    _cpi_quarterly = {"AUD", "NZD"}
     for cur, series_id in CPI_SERIES.items():
         if cur == "USD":
             continue
-        s = _fetch_fred(series_id, frequency="m")
+        freq = "q" if cur in _cpi_quarterly else "m"
+        s = _fetch_fred(series_id, frequency=freq)
         if s is not None:
             cpi_series[cur] = s
 
