@@ -1,0 +1,159 @@
+{
+  "phase": "B3-02",
+  "generated_at": "2026-03-20 02:05 UTC",
+  "gate_pass": true,
+  "mean_rf_vs_cot_gap": 0.1637,
+  "min_samples_leaf_tuning": {
+    "10": 0.4913,
+    "15": 0.4916
+  },
+  "best_min_samples_leaf": 15,
+  "top_10_features": [
+    [
+      "net_pct_change_1w",
+      0.371454
+    ],
+    [
+      "oi_net_confluence",
+      0.342418
+    ],
+    [
+      "momentum_acceleration",
+      0.077993
+    ],
+    [
+      "cot_index_4w_change",
+      0.04815
+    ],
+    [
+      "cot_index",
+      0.029845
+    ],
+    [
+      "dealer_net_contrarian",
+      0.020027
+    ],
+    [
+      "usd_index_cot",
+      0.019697
+    ],
+    [
+      "spread_vs_usd",
+      0.019566
+    ],
+    [
+      "weeks_since_flip",
+      0.012144
+    ],
+    [
+      "cpi_diff_vs_usd",
+      0.009976
+    ]
+  ],
+  "group_b_in_top10": [
+    "dealer_net_contrarian"
+  ],
+  "folds": {
+    "Fold1_2021": {
+      "rf": 0.5148,
+      "random": 0.3235,
+      "always_bull": 0.1887,
+      "cot_rule": 0.31,
+      "logistic_regression": 0.5391,
+      "rf_vs_cot_gap": 0.2049,
+      "gate_pass": true,
+      "confidence_accuracy": {
+        "HIGH": {
+          "n": 0,
+          "accuracy": null
+        },
+        "MEDIUM": {
+          "n": 74,
+          "accuracy": 0.4595
+        },
+        "LOW": {
+          "n": 297,
+          "accuracy": 0.5286
+        }
+      }
+    },
+    "Fold2_2022": {
+      "rf": 0.544,
+      "random": 0.3571,
+      "always_bull": 0.261,
+      "cot_rule": 0.3571,
+      "logistic_regression": 0.5082,
+      "rf_vs_cot_gap": 0.1868,
+      "gate_pass": true,
+      "confidence_accuracy": {
+        "HIGH": {
+          "n": 0,
+          "accuracy": null
+        },
+        "MEDIUM": {
+          "n": 75,
+          "accuracy": 0.48
+        },
+        "LOW": {
+          "n": 289,
+          "accuracy": 0.5606
+        }
+      }
+    },
+    "Fold3_2023": {
+      "rf": 0.423,
+      "random": 0.3025,
+      "always_bull": 0.2465,
+      "cot_rule": 0.3053,
+      "logistic_regression": 0.4482,
+      "rf_vs_cot_gap": 0.1176,
+      "gate_pass": true,
+      "confidence_accuracy": {
+        "HIGH": {
+          "n": 1,
+          "accuracy": 1.0
+        },
+        "MEDIUM": {
+          "n": 62,
+          "accuracy": 0.4194
+        },
+        "LOW": {
+          "n": 294,
+          "accuracy": 0.4218
+        }
+      }
+    },
+    "Fold4_2024": {
+      "rf": 0.4835,
+      "random": 0.3242,
+      "always_bull": 0.1731,
+      "cot_rule": 0.3379,
+      "logistic_regression": 0.4423,
+      "rf_vs_cot_gap": 0.1456,
+      "gate_pass": true,
+      "confidence_accuracy": {
+        "HIGH": {
+          "n": 0,
+          "accuracy": null
+        },
+        "MEDIUM": {
+          "n": 67,
+          "accuracy": 0.403
+        },
+        "LOW": {
+          "n": 297,
+          "accuracy": 0.5017
+        }
+      }
+    }
+  },
+  "per_currency_last_fold": {
+    "AUD": 0.5769,
+    "CAD": 0.4615,
+    "CHF": 0.4808,
+    "EUR": 0.5577,
+    "GBP": 0.5577,
+    "JPY": 0.3462,
+    "NZD": 0.4038
+  }
+}

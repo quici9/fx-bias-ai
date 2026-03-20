@@ -110,3 +110,20 @@
 ---
 
 *Add new decisions below. Include context, decision, and rationale for each.*
+
+## min_samples_leaf Tuning — B3-02e
+
+**Date:** 2026-03-20 02:05 UTC
+
+**Candidates tested:** [10, 15]
+
+| min_samples_leaf | Mean Walk-Forward Accuracy |
+|------------------|---------------------------|
+| 10 | 0.4913 |
+| 15 | 0.4916 ← selected |
+
+**Selected:** `min_samples_leaf = 15`
+**Reason:** Higher mean walk-forward accuracy across 4 folds.
+**Impact:** Lower values allow finer splits (risk overfit); higher values regularize more.
+
+---
