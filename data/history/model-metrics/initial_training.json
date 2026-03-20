@@ -6,8 +6,8 @@
   "label_confirmation_lag": 1,
   "hyperparameters": {
     "n_estimators": 300,
-    "max_depth": 10,
-    "min_samples_leaf": 10,
+    "max_depth": 8,
+    "min_samples_leaf": 20,
     "max_features": "sqrt",
     "class_weight": "balanced",
     "random_state": 42,
@@ -16,10 +16,10 @@
   "calibration": "CalibratedClassifierCV(method='sigmoid', cv=5)",
   "walk_forward_summary": {
     "n_folds": 4,
-    "mean_accuracy": 0.4989,
-    "std_accuracy": 0.0417,
-    "min_accuracy": 0.4426,
-    "max_accuracy": 0.544
+    "mean_accuracy": 0.4976,
+    "std_accuracy": 0.0286,
+    "min_accuracy": 0.451,
+    "max_accuracy": 0.5229
   },
   "folds": [
     {
@@ -29,33 +29,33 @@
       "test_end": "2021-12-31",
       "n_train": 5388,
       "n_test": 371,
-      "accuracy": 0.5337,
+      "accuracy": 0.5229,
       "per_currency_accuracy": {
         "AUD": 0.5283,
-        "CAD": 0.434,
-        "CHF": 0.566,
-        "EUR": 0.5849,
-        "GBP": 0.5283,
-        "JPY": 0.5849,
-        "NZD": 0.5094
+        "CAD": 0.4151,
+        "CHF": 0.5472,
+        "EUR": 0.5283,
+        "GBP": 0.5472,
+        "JPY": 0.566,
+        "NZD": 0.5283
       },
       "classification_report": {
         "BEAR": {
-          "precision": 0.5467,
-          "recall": 0.3727,
-          "f1-score": 0.4432,
+          "precision": 0.541,
+          "recall": 0.3,
+          "f1-score": 0.386,
           "support": 110
         },
         "BULL": {
-          "precision": 0.5,
+          "precision": 0.4583,
           "recall": 0.1571,
-          "f1-score": 0.2391,
+          "f1-score": 0.234,
           "support": 70
         },
         "NEUTRAL": {
-          "precision": 0.5328,
-          "recall": 0.7644,
-          "f1-score": 0.628,
+          "precision": 0.5245,
+          "recall": 0.7853,
+          "f1-score": 0.6289,
           "support": 191
         }
       }
@@ -67,33 +67,33 @@
       "test_end": "2022-12-31",
       "n_train": 5759,
       "n_test": 364,
-      "accuracy": 0.544,
+      "accuracy": 0.5192,
       "per_currency_accuracy": {
-        "AUD": 0.5769,
-        "CAD": 0.5577,
-        "CHF": 0.4615,
-        "EUR": 0.5769,
+        "AUD": 0.5577,
+        "CAD": 0.5,
+        "CHF": 0.4231,
+        "EUR": 0.5192,
         "GBP": 0.6346,
-        "JPY": 0.5192,
-        "NZD": 0.4808
+        "JPY": 0.5385,
+        "NZD": 0.4615
       },
       "classification_report": {
         "BEAR": {
-          "precision": 0.6923,
-          "recall": 0.27,
-          "f1-score": 0.3885,
+          "precision": 0.5789,
+          "recall": 0.22,
+          "f1-score": 0.3188,
           "support": 100
         },
         "BULL": {
-          "precision": 0.6296,
-          "recall": 0.3579,
-          "f1-score": 0.4564,
+          "precision": 0.6207,
+          "recall": 0.3789,
+          "f1-score": 0.4706,
           "support": 95
         },
         "NEUTRAL": {
-          "precision": 0.5055,
-          "recall": 0.8107,
-          "f1-score": 0.6227,
+          "precision": 0.4888,
+          "recall": 0.7751,
+          "f1-score": 0.5995,
           "support": 169
         }
       }
@@ -105,33 +105,33 @@
       "test_end": "2023-12-31",
       "n_train": 6123,
       "n_test": 357,
-      "accuracy": 0.4426,
+      "accuracy": 0.451,
       "per_currency_accuracy": {
         "AUD": 0.4706,
-        "CAD": 0.451,
-        "CHF": 0.4706,
+        "CAD": 0.4314,
+        "CHF": 0.451,
         "EUR": 0.4118,
         "GBP": 0.3725,
-        "JPY": 0.4902,
-        "NZD": 0.4314
+        "JPY": 0.549,
+        "NZD": 0.4706
       },
       "classification_report": {
         "BEAR": {
-          "precision": 0.4091,
-          "recall": 0.1875,
-          "f1-score": 0.2571,
+          "precision": 0.4688,
+          "recall": 0.1562,
+          "f1-score": 0.2344,
           "support": 96
         },
         "BULL": {
-          "precision": 0.4598,
-          "recall": 0.4545,
-          "f1-score": 0.4571,
+          "precision": 0.4419,
+          "recall": 0.4318,
+          "f1-score": 0.4368,
           "support": 88
         },
         "NEUTRAL": {
-          "precision": 0.4425,
-          "recall": 0.578,
-          "f1-score": 0.5013,
+          "precision": 0.4519,
+          "recall": 0.6243,
+          "f1-score": 0.5243,
           "support": 173
         }
       }
@@ -143,33 +143,33 @@
       "test_end": "2024-12-31",
       "n_train": 6480,
       "n_test": 364,
-      "accuracy": 0.4753,
+      "accuracy": 0.4973,
       "per_currency_accuracy": {
-        "AUD": 0.5385,
-        "CAD": 0.4808,
-        "CHF": 0.5192,
-        "EUR": 0.5385,
-        "GBP": 0.4231,
-        "JPY": 0.3846,
-        "NZD": 0.4423
+        "AUD": 0.5577,
+        "CAD": 0.4615,
+        "CHF": 0.5577,
+        "EUR": 0.5769,
+        "GBP": 0.5385,
+        "JPY": 0.3654,
+        "NZD": 0.4231
       },
       "classification_report": {
         "BEAR": {
-          "precision": 0.5217,
-          "recall": 0.1071,
-          "f1-score": 0.1778,
+          "precision": 0.7,
+          "recall": 0.125,
+          "f1-score": 0.2121,
           "support": 112
         },
         "BULL": {
-          "precision": 0.3607,
-          "recall": 0.3492,
-          "f1-score": 0.3548,
+          "precision": 0.3621,
+          "recall": 0.3333,
+          "f1-score": 0.3471,
           "support": 63
         },
         "NEUTRAL": {
-          "precision": 0.4964,
-          "recall": 0.7354,
-          "f1-score": 0.5928,
+          "precision": 0.5105,
+          "recall": 0.7725,
+          "f1-score": 0.6147,
           "support": 189
         }
       }
