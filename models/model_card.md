@@ -1,6 +1,6 @@
 # Model Card — FX Bias AI Random Forest
 
-> Generated: 2026-03-20 13:31 UTC  |  Phase: B3-02
+> Generated: 2026-03-20 17:52 UTC  |  Phase: B3-02
 
 ## Model Overview
 
@@ -8,7 +8,7 @@
 |-------|-------|
 | Model type | RandomForestClassifier + Platt Scaling (CalibratedClassifierCV) |
 | n_estimators | 300 |
-| max_depth | 8 (tuned B3-02e) |
+| max_depth | 12 (tuned B3-02e) |
 | min_samples_leaf | 10 (tuned B3-02e) |
 | max_features | sqrt |
 | class_weight | balanced |
