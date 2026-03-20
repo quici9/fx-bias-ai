@@ -79,12 +79,12 @@ START_DATE = "2006-01-01"
 # Policy rate series (monthly frequency in FRED)
 POLICY_RATE_SERIES = {
     "USD": "FEDFUNDS",
-    "GBP": "BOEBR",
+    "GBP": "IRSTCB01GBM156N",   # OECD Bank of England Base Rate
     "JPY": "IRSTCB01JPM156N",
-    "AUD": "RBAORATE",
+    "AUD": "IRSTCB01AUM156N",   # OECD RBA Cash Rate
     "CAD": "IRSTCB01CAM156N",
     "CHF": "IRSTCB01CHM156N",
-    "NZD": "RBNZOCR",
+    "NZD": "IRSTCB01NZM156N",   # OECD RBNZ Official Cash Rate
     # EUR fetched from ECB API separately
 }
 
@@ -93,10 +93,10 @@ CPI_SERIES = {
     "USD": "CPIAUCSL",          # US CPI all-items (monthly level — compute YoY below)
     "GBP": "GBRCPIALLMINMEI",   # OECD UK CPI YoY
     "JPY": "JPNCPIALLMINMEI",   # OECD Japan CPI YoY
-    "AUD": "AUSCPIALLMINMEI",   # OECD Australia CPI YoY
+    "AUD": "CPALTT01AUQ657N",   # Australia CPI YoY % (quarterly, OECD)
     "CAD": "CPALCY01CAM661N",   # Canada CPI YoY
     "CHF": "CHECPIALLMINMEI",   # OECD Switzerland CPI YoY
-    "NZD": "NZLCPIALLMINMEI",   # OECD New Zealand CPI YoY
+    "NZD": "CPALTT01NZQ657N",   # New Zealand CPI YoY % (quarterly, OECD)
     # EUR fetched from ECB API separately
 }
 
@@ -285,9 +285,11 @@ def download_macro_data() -> dict:
 
     # ---- 10Y yields ----------------------------------------------------------
     logger.info("Downloading 10Y yields...")
+    # DGS10 (US) is daily; all others (DE/GB/JP) are monthly OECD series
+    _yield_freq = {"US": "d", "DE": "m", "GB": "m", "JP": "m"}
     yield_series = {}
     for country, series_id in YIELD_10Y_SERIES.items():
-        s = _fetch_fred(series_id, frequency="d")
+        s = _fetch_fred(series_id, frequency=_yield_freq[country])
         if s is not None:
             yield_series[country] = s
     yields_df = pd.DataFrame(yield_series) if yield_series else None

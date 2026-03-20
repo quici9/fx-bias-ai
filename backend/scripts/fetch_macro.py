@@ -34,31 +34,59 @@ FRED_API_KEY = os.getenv("FRED_API_KEY", "")
 ECB_API_BASE_URL = "https://data-api.ecb.europa.eu/service/data"
 
 # FRED series IDs
+# Policy rates — OECD "Immediate Rates: Central Bank Rates" (monthly, M156N suffix)
 POLICY_RATE_SERIES = {
-    "USD": "FEDFUNDS",                # Federal Funds Rate
-    "GBP": "BOEBR",                   # Bank of England Base Rate
-    "JPY": "IRSTCB01JPM156N",         # Japan Policy Rate
-    "AUD": "RBAORATE",                # RBA Official Cash Rate
-    "CAD": "IRSTCB01CAM156N",         # Bank of Canada Overnight Rate
-    "CHF": "IRSTCB01CHM156N",         # SNB 3-Month LIBOR Target Rate
-    "NZD": "RBNZOCR",                 # RBNZ Official Cash Rate
+    "USD": "FEDFUNDS",                # Federal Funds Rate (monthly)
+    "GBP": "IRSTCB01GBM156N",         # Bank of England Base Rate (OECD)
+    "JPY": "IRSTCB01JPM156N",         # Bank of Japan Policy Rate (OECD)
+    "AUD": "IRSTCB01AUM156N",         # RBA Cash Rate (OECD)
+    "CAD": "IRSTCB01CAM156N",         # Bank of Canada Overnight Rate (OECD)
+    "CHF": "IRSTCB01CHM156N",         # SNB Policy Rate (OECD)
+    "NZD": "IRSTCB01NZM156N",         # RBNZ Official Cash Rate (OECD)
 }
 
+# CPI — prefer YoY % (661N suffix) where available, else index (quarterly series
+# need manual YoY computation). All are monthly unless marked (Q).
 CPI_SERIES = {
-    "USD": "CPIAUCSL",                # US CPI All Items
-    "JPY": "JPNCPIALLMINMEI",         # Japan CPI
-    "AUD": "AUSCPIALLMINMEI",         # Australia CPI
-    "CAD": "CPALCY01CAM661N",         # Canada CPI
-    "GBP": "GBRCPIALLMINMEI",         # UK CPI
-    "CHF": "CHECPIALLMINMEI",         # Switzerland CPI
-    "NZD": "NZLCPIALLMINMEI",         # New Zealand CPI
+    "USD": "CPIAUCSL",                # US CPI All Items (monthly, index → compute YoY)
+    "JPY": "JPNCPIALLMINMEI",         # Japan CPI (monthly, index → compute YoY)
+    "AUD": "CPALTT01AUQ657N",         # Australia CPI YoY % (quarterly, OECD)
+    "CAD": "CPALCY01CAM661N",         # Canada CPI YoY % (monthly, OECD)
+    "GBP": "GBRCPIALLMINMEI",         # UK CPI (monthly, index → compute YoY)
+    "CHF": "CHECPIALLMINMEI",         # Switzerland CPI (monthly, index → compute YoY)
+    "NZD": "CPALTT01NZQ657N",         # New Zealand CPI YoY % (quarterly, OECD)
 }
 
+# Yield 10Y — all OECD series are MONTHLY (M156N suffix)
+# IMPORTANT: must NOT request frequency=d — will 400. Use frequency=m or no freq param.
 YIELD_10Y_SERIES = {
-    "US": "DGS10",                    # US 10Y Treasury
-    "DE": "IRLTLT01DEM156N",          # Germany 10Y Bund
-    "GB": "IRLTLT01GBM156N",          # UK 10Y Gilt
-    "JP": "IRLTLT01JPM156N",          # Japan 10Y JGB
+    "US": "DGS10",                    # US 10Y Treasury (daily — OK)
+    "DE": "IRLTLT01DEM156N",          # Germany 10Y Bund (monthly)
+    "GB": "IRLTLT01GBM156N",          # UK 10Y Gilt (monthly)
+    "JP": "IRLTLT01JPM156N",          # Japan 10Y JGB (monthly)
+}
+
+# Native frequency per series (to avoid requesting higher freq → 400 error)
+SERIES_FREQUENCY: dict[str, str] = {
+    "DGS10": "d",                     # Daily — no aggregation needed
+    "IRLTLT01DEM156N": "m",           # Monthly — must use freq=m
+    "IRLTLT01GBM156N": "m",
+    "IRLTLT01JPM156N": "m",
+    "IRSTCB01GBM156N": "m",
+    "IRSTCB01JPM156N": "m",
+    "IRSTCB01AUM156N": "m",
+    "IRSTCB01CAM156N": "m",
+    "IRSTCB01CHM156N": "m",
+    "IRSTCB01NZM156N": "m",
+    "JPNCPIALLMINMEI": "m",
+    "GBRCPIALLMINMEI": "m",
+    "CHECPIALLMINMEI": "m",
+    "CPALTT01AUQ657N": "q",           # Quarterly
+    "CPALTT01NZQ657N": "q",           # Quarterly
+    "CPALCY01CAM661N": "m",
+    "CPIAUCSL": "m",
+    "FEDFUNDS": "m",
+    "VIXCLS": "d",
 }
 
 VIX_SERIES = "VIXCLS"
@@ -77,6 +105,11 @@ def fetch_fred_series(
 ) -> list[dict]:
     """
     Fetch data from FRED API for a specific series.
+
+    Automatically applies the correct frequency parameter based on the series'
+    native frequency (SERIES_FREQUENCY dict). FRED will return 400 if you
+    request a higher frequency than the series supports (e.g. daily for a
+    monthly series).
 
     Args:
         series_id: FRED series ID (e.g. 'FEDFUNDS')
@@ -101,6 +134,12 @@ def fetch_fred_series(
         "sort_order": "desc",
         "limit": limit,
     }
+
+    # Always specify frequency to match native series frequency.
+    # Omitting it lets FRED pick default which can conflict → 400.
+    native_freq = SERIES_FREQUENCY.get(series_id)
+    if native_freq:
+        params["frequency"] = native_freq
 
     if start_date:
         params["observation_start"] = start_date.isoformat()
