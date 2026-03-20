@@ -75,6 +75,7 @@ TUNE_FOLDS = FOLDS
 TUNE_LEAF = (5, 10, 15, 20, 30)
 TUNE_DEPTH = (6, 8, 10, 12)
 TUNE_MAX_FEATURES = ("sqrt", 0.5)  # sqrt=5/28 features vs 0.5=14/28
+TUNE_N_ESTIMATORS = 100            # grid search only — 5x faster; final model uses RF_PARAMS["n_estimators"]
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -193,7 +194,7 @@ def find_best_params(df: pd.DataFrame, currency_encoder: LabelEncoder) -> tuple:
     for mf in TUNE_MAX_FEATURES:
         for leaf in TUNE_LEAF:
             for depth in TUNE_DEPTH:
-                params = {**RF_PARAMS, "min_samples_leaf": leaf, "max_depth": depth, "max_features": mf}
+                params = {**RF_PARAMS, "n_estimators": TUNE_N_ESTIMATORS, "min_samples_leaf": leaf, "max_depth": depth, "max_features": mf}
                 fold_accs = []
                 for train_end, test_start, test_end, fold_label in TUNE_FOLDS:
                     df_train = df[df["date"] <= pd.Timestamp(train_end)]

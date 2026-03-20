@@ -224,6 +224,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: main   # always fetch latest commit so bias-latest.json from predict job is present
 
       - name: Set up Python
         uses: actions/setup-python@v5
