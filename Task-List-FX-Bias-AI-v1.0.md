@@ -299,15 +299,15 @@
 
 ### B5-01 — Monitoring Logic
 
-- [ ] 🟡 **B5-01a** — Implement weekly accuracy calculation: compare predictions T-4..T-1 vs actual outcomes
-- [ ] 🟡 **B5-01b** — Implement `MODEL_DRIFT` detection: accuracy 4w < baseline − 5% → alert
-- [ ] 🟡 **B5-01c** — Implement monthly accuracy report: tự động aggregate metrics, commit vào `data/history/model-metrics/monthly_YYYY-MM.json`
-- [ ] 🟢 **B5-01d** — Implement quarterly review checklist trong `docs/quarterly_review_template.md`
+- [x] 🟡 **B5-01a** — Implement weekly accuracy calculation: compare predictions T-4..T-1 vs actual outcomes
+- [x] 🟡 **B5-01b** — Implement `MODEL_DRIFT` detection: accuracy 4w < baseline − 5% → alert
+- [x] 🟡 **B5-01c** — Implement monthly accuracy report: tự động aggregate metrics, commit vào `data/history/model-metrics/monthly_YYYY-MM.json`
+- [x] 🟢 **B5-01d** — Implement quarterly review checklist trong `docs/quarterly_review_template.md`
 
 ### B5-02 — Annual Maintenance Tasks (Lên lịch tháng 1 hàng năm)
 
-- [ ] 🟡 **B5-02a** — Cập nhật `static/calendar_{YEAR}.json` với FOMC + NFP dates năm mới
-- [ ] 🟡 **B5-02b** — Verify tất cả FRED series IDs còn active (chạy `test_fred_api.py`)
+- [x] 🟡 **B5-02a** — Cập nhật `static/calendar_{YEAR}.json` với FOMC + NFP dates năm mới
+- [x] 🟡 **B5-02b** — Verify tất cả FRED series IDs còn active (chạy `test_fred_api.py`)
 - [ ] 🟢 **B5-02c** — Review Data Source Health SLA: có nguồn nào cần downgrade không?
 - [ ] 🟢 **B5-02d** — Quarterly model review: feature importance drift, class distribution drift
 
@@ -552,7 +552,7 @@
 | B2 — Feature Engineering | 22 | 16 | 4 | 2 | B1 |
 | B3 — Model Training | 12 | 7 | 4 | 1 | B2 |
 | B4 — Inference Pipeline | 26 | 14 | 10 | 2 | B3 |
-| B5 — Monitoring | 7 | 0 | 4 | 3 | B4 |
+| B5 — Monitoring | 8 | 6 | 0 | 2 | B4 |
 | F1 — App Shell + Mock | 29 | 18 | 8 | 3 | SETUP (parallel) |
 | F2 — Dashboard | 18 | 9 | 7 | 2 | F1 |
 | F3 — Data Audit | 22 | 0 | 22 | 0 | F1 |
