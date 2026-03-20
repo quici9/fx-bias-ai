@@ -405,15 +405,12 @@ def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
     if not ESTAT_API_KEY:
         raise ValueError("ESTAT_API_KEY environment variable not set")
 
-    start_year = date.today().year - lookback_years
-    cd_time_from = f"{start_year}01"
-
     params = {
         "appId": ESTAT_API_KEY,
         "statsDataId": ESTAT_JAPAN_CPI_STATS_ID,
-        "cdTimeFrom": cd_time_from,
         "metaGetFlg": "Y",   # Include CLASS_OBJ to discover 総合 category code
         "cntGetFlg": "N",
+        "limit": 200,        # enough for ~4 years of monthly data across all categories
     }
 
     for attempt in range(1, MAX_RETRIES + 1):
@@ -434,12 +431,28 @@ def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
             response.raise_for_status()
             data = response.json()
 
+            # Check for API-level errors (STATUS=0 means success)
+            result_block = data.get("GET_STATS_DATA", {}).get("RESULT", {})
+            api_status = result_block.get("STATUS", 0)
+            if api_status != 0:
+                raise ValueError(
+                    f"e-Stat API error (STATUS={api_status}): {result_block.get('ERROR_MSG', 'unknown')}"
+                )
+
             stat_data = (
                 data.get("GET_STATS_DATA", {}).get("STATISTICAL_DATA", {})
             )
             values = stat_data.get("DATA_INF", {}).get("VALUE", [])
 
             if not values:
+                # Log response structure to diagnose future issues
+                logger.warning(
+                    "e-Stat empty VALUE list — STATISTICAL_DATA keys: %s, "
+                    "CLASS_INF present: %s, DATA_INF: %s",
+                    list(stat_data.keys()),
+                    "CLASS_INF" in stat_data,
+                    stat_data.get("DATA_INF"),
+                )
                 raise ValueError(
                     f"e-Stat returned empty VALUE list for statsDataId={ESTAT_JAPAN_CPI_STATS_ID}"
                 )
@@ -485,6 +498,73 @@ def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
             raise
 
     raise requests.RequestException(f"Failed to fetch e-Stat Japan CPI after {MAX_RETRIES} attempts")
+
+
+def fetch_oecd_japan_cpi(lookback_years: int = 4) -> list[dict]:
+    """
+    Fetch Japan CPI YoY% from OECD Stats API (no API key required).
+
+    Uses the OECD SDMX-JSON endpoint, which is the same underlying source
+    that FRED mirrored in CPALCY01JPM661N (now stale). Returns YoY% directly
+    — no need to call compute_yoy_from_level().
+
+    Returns FRED-compatible observations sorted descending by date:
+        [{"date": "YYYY-MM-01", "value": "3.2"}, ...]
+
+    Raises:
+        ValueError: If the response contains no observations.
+        requests.RequestException: On API failure.
+    """
+    start_time = f"{date.today().year - lookback_years}-01"
+    url = "https://stats.oecd.org/SDMX-JSON/data/PRICES_CPI/JPN.CPALTT01.GY.M/all"
+    params = {"startTime": start_time, "format": "json"}
+
+    logger.info("Fetching Japan CPI YoY%% from OECD Stats API (from %s)", start_time)
+    response = requests.get(url, params=params, timeout=REQUEST_TIMEOUT)
+    response.raise_for_status()
+    data = response.json()
+
+    datasets = data.get("dataSets", [])
+    if not datasets:
+        raise ValueError("OECD: no dataSets in response")
+
+    series_map = datasets[0].get("series", {})
+    if not series_map:
+        raise ValueError("OECD: no series in dataSets[0]")
+
+    # Extract time period labels from structure
+    obs_dims = data.get("structure", {}).get("dimensions", {}).get("observation", [])
+    time_values: list[dict] = []
+    for dim in obs_dims:
+        if dim.get("id") == "TIME_PERIOD":
+            time_values = dim.get("values", [])
+            break
+
+    if not time_values:
+        raise ValueError("OECD: TIME_PERIOD dimension not found in structure")
+
+    # Use the first (and only expected) series
+    series_data = next(iter(series_map.values()))
+    observations_raw = series_data.get("observations", {})
+
+    observations = []
+    for idx_str, obs_vals in observations_raw.items():
+        idx = int(idx_str)
+        if idx >= len(time_values):
+            continue
+        value = obs_vals[0] if obs_vals else None
+        if value is None:
+            continue
+        time_id = time_values[idx].get("id", "")  # Format: "2022-01"
+        if len(time_id) == 7:
+            observations.append({"date": f"{time_id}-01", "value": str(round(float(value), 2))})
+
+    if not observations:
+        raise ValueError("OECD: parsed 0 observations — check series key or time dimension")
+
+    observations.sort(key=lambda x: x["date"], reverse=True)
+    logger.info("OECD: fetched %d Japan CPI YoY%% observations", len(observations))
+    return observations
 
 
 def compute_yoy_from_level(observations: list[dict]) -> list[dict]:
@@ -596,17 +676,26 @@ def main() -> int:
         cpi_yoy = []
         usd_cpi_value = None
 
-        # Pre-fetch Japan CPI from e-Stat (fresh data vs stale FRED CPALCY01JPM661N)
+        # Pre-fetch Japan CPI — try e-Stat → OECD → FRED (stale fallback)
         jpy_cpi_observations: Optional[list[dict]] = None
+
         if ESTAT_API_KEY:
             try:
                 level_obs = fetch_estat_japan_cpi()
                 jpy_cpi_observations = compute_yoy_from_level(level_obs)
-                logger.info("Japan CPI (e-Stat): %d YoY observations available", len(jpy_cpi_observations))
+                logger.info("Japan CPI (e-Stat): %d YoY observations", len(jpy_cpi_observations))
             except Exception as e:
-                logger.warning("e-Stat Japan CPI failed — falling back to FRED: %s", e)
-        else:
-            logger.warning("ESTAT_API_KEY not set — JPY CPI will use stale FRED data (ends 2022-04)")
+                logger.warning("e-Stat Japan CPI failed: %s", e)
+
+        if not jpy_cpi_observations:
+            try:
+                jpy_cpi_observations = fetch_oecd_japan_cpi()
+                logger.info("Japan CPI (OECD): %d YoY observations", len(jpy_cpi_observations))
+            except Exception as e:
+                logger.warning("OECD Japan CPI failed — falling back to stale FRED: %s", e)
+
+        if not jpy_cpi_observations:
+            logger.warning("JPY CPI: all fresh sources failed, FRED CPALCY01JPM661N (ends 2022-04) will be used")
 
         for currency, series_id in CPI_SERIES.items():
             try:
