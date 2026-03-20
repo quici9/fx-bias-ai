@@ -79,9 +79,9 @@ FEATURE_COLS = [
     "momentum_acceleration", "oi_delta_direction", "oi_net_confluence",
     "flip_flag", "extreme_flag", "usd_index_cot", "rank_in_8",
     "spread_vs_usd", "weeks_since_flip",
-    # Group B — TFF (lev_funds_net_index & asset_mgr_net_direction excluded:
-    # zero-variance in training data — TFF fields missing from Socrata pivot)
+    # Group B — TFF
     "dealer_net_contrarian", "lev_vs_assetmgr_divergence",
+    "asset_mgr_net_direction", "lev_funds_net_index",
     # Group C — Macro
     "rate_diff_vs_usd", "rate_diff_trend_3m", "rate_hike_expectation",
     "cpi_diff_vs_usd", "cpi_trend", "pmi_composite_diff",
