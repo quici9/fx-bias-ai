@@ -1,0 +1,116 @@
+name: Build & Deploy Frontend
+
+# D-01a — Build Next.js → export static → deploy to GitHub Pages
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'frontend/**'
+      - 'data/bias-latest.json'
+      - 'data/cot-latest.json'
+      - 'data/macro-latest.json'
+      - 'data/cross-asset-latest.json'
+  workflow_dispatch:       # Manual trigger for testing
+
+permissions:
+  contents: read
+  pages: write             # Required for GitHub Pages deployment
+  id-token: write          # Required for OIDC token auth with Pages
+
+# Prevent concurrent deployments to the same environment
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 1 — Build Next.js static export
+  # D-01b: output: 'export', basePath if needed (configured in next.config.ts)
+  # ─────────────────────────────────────────────────────────────────────────
+  build:
+    name: Build Next.js Static Export
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Copy latest data files into public/data
+        # D-01c: serve real JSON files from data/ alongside the static export.
+        # During development the frontend reads from public/data/ (mock);
+        # in production we overwrite with real data from the repo root.
+        working-directory: ${{ github.workspace }}
+        run: |
+          mkdir -p frontend/public/data frontend/public/data/history/bias frontend/public/data/history/model-metrics
+          # Copy real JSON files if they exist (they will exist once B4 is live)
+          [ -f "data/bias-latest.json" ]       && cp data/bias-latest.json       frontend/public/data/ || echo "bias-latest.json not found — using mock"
+          [ -f "data/cot-latest.json" ]        && cp data/cot-latest.json        frontend/public/data/ || echo "cot-latest.json not found — using mock"
+          [ -f "data/macro-latest.json" ]      && cp data/macro-latest.json      frontend/public/data/ || echo "macro-latest.json not found — using mock"
+          [ -f "data/cross-asset-latest.json" ] && cp data/cross-asset-latest.json frontend/public/data/ || echo "cross-asset-latest.json not found — using mock"
+          # Copy history bias files
+          if [ -d "data/history/bias" ]; then
+            cp data/history/bias/*.json frontend/public/data/history/bias/ 2>/dev/null || true
+          fi
+          # Copy latest model-metrics if available
+          if [ -d "data/history/model-metrics" ]; then
+            cp data/history/model-metrics/*.json frontend/public/data/history/model-metrics/ 2>/dev/null || true
+          fi
+          echo "Data files in frontend/public/data/:"
+          ls -la frontend/public/data/ || true
+
+      - name: Build (npm run build → next export)
+        run: npm run build
+        env:
+          # Expose the dashboard URL so the build can embed it if needed
+          NEXT_PUBLIC_DASHBOARD_URL: ${{ secrets.DASHBOARD_URL }}
+
+      - name: Verify output directory exists
+        run: |
+          echo "Contents of out/ directory:"
+          ls -la out/ || (echo "ERROR: out/ directory not found after build" && exit 1)
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/out
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 2 — Deploy to GitHub Pages
+  # D-01c: verify frontend serves JSON files correctly
+  # ─────────────────────────────────────────────────────────────────────────
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Print deployment URL
+        run: |
+          echo "✅ Frontend deployed to: ${{ steps.deployment.outputs.page_url }}"
+          echo "   Data audit: ${{ steps.deployment.outputs.page_url }}audit/"

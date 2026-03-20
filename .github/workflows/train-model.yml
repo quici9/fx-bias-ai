@@ -1,0 +1,82 @@
+name: Train & Validate Model (B3-01 + B3-02)
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  train:
+    name: B3-01 Walk-Forward Training
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run train_model.py (B3-01)
+        run: python training/train_model.py
+
+      - name: Verify train outputs
+        run: |
+          echo "=== B3-01 outputs ==="
+          ls -lh models/model.pkl models/calibrator.pkl
+          python3 -c "
+          import json
+          m = json.load(open('data/history/model-metrics/initial_training.json'))
+          s = m['walk_forward_summary']
+          print(f'Folds: {s[\"n_folds\"]}')
+          print(f'Mean accuracy: {s[\"mean_accuracy\"]:.4f}')
+          gate = s['mean_accuracy'] >= 0.68
+          print(f'Gate (>=68%): {\"PASS\" if gate else \"FAIL\"}')
+          for fold in m['folds']:
+              print(f'  {fold[\"fold\"]}: {fold[\"accuracy\"]:.4f}')
+          "
+
+      - name: Run validate_model.py (B3-02 + B3-03)
+        run: python training/validate_model.py
+
+      - name: Verify validate outputs
+        run: |
+          echo "=== B3-02 outputs ==="
+          ls -lh models/model_card.md models/model_lr_fallback.pkl || true
+          ls -lh models/validation_chart.png 2>/dev/null && echo "Chart generated" || echo "Chart skipped (no matplotlib)"
+          python3 -c "
+          import json
+          v = json.load(open('data/history/model-metrics/validation_results.json'))
+          print(f'Gate (RF beats COT by >=5%): {\"PASS\" if v[\"gate_pass\"] else \"FAIL\"}')
+          print(f'Mean RF-COT gap: {v[\"mean_rf_vs_cot_gap\"]:+.4f}')
+          print(f'Best min_samples_leaf: {v[\"best_min_samples_leaf\"]}')
+          print(f'Group B in top-10: {v[\"group_b_in_top10\"]}')
+          for fold, res in v['folds'].items():
+              print(f'  {fold}: RF={res[\"rf\"]:.4f} COT={res[\"cot_rule\"]:.4f} gap={res[\"rf_vs_cot_gap\"]:+.4f}')
+          "
+
+      - name: Commit all artifacts
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add models/model.pkl models/calibrator.pkl
+          git add models/model_lr_fallback.pkl
+          git add models/model_card.md
+          git add DECISIONS.md
+          git add data/history/model-metrics/initial_training.json
+          git add data/history/model-metrics/validation_results.json
+          git add models/validation_chart.png 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "training: B3-01 walk-forward + B3-02 validation + B3-03 LR fallback"
+            git push
+          fi

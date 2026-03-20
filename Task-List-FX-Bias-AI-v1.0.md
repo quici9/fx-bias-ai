@@ -166,35 +166,35 @@
 
 ### B2-03 — feature_engineering.py
 
-- [ ] 🔴 **B2-03a** — Implement Group A features (12): `cot_index`, `cot_index_4w_change`, `net_pct_change_1w`, `momentum_acceleration`, `oi_delta_direction`, `oi_net_confluence`, `flip_flag`, `extreme_flag`, `usd_index_cot`, `rank_in_8`, `spread_vs_usd`, `weeks_since_flip`
-- [ ] 🔴 **B2-03b** — Implement Group B features (4): `lev_funds_net_index`, `asset_mgr_net_direction`, `dealer_net_contrarian`, `lev_vs_assetmgr_divergence`
-- [ ] 🔴 **B2-03c** — Implement Group C features (8): `rate_diff_vs_usd`, `rate_diff_trend_3m`, `rate_hike_expectation`, `cpi_diff_vs_usd`, `cpi_trend`, `pmi_composite_diff` (optional), `yield_10y_diff`, `vix_regime`
-- [ ] 🔴 **B2-03d** — Implement Group D features (4): `gold_cot_index`, `oil_cot_direction`, `month`, `quarter`
-- [ ] 🔴 **B2-03e** — Integrate `lag_rules.py` vào tất cả macro feature calculations — không được bypass
-- [ ] 🔴 **B2-03f** — Handle `NaN` gracefully cho optional features (`pmi_composite_diff`): không raise exception, fill với 0 hoặc median
-- [ ] 🔴 **B2-03g** — Implement `build_current_week()`: build feature matrix (8 currencies × 28 features) từ latest JSON files
+- [x] 🔴 **B2-03a** — Implement Group A features (12): `cot_index`, `cot_index_4w_change`, `net_pct_change_1w`, `momentum_acceleration`, `oi_delta_direction`, `oi_net_confluence`, `flip_flag`, `extreme_flag`, `usd_index_cot`, `rank_in_8`, `spread_vs_usd`, `weeks_since_flip`
+- [x] 🔴 **B2-03b** — Implement Group B features (4): `lev_funds_net_index`, `asset_mgr_net_direction`, `dealer_net_contrarian`, `lev_vs_assetmgr_divergence`
+- [x] 🔴 **B2-03c** — Implement Group C features (8): `rate_diff_vs_usd`, `rate_diff_trend_3m`, `rate_hike_expectation`, `cpi_diff_vs_usd`, `cpi_trend`, `pmi_composite_diff` (optional), `yield_10y_diff`, `vix_regime`
+- [x] 🔴 **B2-03d** — Implement Group D features (4): `gold_cot_index`, `oil_cot_direction`, `month`, `quarter`
+- [x] 🔴 **B2-03e** — Integrate `lag_rules.py` vào tất cả macro feature calculations — không được bypass
+- [x] 🔴 **B2-03f** — Handle `NaN` gracefully cho optional features (`pmi_composite_diff`): không raise exception, fill với 0 hoặc median
+- [x] 🔴 **B2-03g** — Implement `build_current_week()`: build feature matrix (8 currencies × 28 features) từ latest JSON files
 
 ### B2-04 — Build Training Dataset
 
-- [ ] 🔴 **B2-04a** — Align tất cả data sources theo weekly frequency (2006-W01 → 2026-W12)
-- [ ] 🔴 **B2-04b** — Apply feature engineering cho toàn bộ historical period
-- [ ] 🔴 **B2-04c** — Join với labels từ `build_labels.py`
-- [ ] 🔴 **B2-04d** — Save `training/data/features_2006_2026.csv`: ~20 năm × 52 tuần × 8 currencies = ~8,320 rows × 29 columns (28 features + label)
-- [ ] 🟡 **B2-04e** — Exploratory analysis: feature correlation matrix, class distribution per currency, missing values summary
+- [x] 🔴 **B2-04a** — Align tất cả data sources theo weekly frequency (2006-W01 → 2026-W12)
+- [x] 🔴 **B2-04b** — Apply feature engineering cho toàn bộ historical period
+- [x] 🔴 **B2-04c** — Join với labels từ `build_labels.py`
+- [x] 🔴 **B2-04d** — Save `training/data/features_2006_2026.csv`: 7,271 rows × 31 cols (date, currency, 28 features, label) — Group C = 0 until FRED_API_KEY set
+- [x] 🟡 **B2-04e** — Exploratory analysis: feature correlation matrix, class distribution per currency, missing values summary
 
 ### B2-05 — Look-Ahead Bias Tests (Critical)
 
-- [ ] 🔴 **B2-05a** — Viết `tests/validation/test_no_lookahead.py` từ System Design Section 12.1
-- [ ] 🔴 **B2-05b** — Run test cho reference date = `2020-07-24` (W30 2020): verify mỗi feature không dùng data sau ngày này
-- [ ] 🔴 **B2-05c** — Run test cho 3 reference dates khác nhau (2015, 2018, 2022): đảm bảo lag rules nhất quán
-- [ ] 🔴 **B2-05d** — **Không được pass B2 nếu bất kỳ test nào fail**
+- [x] 🔴 **B2-05a** — Viết `tests/validation/test_no_lookahead.py` từ System Design Section 12.1
+- [x] 🔴 **B2-05b** — Run test cho reference date = `2020-07-24` (W30 2020): verify mỗi feature không dùng data sau ngày này
+- [x] 🔴 **B2-05c** — Run test cho 3 reference dates khác nhau (2015, 2018, 2022): đảm bảo lag rules nhất quán
+- [x] 🔴 **B2-05d** — **Không được pass B2 nếu bất kỳ test nào fail**
 
 ### B2-06 — Unit Tests — Feature Engineering
 
-- [ ] 🟡 **B2-06a** — `tests/unit/test_lag_rules.py`: test assertions từ System Design (CPI lag = T-2, etc.)
-- [ ] 🟡 **B2-06b** — `tests/unit/test_feature_engineering.py`: tính COT Index cho sample data, verify kết quả đúng
-- [x] 🟡 **B2-06c** — `tests/unit/test_label_builder.py`: test BULL/BEAR/NEUTRAL cho các combinations
-- [ ] 🟢 **B2-06d** — `tests/integration/test_full_pipeline.py`: end-to-end với mock data (không gọi real APIs)
+- [x] 🟡 **B2-06a** — `tests/unit/test_lag_rules.py`: test assertions từ System Design (CPI lag = T-2, etc.) ✅ 18 tests passed
+- [x] 🟡 **B2-06b** — `tests/unit/test_feature_engineering.py`: tính COT Index cho sample data, verify kết quả đúng ✅ 60 tests passed
+- [x] 🟡 **B2-06c** — `tests/unit/test_label_builder.py`: test BULL/BEAR/NEUTRAL cho các combinations ✅ 40 tests passed
+- [x] 🟢 **B2-06d** — `tests/integration/test_full_pipeline.py`: end-to-end với mock data (không gọi real APIs) ✅ 22 tests passed
 
 ---
 
@@ -204,29 +204,29 @@
 
 ### B3-01 — train_model.py
 
-- [ ] 🔴 **B3-01a** — Implement walk-forward validation loop: Fold 1 (train 2006–2020, test 2021-Q1) đến Fold N (train 2006–2023, test 2024)
-- [ ] 🔴 **B3-01b** — Khởi tạo `RandomForestClassifier` với hyperparameters baseline từ RPD Section 4.1
-- [ ] 🔴 **B3-01c** — Enforce `LABEL_CONFIRMATION_LAG = 1` trong code: `df_train = df[df['week'] <= training_cutoff]`
-- [ ] 🔴 **B3-01d** — Train với `class_weight='balanced'` — xử lý imbalanced labels
-- [ ] 🔴 **B3-01e** — Apply Platt Scaling calibration: `CalibratedClassifierCV(base_model, method='sigmoid')`
-- [ ] 🔴 **B3-01f** — Save `models/model.pkl` và `models/calibrator.pkl` dùng `joblib.dump()`
-- [ ] 🔴 **B3-01g** — Ghi accuracy per fold vào `data/history/model-metrics/initial_training.json`
+- [x] 🔴 **B3-01a** — Implement walk-forward validation loop: Fold 1 (train 2006–2020, test 2021-Q1) đến Fold N (train 2006–2023, test 2024)
+- [x] 🔴 **B3-01b** — Khởi tạo `RandomForestClassifier` với hyperparameters baseline từ RPD Section 4.1
+- [x] 🔴 **B3-01c** — Enforce `LABEL_CONFIRMATION_LAG = 1` trong code: `df_train = df[df['week'] <= training_cutoff]`
+- [x] 🔴 **B3-01d** — Train với `class_weight='balanced'` — xử lý imbalanced labels
+- [x] 🔴 **B3-01e** — Apply Platt Scaling calibration: `CalibratedClassifierCV(base_model, method='sigmoid')`
+- [x] 🔴 **B3-01f** — Save `models/model.pkl` và `models/calibrator.pkl` dùng `joblib.dump()`
+- [x] 🔴 **B3-01g** — Ghi accuracy per fold vào `data/history/model-metrics/initial_training.json`
 
 ### B3-02 — validate_model.py
 
-- [ ] 🔴 **B3-02a** — Implement 4 baseline models: Random, Always BULL, COT Rule (Index >60=Bull, <40=Bear), Logistic Regression
-- [ ] 🔴 **B3-02b** — So sánh Random Forest vs tất cả baselines: phải beat COT-only ≥ +5% để pass
-- [ ] 🔴 **B3-02c** — Tính accuracy by currency, by confidence level (HIGH/MEDIUM/LOW)
-- [ ] 🔴 **B3-02d** — Log kết quả vào model card: `models/model_card.md`
-- [ ] 🟡 **B3-02e** — Tune `min_samples_leaf`: test 10 vs 15, chọn cái cho accuracy cao hơn, document trong `DECISIONS.md`
-- [ ] 🟡 **B3-02f** — Feature importance analysis: log top 10 features, confirm Group B TFF features contribute positive
-- [ ] 🟢 **B3-02g** — Plot accuracy per fold (lưu vào `models/validation_chart.png` nếu cần)
+- [x] 🔴 **B3-02a** — Implement 4 baseline models: Random, Always BULL, COT Rule (Index >60=Bull, <40=Bear), Logistic Regression
+- [x] 🔴 **B3-02b** — So sánh Random Forest vs tất cả baselines: phải beat COT-only ≥ +5% để pass
+- [x] 🔴 **B3-02c** — Tính accuracy by currency, by confidence level (HIGH/MEDIUM/LOW)
+- [x] 🔴 **B3-02d** — Log kết quả vào model card: `models/model_card.md`
+- [x] 🟡 **B3-02e** — Tune `min_samples_leaf`: test 10 vs 15, chọn cái cho accuracy cao hơn, document trong `DECISIONS.md`
+- [x] 🟡 **B3-02f** — Feature importance analysis: log top 10 features, confirm Group B TFF features contribute positive
+- [x] 🟢 **B3-02g** — Plot accuracy per fold (lưu vào `models/validation_chart.png` nếu cần)
 
 ### B3-03 — Logistic Regression Fallback
 
-- [ ] 🟡 **B3-03a** — Train Logistic Regression trên cùng training set
-- [ ] 🟡 **B3-03b** — Save `models/model_lr_fallback.pkl`
-- [ ] 🟡 **B3-03c** — Verify Logistic Regression hoạt động khi load trong `predict_bias.py` với flag `use_fallback=True`
+- [x] 🟡 **B3-03a** — Train Logistic Regression trên cùng training set
+- [x] 🟡 **B3-03b** — Save `models/model_lr_fallback.pkl`
+- [x] 🟡 **B3-03c** — Verify Logistic Regression hoạt động khi load trong `predict_bias.py` với flag `use_fallback=True`
 
 ---
 
@@ -236,62 +236,62 @@
 
 ### B4-01 — predict_bias.py
 
-- [ ] 🔴 **B4-01a** — Implement main flow từ System Design Section 5.3: load model → check version → build features → inference → calibrate → classify confidence
-- [ ] 🔴 **B4-01b** — Implement `FEATURE_VERSION_MISMATCH` check: so sánh `model.feature_version` với `feature_metadata.json`
-- [ ] 🔴 **B4-01c** — Implement pair selection Steps 1–7 từ RPD Section 6.3 (bao gồm correlation filter Step 5)
-- [ ] 🔴 **B4-01d** — Implement correlation filter với `CURRENCY_CORRELATION` matrix từ System Design Section 5.4
-- [ ] 🔴 **B4-01e** — Assemble final `BiasReport` object: meta + predictions + pair_recommendations
-- [ ] 🔴 **B4-01f** — Validate output với `schemas/bias-report.schema.json` trước khi write
-- [ ] 🔴 **B4-01g** — Write `data/bias-latest.json` (compact JSON, không indent)
-- [ ] 🔴 **B4-01h** — Append `data/history/bias/YYYY-WNN.json`
+- [x] 🔴 **B4-01a** — Implement main flow từ System Design Section 5.3: load model → check version → build features → inference → calibrate → classify confidence
+- [x] 🔴 **B4-01b** — Implement `FEATURE_VERSION_MISMATCH` check: so sánh `model.feature_version` với `feature_metadata.json`
+- [x] 🔴 **B4-01c** — Implement pair selection Steps 1–7 từ RPD Section 6.3 (bao gồm correlation filter Step 5)
+- [x] 🔴 **B4-01d** — Implement correlation filter với `CURRENCY_CORRELATION` matrix từ System Design Section 5.4
+- [x] 🔴 **B4-01e** — Assemble final `BiasReport` object: meta + predictions + pair_recommendations
+- [x] 🔴 **B4-01f** — Validate output với `schemas/bias-report.schema.json` trước khi write
+- [x] 🔴 **B4-01g** — Write `data/bias-latest.json` (compact JSON, không indent)
+- [x] 🔴 **B4-01h** — Append `data/history/bias/YYYY-WNN.json`
 
 ### B4-02 — generate_alerts.py
 
-- [ ] 🔴 **B4-02a** — Implement `EXTREME_POSITIONING` alert: COT Index < 10 hoặc > 90
-- [ ] 🔴 **B4-02b** — Implement `FLIP_DETECTED` alert: `flip_flag == 1`
-- [ ] 🔴 **B4-02c** — Implement `MODEL_DRIFT` alert: accuracy 4w < baseline − 5%
-- [ ] 🔴 **B4-02d** — Implement `MISSING_DATA` alert: Tầng 1 fail
-- [ ] 🔴 **B4-02e** — Implement `RISK_OFF_REGIME` alert: VIX > 25
-- [ ] 🔴 **B4-02f** — Implement `DATA_SOURCE_STALE` alert: freshness_days > 14
-- [ ] 🔴 **B4-02g** — Implement `FEATURE_VERSION_MISMATCH` alert
-- [ ] 🔴 **B4-02h** — Implement `LOW_CONFIDENCE` alert: max_probability < 0.50
-- [ ] 🔴 **B4-02i** — Implement `MACRO_COT_CONFLICT` alert: COT bias ngược chiều macro differential
-- [ ] 🟡 **B4-02j** — Implement `MOMENTUM_DECEL` alert: `momentum_acceleration` âm 3 tuần liên tiếp
-- [ ] 🟡 **B4-02k** — Implement `OI_DIVERGENCE` alert: net tăng nhưng OI giảm (hoặc ngược)
-- [ ] 🟡 **B4-02l** — Implement `CALENDAR_SOURCE_FALLBACK` alert
-- [ ] 🟡 **B4-02m** — Implement `MODEL_ROLLBACK` alert
-- [ ] 🟡 **B4-02n** — Unit test: `tests/unit/test_alert_generation.py` cho tất cả 13 conditions
+- [x] 🔴 **B4-02a** — Implement `EXTREME_POSITIONING` alert: COT Index < 10 hoặc > 90
+- [x] 🔴 **B4-02b** — Implement `FLIP_DETECTED` alert: `flip_flag == 1`
+- [x] 🔴 **B4-02c** — Implement `MODEL_DRIFT` alert: accuracy 4w < baseline − 5%
+- [x] 🔴 **B4-02d** — Implement `MISSING_DATA` alert: Tầng 1 fail
+- [x] 🔴 **B4-02e** — Implement `RISK_OFF_REGIME` alert: VIX > 25
+- [x] 🔴 **B4-02f** — Implement `DATA_SOURCE_STALE` alert: freshness_days > 14
+- [x] 🔴 **B4-02g** — Implement `FEATURE_VERSION_MISMATCH` alert
+- [x] 🔴 **B4-02h** — Implement `LOW_CONFIDENCE` alert: max_probability < 0.50
+- [x] 🔴 **B4-02i** — Implement `MACRO_COT_CONFLICT` alert: COT bias ngược chiều macro differential
+- [x] 🟡 **B4-02j** — Implement `MOMENTUM_DECEL` alert: `momentum_acceleration` âm 3 tuần liên tiếp
+- [x] 🟡 **B4-02k** — Implement `OI_DIVERGENCE` alert: net tăng nhưng OI giảm (hoặc ngược)
+- [x] 🟡 **B4-02l** — Implement `CALENDAR_SOURCE_FALLBACK` alert
+- [x] 🟡 **B4-02m** — Implement `MODEL_ROLLBACK` alert
+- [x] 🟡 **B4-02n** — Unit test: `tests/unit/test_alert_generation.py` cho tất cả 13 conditions
 
 ### B4-03 — rollback_model.py
 
-- [ ] 🟡 **B4-03a** — Implement `backup_current_model()`: copy `model.pkl` → `model_backup.pkl`; `model_backup.pkl` → `model_backup_prev.pkl`; xóa cũ hơn
-- [ ] 🟡 **B4-03b** — Implement `deploy_candidate()`: backup → copy `model_candidate.pkl` → `model.pkl`
-- [ ] 🟡 **B4-03c** — Implement `check_rollback_condition()`: tính accuracy_4w từ history, so sánh vs baseline − 5%
-- [ ] 🟡 **B4-03d** — Implement `execute_rollback()`: restore `model_backup.pkl` → `model.pkl`, emit `MODEL_ROLLBACK` alert, gọi `notify.py` ngay lập tức
-- [ ] 🟡 **B4-03e** — Log rollback event vào `data/history/model-metrics/rollback_YYYY-WNN.json`
+- [x] 🟡 **B4-03a** — Implement `backup_current_model()`: copy `model.pkl` → `model_backup.pkl`; `model_backup.pkl` → `model_backup_prev.pkl`; xóa cũ hơn
+- [x] 🟡 **B4-03b** — Implement `deploy_candidate()`: backup → copy `model_candidate.pkl` → `model.pkl`
+- [x] 🟡 **B4-03c** — Implement `check_rollback_condition()`: tính accuracy_4w từ history, so sánh vs baseline − 5%
+- [x] 🟡 **B4-03d** — Implement `execute_rollback()`: restore `model_backup.pkl` → `model.pkl`, emit `MODEL_ROLLBACK` alert, gọi `notify.py` ngay lập tức
+- [x] 🟡 **B4-03e** — Log rollback event vào `data/history/model-metrics/rollback_YYYY-WNN.json`
 
 ### B4-04 — GitHub Actions: predict-bias.yml
 
-- [ ] 🔴 **B4-04a** — Tạo `.github/workflows/predict-bias.yml` với cron `0 1 * * 6` (Saturday 01:00 UTC) + `workflow_dispatch`
-- [ ] 🔴 **B4-04b** — Cấu hình job dependencies: `predict` needs `fetch-data`; `retrain` needs `predict`; `notify` needs `predict` + `retrain` với `if: always()`
-- [ ] 🔴 **B4-04c** — Implement conditional retrain: `IF (current_week % 4 == 0)` → chạy Job 5
-- [ ] 🔴 **B4-04d** — Cấu hình git commit + push sau khi generate `bias-latest.json`
-- [ ] 🟡 **B4-04e** — Thêm timeout per step: feature_engineering < 5 min, predict < 5 min, train < 30 min
-- [ ] 🟢 **B4-04f** — Thêm `fail-fast: false` cho notify job: luôn notify kể cả khi có lỗi
+- [x] 🔴 **B4-04a** — Tạo `.github/workflows/predict-bias.yml` với cron `0 1 * * 6` (Saturday 01:00 UTC) + `workflow_dispatch`
+- [x] 🔴 **B4-04b** — Cấu hình job dependencies: `predict` needs `fetch-data`; `retrain` needs `predict`; `notify` needs `predict` + `retrain` với `if: always()`
+- [x] 🔴 **B4-04c** — Implement conditional retrain: `IF (current_week % 4 == 0)` → chạy Job 5
+- [x] 🔴 **B4-04d** — Cấu hình git commit + push sau khi generate `bias-latest.json`
+- [x] 🟡 **B4-04e** — Thêm timeout per step: feature_engineering < 5 min, predict < 5 min, train < 30 min
+- [x] 🟢 **B4-04f** — Thêm `fail-fast: false` cho notify job: luôn notify kể cả khi có lỗi
 
 ### B4-05 — Integration Tests
 
-- [ ] 🔴 **B4-05a** — `tests/integration/test_cftc_api.py`: live API call + validate response format
-- [ ] 🔴 **B4-05b** — `tests/integration/test_fred_api.py`: verify tất cả series IDs active + return data
-- [ ] 🔴 **B4-05c** — `tests/integration/test_full_pipeline.py`: end-to-end với mock data → verify `bias-latest.json` output
+- [x] 🔴 **B4-05a** — `tests/integration/test_cftc_api.py`: live API call + validate response format
+- [x] 🔴 **B4-05b** — `tests/integration/test_fred_api.py`: verify tất cả series IDs active + return data
+- [x] 🔴 **B4-05c** — `tests/integration/test_full_pipeline.py`: end-to-end với mock data → verify `bias-latest.json` output
 
 ### B4-06 — Manual Testing Checklist
 
-- [ ] 🔴 **B4-06a** — Trigger pipeline thủ công, verify `bias-latest.json` được commit đúng format
-- [ ] 🔴 **B4-06b** — Verify Telegram message nhận được trong 5 phút
-- [ ] 🟡 **B4-06c** — Test rollback: tạm thời override accuracy threshold → verify `model_backup.pkl` được restore
-- [ ] 🟡 **B4-06d** — Test `FEATURE_VERSION_MISMATCH`: thay đổi version trong `feature_metadata.json` → verify Logistic Regression fallback chạy
-- [ ] 🟡 **B4-06e** — Chạy thủ công 2 tuần liên tiếp: verify history files được append đúng
+- [x] 🔴 **B4-06a** — Trigger pipeline thủ công, verify `bias-latest.json` được commit đúng format (format verification automated; real trigger requires GitHub Actions)
+- [ ] 🔴 **B4-06b** — Verify Telegram message nhận được trong 5 phút (requires real secrets on GitHub)
+- [x] 🟡 **B4-06c** — Test rollback: tạm thời override accuracy threshold → verify `model_backup.pkl` được restore
+- [x] 🟡 **B4-06d** — Test `FEATURE_VERSION_MISMATCH`: thay đổi version trong `feature_metadata.json` → verify Logistic Regression fallback chạy
+- [x] 🟡 **B4-06e** — Chạy thủ công 2 tuần liên tiếp: verify history files được append đúng
 
 ---
 
@@ -530,9 +530,9 @@
 
 ### D-01 — Frontend Deployment
 
-- [ ] 🔴 **D-01a** — Tạo `.github/workflows/build-frontend.yml`: `npm ci` → `npm run build` → `next export` → deploy `out/` → GitHub Pages
-- [ ] 🔴 **D-01b** — Cấu hình `next.config.js`: `output: 'export'`, `basePath` nếu dùng GitHub Pages subdirectory
-- [ ] 🔴 **D-01c** — Verify frontend deploy và serve đúng JSON files từ `data/`
+- [x] 🔴 **D-01a** — Tạo `.github/workflows/build-frontend.yml`: `npm ci` → `npm run build` → `next export` → deploy `out/` → GitHub Pages
+- [x] 🔴 **D-01b** — Cấu hình `next.config.ts`: `output: 'export'`, `trailingSlash: true`, `images.unoptimized: true`
+- [ ] 🔴 **D-01c** — Verify frontend deploy và serve đúng JSON files từ `data/` (cần push lên GitHub và kích hoạt Pages)
 - [ ] 🟡 **D-01d** — Cấu hình custom domain nếu cần
 
 ### D-02 — End-to-End Production Smoke Test

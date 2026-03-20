@@ -1,0 +1,244 @@
+name: Predict Bias
+
+# B4-04a — Saturday 01:00 UTC + manual trigger
+on:
+  workflow_dispatch:
+    inputs:
+      force_retrain:
+        description: 'Force model retrain regardless of week number'
+        required: false
+        type: boolean
+        default: false
+      use_fallback:
+        description: 'Use LR fallback model instead of primary RF'
+        required: false
+        type: boolean
+        default: false
+  schedule:
+    - cron: '0 1 * * 6'   # Saturday 01:00 UTC
+
+permissions:
+  contents: write
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 1 — Inference + Alerts + Rollback check
+  # B4-04b: this job is the anchor; retrain and notify depend on it
+  # B4-04d: commits bias-latest.json after prediction
+  # ─────────────────────────────────────────────────────────────────────────
+  predict:
+    name: Inference · Alerts · Rollback
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    outputs:
+      should_retrain: ${{ steps.week.outputs.should_retrain }}
+      week_label:     ${{ steps.week.outputs.week_label }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Compute ISO week, week label, and 4-week retrain flag
+      - name: Compute week / retrain flag
+        id: week
+        run: |
+          WEEK=$(date -u '+%V' | sed 's/^0*//')
+          YEAR=$(date -u '+%G')
+          LABEL="${YEAR}-W$(printf '%02d' $WEEK)"
+          SHOULD=$([[ $((WEEK % 4)) -eq 0 ]] && echo "true" || echo "false")
+          echo "week_number=$WEEK"       >> "$GITHUB_OUTPUT"
+          echo "week_label=$LABEL"       >> "$GITHUB_OUTPUT"
+          echo "should_retrain=$SHOULD"  >> "$GITHUB_OUTPUT"
+          echo "Week: $LABEL  |  should_retrain=$SHOULD"
+
+      # B4-04e: feature_engineering timeout < 5 min
+      # Pre-builds current-week feature snapshot; continue-on-error because
+      # predict_bias.py constructs features inline from raw JSON as fallback.
+      - name: Feature engineering (current week)
+        timeout-minutes: 5
+        run: |
+          python training/feature_engineering.py --current-week 2>/dev/null \
+            || echo "feature_engineering.py --current-week not supported; inference uses inline build"
+        continue-on-error: true
+
+      # B4-04e: predict step timeout < 5 min
+      - name: Run predict_bias.py
+        timeout-minutes: 5
+        run: |
+          FALLBACK_FLAG=""
+          if [ "${{ github.event.inputs.use_fallback }}" = "true" ]; then
+            FALLBACK_FLAG="--fallback"
+          fi
+          python backend/scripts/predict_bias.py $FALLBACK_FLAG
+
+      - name: Generate alerts
+        run: python backend/scripts/generate_alerts.py
+
+      # B4-03 rollback check — auto-restores model_backup.pkl if accuracy drifted
+      - name: Check rollback condition
+        run: python backend/scripts/rollback_model.py
+        continue-on-error: true   # rollback failure must not block output commit
+
+      # Sanity-check the output before committing
+      - name: Verify bias-latest.json
+        run: |
+          python3 -c "
+          import json, sys
+          r = json.load(open('data/bias-latest.json'))
+          print(f'Week      : {r[\"meta\"][\"weekLabel\"]}')
+          print(f'Confidence: {r[\"meta\"][\"overallConfidence\"]}')
+          print(f'Predictions: {len(r[\"predictions\"])}')
+          print(f'Alerts    : {len(r[\"weekly_alerts\"])}')
+          for p in r['predictions']:
+              print(f'  {p[\"currency\"]}: {p[\"bias\"]} ({p[\"confidence\"]})')
+          long_r  = [x['pair'] for x in r['pair_recommendations']['strong_long']]
+          short_r = [x['pair'] for x in r['pair_recommendations']['strong_short']]
+          print(f'Long : {long_r}')
+          print(f'Short: {short_r}')
+          if len(r['predictions']) == 0:
+              print('ERROR: no predictions generated')
+              sys.exit(1)
+          "
+
+      # B4-04d — commit bias-latest.json + history after generation
+      - name: Commit bias output
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/bias-latest.json
+          git add data/history/bias/
+          git add data/alerts-pending.json             2>/dev/null || true
+          git add data/history/model-metrics/          2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "bias: weekly prediction ${{ steps.week.outputs.week_label }} [B4-04]"
+            git push
+          fi
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 2 — Conditional retrain (every 4 weeks or forced)
+  # B4-04b: needs predict
+  # B4-04c: IF (current_week % 4 == 0) OR force_retrain input
+  # B4-04e: train step timeout < 30 min
+  # ─────────────────────────────────────────────────────────────────────────
+  retrain:
+    name: Conditional Retrain (4-week cycle)
+    needs: predict
+    # B4-04c — run when week is divisible by 4, or forced manually
+    if: >
+      needs.predict.result == 'success' &&
+      (needs.predict.outputs.should_retrain == 'true' ||
+       github.event.inputs.force_retrain == 'true')
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Backup current model before overwriting (enables rollback later)
+      - name: Backup current model
+        run: |
+          python3 -c "
+          import sys; sys.path.insert(0, '.')
+          from backend.scripts.rollback_model import backup_current_model
+          ok = backup_current_model()
+          print('Backup:', 'OK' if ok else 'SKIPPED (no existing model.pkl)')
+          "
+
+      # B4-04e: train step timeout < 30 min
+      - name: Train model (walk-forward)
+        timeout-minutes: 30
+        run: python training/train_model.py
+
+      # B4-04e: validate step (< 5 min)
+      - name: Validate model
+        timeout-minutes: 5
+        run: python training/validate_model.py
+
+      # Post-retrain rollback check — auto-rollback if new model underperforms
+      - name: Check rollback condition (post-retrain)
+        run: python backend/scripts/rollback_model.py
+        continue-on-error: true
+
+      - name: Commit model artifacts
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add models/model.pkl                           2>/dev/null || true
+          git add models/calibrator.pkl                      2>/dev/null || true
+          git add models/model_backup.pkl                    2>/dev/null || true
+          git add models/model_backup_prev.pkl               2>/dev/null || true
+          git add models/model_lr_fallback.pkl               2>/dev/null || true
+          git add models/model_card.md                       2>/dev/null || true
+          git add models/feature_metadata.json               2>/dev/null || true
+          git add data/history/model-metrics/                2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "training: retrain ${{ needs.predict.outputs.week_label }} [B4-04c]"
+            git push
+          fi
+
+  # ─────────────────────────────────────────────────────────────────────────
+  # Job 3 — Send Telegram notification
+  # B4-04b: needs predict + retrain
+  # B4-04f: if: always() → notify even when predict/retrain failed
+  #         continue-on-error on notify step → notification failure is non-fatal
+  # ─────────────────────────────────────────────────────────────────────────
+  notify:
+    name: Send Telegram Notification
+    needs: [predict, retrain]
+    if: always()   # B4-04f — always run, even if predict or retrain failed/skipped
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Send weekly notification
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:   ${{ secrets.TELEGRAM_CHAT_ID }}
+          DASHBOARD_URL:      ${{ secrets.DASHBOARD_URL }}
+        run: |
+          if [ -f "data/bias-latest.json" ]; then
+            python backend/scripts/notify.py
+          else
+            echo "bias-latest.json not found — skipping notification"
+          fi
+        continue-on-error: true   # B4-04f: notification failure must not fail the run
