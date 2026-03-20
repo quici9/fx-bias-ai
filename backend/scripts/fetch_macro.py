@@ -41,7 +41,6 @@ ESTAT_API_KEY = os.getenv("ESTAT_API_KEY", "")
 # Japan National CPI (All Items), 2020=100, monthly — Statistics Bureau of Japan
 # statsDataId 0003427716 = 消費者物価指数（全国）2020年基準
 ESTAT_JAPAN_CPI_STATS_ID = "0003427716"
-ESTAT_JAPAN_CPI_CAT01 = "0001"  # 総合 (All Items)
 
 # FRED series IDs
 # Policy rates — OECD "Immediate Rates: Central Bank Rates" (monthly, M156N suffix)
@@ -340,9 +339,57 @@ def compute_vix_regime(vix_value: float) -> str:
         return "EXTREME"
 
 
+def _find_all_items_cat_code(stat_data: dict) -> Optional[str]:
+    """
+    Discover the @cat01 code for '総合' (All Items) from e-Stat CLASS_OBJ metadata.
+
+    e-Stat returns class definitions when metaGetFlg=Y. The 総合 entry is
+    the top-level aggregate; we match on name containing '総合' excluding
+    partial entries like '生鮮食品を除く総合'.
+
+    Returns the code string, or None if not found (caller skips category filter).
+    """
+    class_obj_list = (
+        stat_data.get("CLASS_INF", {}).get("CLASS_OBJ", [])
+    )
+    if isinstance(class_obj_list, dict):
+        class_obj_list = [class_obj_list]
+
+    for class_obj in class_obj_list:
+        if class_obj.get("@id") != "cat01":
+            continue
+        classes = class_obj.get("CLASS", [])
+        if isinstance(classes, dict):
+            classes = [classes]
+
+        # First pass: exact "総合" only
+        for cls in classes:
+            if cls.get("@name", "").strip() == "総合":
+                code = cls.get("@code", "")
+                logger.info("e-Stat: 総合 category code = '%s'", code)
+                return code
+
+        # Second pass: contains 総合 but not a sub-aggregate (除く = "excluding")
+        for cls in classes:
+            name = cls.get("@name", "")
+            if "総合" in name and "除く" not in name:
+                code = cls.get("@code", "")
+                logger.info("e-Stat: 総合 category code (loose match) = '%s' (%s)", code, name)
+                return code
+
+    logger.warning("e-Stat: could not find 総合 category in CLASS_OBJ metadata")
+    return None
+
+
 def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
     """
     Fetch Japan National CPI (All Items, 2020=100) from e-Stat API.
+
+    Strategy:
+      1. Call e-Stat with metaGetFlg=Y (no cdCat01 filter) to get both
+         metadata and data in one request.
+      2. Discover the correct @cat01 code for '総合' from CLASS_OBJ.
+      3. Filter VALUE entries to only that category.
 
     Returns FRED-compatible observations sorted descending by date:
         [{"date": "YYYY-MM-01", "value": "107.5"}, ...]
@@ -352,7 +399,7 @@ def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
         lookback_years: Years of history to fetch (default 4 covers YoY + 3m trend).
 
     Raises:
-        ValueError: If ESTAT_API_KEY is not set.
+        ValueError: If ESTAT_API_KEY is not set or no data returned.
         requests.RequestException: On API failure after retries.
     """
     if not ESTAT_API_KEY:
@@ -364,9 +411,8 @@ def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
     params = {
         "appId": ESTAT_API_KEY,
         "statsDataId": ESTAT_JAPAN_CPI_STATS_ID,
-        "cdCat01": ESTAT_JAPAN_CPI_CAT01,
         "cdTimeFrom": cd_time_from,
-        "metaGetFlg": "N",
+        "metaGetFlg": "Y",   # Include CLASS_OBJ to discover 総合 category code
         "cntGetFlg": "N",
     }
 
@@ -388,29 +434,40 @@ def fetch_estat_japan_cpi(lookback_years: int = 4) -> list[dict]:
             response.raise_for_status()
             data = response.json()
 
-            values = (
-                data.get("GET_STATS_DATA", {})
-                .get("STATISTICAL_DATA", {})
-                .get("DATA_INF", {})
-                .get("VALUE", [])
+            stat_data = (
+                data.get("GET_STATS_DATA", {}).get("STATISTICAL_DATA", {})
             )
+            values = stat_data.get("DATA_INF", {}).get("VALUE", [])
 
             if not values:
-                raise ValueError("e-Stat returned empty VALUE list — check statsDataId or cdCat01")
+                raise ValueError(
+                    f"e-Stat returned empty VALUE list for statsDataId={ESTAT_JAPAN_CPI_STATS_ID}"
+                )
+
+            # Discover the correct category code for 総合 (All Items)
+            all_items_code = _find_all_items_cat_code(stat_data)
 
             observations = []
             for v in values:
-                # @time format: YYYYMM (6 chars) padded to 10 chars in some API versions
+                # Filter to All Items category only (skip sub-categories)
+                if all_items_code and v.get("@cat01") != all_items_code:
+                    continue
+                # @time format: YYYYMM (6 chars) or padded to 10 chars in some versions
                 time_str = v.get("@time", "")
                 raw_value = v.get("$", "")
-                # Skip missing/suppressed values
                 if len(time_str) < 6 or raw_value in ("", "-", "***", "－", "…"):
                     continue
                 year, month = time_str[:4], time_str[4:6]
                 observations.append({"date": f"{year}-{month}-01", "value": raw_value})
 
+            if not observations:
+                raise ValueError(
+                    f"e-Stat: no observations for 総合 (cat01={all_items_code!r}) "
+                    f"in statsDataId={ESTAT_JAPAN_CPI_STATS_ID}"
+                )
+
             observations.sort(key=lambda x: x["date"], reverse=True)
-            logger.info("e-Stat: fetched %d Japan CPI level observations", len(observations))
+            logger.info("e-Stat: fetched %d Japan CPI level observations (総合)", len(observations))
             return observations
 
         except requests.Timeout:
