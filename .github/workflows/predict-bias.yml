@@ -205,6 +205,7 @@ jobs:
             echo "No changes to commit"
           else
             git commit -m "training: retrain ${{ needs.predict.outputs.week_label }} [B4-04c]"
+            git pull --rebase origin main
             git push
           fi
 
