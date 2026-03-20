@@ -53,7 +53,7 @@ RF_PARAMS = {
     "n_estimators": 500,          # 300→500: giảm variance, không tăng overfitting
     "max_depth": 8,
     "min_samples_leaf": 10,
-    "max_features": "sqrt",
+    "max_features": 0.5,          # grid best: 0.5 > sqrt (0.5142 vs 0.5072)
     "class_weight": "balanced",   # B3-01d
     "random_state": 42,
     "n_jobs": -1,
