@@ -39,10 +39,10 @@ ESTAT_API_BASE_URL = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsData"
 ESTAT_LIST_URL = "https://api.e-stat.go.jp/rest/3.0/app/json/getStatsList"
 ESTAT_API_KEY = os.getenv("ESTAT_API_KEY", "")
 
-# Japan National CPI (All Items), 2020=100, monthly — Statistics Bureau of Japan
-# Discovered at runtime via getStatsList; this constant is the fallback cache.
-# If empty, fetch_estat_japan_cpi() will call getStatsList to discover the ID.
-ESTAT_JAPAN_CPI_STATS_ID: str = ""  # discovered dynamically
+# Japan National CPI (All Items), 2020=100 — Statistics Bureau of Japan
+# Discovered via getStatsList on 2026-03-20: 消費者物価指数（2020年基準）
+# If empty, fetch_estat_japan_cpi() calls getStatsList to rediscover.
+ESTAT_JAPAN_CPI_STATS_ID: str = "0003427113"
 
 # FRED series IDs
 # Policy rates — OECD "Immediate Rates: Central Bank Rates" (monthly, M156N suffix)
