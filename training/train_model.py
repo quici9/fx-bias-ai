@@ -50,7 +50,7 @@ METRICS_FILE = METRICS_DIR / "initial_training.json"
 LABEL_CONFIRMATION_LAG = 1  # weeks — DO NOT CHANGE (RPD Section 5.1)
 
 RF_PARAMS = {
-    "n_estimators": 300,
+    "n_estimators": 500,          # 300→500: giảm variance, không tăng overfitting
     "max_depth": 8,
     "min_samples_leaf": 10,
     "max_features": "sqrt",
@@ -74,6 +74,7 @@ FOLDS = [
 TUNE_FOLDS = FOLDS
 TUNE_LEAF = (5, 10, 15, 20, 30)
 TUNE_DEPTH = (6, 8, 10, 12)
+TUNE_MAX_FEATURES = ("sqrt", 0.5)  # sqrt=5/28 features vs 0.5=14/28
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -129,9 +130,8 @@ FEATURE_COLS = [
     "flip_flag", "extreme_flag", "usd_index_cot", "rank_in_8",
     "spread_vs_usd", "weeks_since_flip",
     # Group B — TFF
-    # lev_funds_net_index excluded: r=0.836 với cot_index — redundant
     "dealer_net_contrarian", "lev_vs_assetmgr_divergence",
-    "asset_mgr_net_direction",
+    "asset_mgr_net_direction", "lev_funds_net_index",
     # Group C — Macro
     "rate_diff_vs_usd", "rate_diff_trend_3m", "rate_hike_expectation",
     "cpi_diff_vs_usd", "cpi_trend", "pmi_composite_diff",
@@ -183,43 +183,46 @@ def find_best_params(df: pd.DataFrame, currency_encoder: LabelEncoder) -> tuple:
     Returns:
         (best_rf_params dict, grid_results list of dicts for JSON storage)
     """
-    logger.info(f"Grid: min_samples_leaf={TUNE_LEAF}, max_depth={TUNE_DEPTH}")
+    logger.info(f"Grid: min_samples_leaf={TUNE_LEAF}, max_depth={TUNE_DEPTH}, max_features={TUNE_MAX_FEATURES}")
     best_acc = -1.0
     best_leaf = RF_PARAMS["min_samples_leaf"]
     best_depth = RF_PARAMS["max_depth"]
+    best_max_features = RF_PARAMS["max_features"]
     grid_results = []
 
-    for leaf in TUNE_LEAF:
-        for depth in TUNE_DEPTH:
-            params = {**RF_PARAMS, "min_samples_leaf": leaf, "max_depth": depth}
-            fold_accs = []
-            for train_end, test_start, test_end, fold_label in TUNE_FOLDS:
-                df_train = df[df["date"] <= pd.Timestamp(train_end)]
-                df_test = df[
-                    (df["date"] >= pd.Timestamp(test_start)) &
-                    (df["date"] <= pd.Timestamp(test_end))
-                ]
-                if df_train.empty or df_test.empty:
-                    continue
-                X_tr, y_tr, _ = prepare_features(df_train, currency_encoder)
-                X_te, y_te, _ = prepare_features(df_test, currency_encoder)
+    for mf in TUNE_MAX_FEATURES:
+        for leaf in TUNE_LEAF:
+            for depth in TUNE_DEPTH:
+                params = {**RF_PARAMS, "min_samples_leaf": leaf, "max_depth": depth, "max_features": mf}
+                fold_accs = []
+                for train_end, test_start, test_end, fold_label in TUNE_FOLDS:
+                    df_train = df[df["date"] <= pd.Timestamp(train_end)]
+                    df_test = df[
+                        (df["date"] >= pd.Timestamp(test_start)) &
+                        (df["date"] <= pd.Timestamp(test_end))
+                    ]
+                    if df_train.empty or df_test.empty:
+                        continue
+                    X_tr, y_tr, _ = prepare_features(df_train, currency_encoder)
+                    X_te, y_te, _ = prepare_features(df_test, currency_encoder)
 
-                base_rf = RandomForestClassifier(**params)
-                model = CalibratedClassifierCV(base_rf, method="sigmoid", cv=5)
-                model.fit(X_tr, y_tr)
-                fold_accs.append(accuracy_score(y_te, model.predict(X_te)))
+                    base_rf = RandomForestClassifier(**params)
+                    model = CalibratedClassifierCV(base_rf, method="sigmoid", cv=5)
+                    model.fit(X_tr, y_tr)
+                    fold_accs.append(accuracy_score(y_te, model.predict(X_te)))
 
-            mean_acc = float(np.mean(fold_accs)) if fold_accs else 0.0
-            logger.info(f"  leaf={leaf}, depth={depth}: acc={mean_acc:.4f}")
-            grid_results.append({"leaf": leaf, "depth": depth, "acc": round(mean_acc, 4)})
-            if mean_acc > best_acc:
-                best_acc = mean_acc
-                best_leaf = leaf
-                best_depth = depth
+                mean_acc = float(np.mean(fold_accs)) if fold_accs else 0.0
+                logger.info(f"  mf={mf}, leaf={leaf}, depth={depth}: acc={mean_acc:.4f}")
+                grid_results.append({"max_features": str(mf), "leaf": leaf, "depth": depth, "acc": round(mean_acc, 4)})
+                if mean_acc > best_acc:
+                    best_acc = mean_acc
+                    best_leaf = leaf
+                    best_depth = depth
+                    best_max_features = mf
 
-    best = {**RF_PARAMS, "min_samples_leaf": best_leaf, "max_depth": best_depth}
+    best = {**RF_PARAMS, "min_samples_leaf": best_leaf, "max_depth": best_depth, "max_features": best_max_features}
     logger.info(
-        f"Best params: min_samples_leaf={best_leaf}, max_depth={best_depth} → acc={best_acc:.4f}"
+        f"Best params: min_samples_leaf={best_leaf}, max_depth={best_depth}, max_features={best_max_features} → acc={best_acc:.4f}"
     )
     return best, grid_results
 

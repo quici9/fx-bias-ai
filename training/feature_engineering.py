@@ -253,10 +253,9 @@ def _compute_group_a(
     net_pct_change = (net - net_prev) / abs_prev * 100.0
     net_pct_change = net_pct_change.fillna(0.0).clip(-500.0, 500.0)
 
-    # 4. momentum_acceleration — (delta[t] − delta[t−1]) / |Net[t−1]| × 100
-    # Normalized as % of prior net position, same scale as net_pct_change_1w
+    # 4. momentum_acceleration — delta[t] − delta[t−1] (raw contracts)
     delta = net.diff()           # Net[t] − Net[t−1]
-    momentum_accel = (delta.diff() / abs_prev * 100.0).fillna(0.0).clip(-500.0, 500.0)
+    momentum_accel = delta.diff().fillna(0.0)
 
     # 5. oi_delta_direction — sign(OI[t] − OI[t−1])
     oi_delta_dir = np.sign(oi.diff()).fillna(0.0).astype(int)
