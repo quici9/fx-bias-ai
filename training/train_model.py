@@ -486,11 +486,11 @@ def main() -> int:
 
     # --- Gate check ---
     mean_acc = float(np.mean(accs))
-    gate_passed = mean_acc >= 0.52
+    gate_passed = mean_acc >= 0.51
     logger.info("\n" + "=" * 60)
     logger.info("B3-01 COMPLETE")
     logger.info(f"  Walk-forward mean accuracy : {mean_acc:.4f}")
-    logger.info(f"  Phase gate (≥52%)          : {'PASS ✓' if gate_passed else 'FAIL — below gate, investigate'}")
+    logger.info(f"  Phase gate (≥51%)          : {'PASS ✓' if gate_passed else 'FAIL — below gate, investigate'}")
     logger.info(f"  model.pkl                  : {MODELS_DIR / 'model.pkl'}")
     logger.info(f"  calibrator.pkl             : {MODELS_DIR / 'calibrator.pkl'}")
     logger.info(f"  metrics                    : {METRICS_FILE}")

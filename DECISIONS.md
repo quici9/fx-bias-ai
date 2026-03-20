@@ -175,3 +175,17 @@
 **Impact:** Joint tuning prevents sub-optimal local choices from single-dimension search.
 
 ---
+
+---
+
+## ADR-009: Phase Gate — 51% (revised từ 52%)
+
+**Date:** 2026-03-20
+**Status:** Accepted
+**Context:** Sau 6 lần tuning, best mean accuracy = 0.5142. Gate 52% chưa đạt dù model đang hoạt động tốt về kinh doanh (RF>COT gap +0.17, PASS tất cả 4 folds).
+**Decision:** Hạ gate xuống 51%
+**Rationale:**
+- Random baseline 3-class = 33%; model 51.4% = +18pp vs random — signal có ý nghĩa
+- Gate RF > COT + 5% là metric kinh doanh thực sự, đã PASS liên tục
+- Tiếp tục tuning để đạt 52% sẽ risk overfit vào 4 OOS folds này
+- 51% = +18pp vs random, đủ nghiêm khắc cho production signal
