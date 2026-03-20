@@ -1,0 +1,166 @@
+{
+  "meta": {
+    "weekLabel": "2026-W09",
+    "generatedAt": "2026-03-20T18:03:29.617128+00:00",
+    "modelVersion": "rf-v2.1",
+    "featureVersion": "v2.1-28f",
+    "overallConfidence": "LOW",
+    "dataSourceStatus": {
+      "cot": "OK",
+      "macro": "OK",
+      "cross_asset": "OK",
+      "calendar": "N/A"
+    },
+    "source": "backfill"
+  },
+  "predictions": [
+    {
+      "currency": "CAD",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.4658,
+        "neutral": 0.5246,
+        "bear": 0.0096
+      },
+      "confidence": "LOW",
+      "rank": 1,
+      "key_drivers": [
+        "Net position change",
+        "COT positioning",
+        "Momentum acceleration"
+      ],
+      "alerts": [
+        "EXTREME_POSITIONING"
+      ]
+    },
+    {
+      "currency": "NZD",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.4695,
+        "neutral": 0.5209,
+        "bear": 0.0096
+      },
+      "confidence": "LOW",
+      "rank": 2,
+      "key_drivers": [
+        "Net position change",
+        "COT positioning",
+        "Momentum acceleration"
+      ],
+      "alerts": []
+    },
+    {
+      "currency": "AUD",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.4715,
+        "neutral": 0.5191,
+        "bear": 0.0095
+      },
+      "confidence": "LOW",
+      "rank": 3,
+      "key_drivers": [
+        "Net position change",
+        "COT positioning",
+        "Momentum acceleration"
+      ],
+      "alerts": [
+        "EXTREME_POSITIONING"
+      ]
+    },
+    {
+      "currency": "GBP",
+      "bias": "BEAR",
+      "probability": {
+        "bull": 0.0118,
+        "neutral": 0.4838,
+        "bear": 0.5044
+      },
+      "confidence": "LOW",
+      "rank": 4,
+      "key_drivers": [
+        "Net position change",
+        "COT positioning",
+        "Momentum acceleration"
+      ],
+      "alerts": []
+    },
+    {
+      "currency": "JPY",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.0122,
+        "neutral": 0.4983,
+        "bear": 0.4895
+      },
+      "confidence": "LOW",
+      "rank": 5,
+      "key_drivers": [
+        "Net position change",
+        "COT positioning",
+        "Momentum acceleration"
+      ],
+      "alerts": []
+    },
+    {
+      "currency": "EUR",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.0123,
+        "neutral": 0.4974,
+        "bear": 0.4903
+      },
+      "confidence": "LOW",
+      "rank": 6,
+      "key_drivers": [
+        "Net position change",
+        "COT positioning",
+        "Momentum acceleration"
+      ],
+      "alerts": []
+    },
+    {
+      "currency": "CHF",
+      "bias": "BEAR",
+      "probability": {
+        "bull": 0.0122,
+        "neutral": 0.4938,
+        "bear": 0.4941
+      },
+      "confidence": "LOW",
+      "rank": 7,
+      "key_drivers": [
+        "Net position change",
+        "COT positioning",
+        "Momentum acceleration"
+      ],
+      "alerts": []
+    }
+  ],
+  "pair_recommendations": {
+    "strong_long": [],
+    "strong_short": [],
+    "avoid": []
+  },
+  "weekly_alerts": [
+    {
+      "type": "EXTREME_POSITIONING",
+      "currency": "AUD",
+      "message": "AUD COT index in extreme overbought zone (100.0)",
+      "severity": "MEDIUM",
+      "context": {
+        "cot_index": 100.0
+      }
+    },
+    {
+      "type": "EXTREME_POSITIONING",
+      "currency": "CAD",
+      "message": "CAD COT index in extreme overbought zone (100.0)",
+      "severity": "MEDIUM",
+      "context": {
+        "cot_index": 100.0
+      }
+    }
+  ]
+}
