@@ -1,7 +1,7 @@
 {
   "meta": {
     "weekLabel": "2026-W12",
-    "generatedAt": "2026-03-20T16:26:20.589382+00:00",
+    "generatedAt": "2026-03-20T17:13:16.126973+00:00",
     "modelVersion": "rf-v2.1",
     "featureVersion": "v2.1-28f",
     "overallConfidence": "MEDIUM",
@@ -11,7 +11,7 @@
       "cross_asset": "OK",
       "calendar": "OK"
     },
-    "pipelineRuntime": 3.76
+    "pipelineRuntime": 2.52
   },
   "predictions": [
     {
