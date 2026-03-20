@@ -79,19 +79,19 @@ FEATURE_COLS = [
     "momentum_acceleration", "oi_delta_direction", "oi_net_confluence",
     "flip_flag", "extreme_flag", "usd_index_cot", "rank_in_8",
     "spread_vs_usd", "weeks_since_flip",
-    # Group B — TFF
-    "lev_funds_net_index", "asset_mgr_net_direction", "dealer_net_contrarian",
-    "lev_vs_assetmgr_divergence",
+    # Group B — TFF (lev_funds_net_index & asset_mgr_net_direction excluded:
+    # zero-variance in training data — TFF fields missing from Socrata pivot)
+    "dealer_net_contrarian", "lev_vs_assetmgr_divergence",
     # Group C — Macro
     "rate_diff_vs_usd", "rate_diff_trend_3m", "rate_hike_expectation",
     "cpi_diff_vs_usd", "cpi_trend", "pmi_composite_diff",
     "yield_10y_diff", "vix_regime",
-    # Group D — Cross-asset & Seasonal
-    "gold_cot_index", "oil_cot_direction", "month", "quarter",
+    # Group D — Cross-asset & Seasonal (month excluded: r=0.97 with quarter)
+    "gold_cot_index", "oil_cot_direction", "quarter",
 ]
 
 GROUP_B_FEATURES = [
-    "lev_funds_net_index", "asset_mgr_net_direction", "dealer_net_contrarian",
+    "dealer_net_contrarian",
     "lev_vs_assetmgr_divergence",
 ]
 
@@ -231,7 +231,7 @@ def tune_hyperparams(
     df: pd.DataFrame,
     currency_encoder: LabelEncoder,
     leaf_candidates: list = (5, 10, 15, 20, 30),
-    depth_candidates: list = (6, 8, 10),
+    depth_candidates: list = (6, 8, 10, 12),
 ) -> dict:
     """
     Joint grid search over min_samples_leaf × max_depth using walk-forward folds.
@@ -512,7 +512,7 @@ def write_model_card(
         "| class_weight | balanced |",
         "| calibration | Sigmoid (Platt) |",
         "| training window | 2006 – 2023 |",
-        "| features | 28 + currency_enc |",
+        "| features | 25 + currency_enc |",
         "| classes | BULL / BEAR / NEUTRAL |",
         "",
         "## Walk-Forward Validation Results",

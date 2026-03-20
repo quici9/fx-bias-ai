@@ -60,8 +60,8 @@ RF_PARAMS = {
 }
 
 # Hyperparameter search grid (B3-01 tuning step)
-TUNE_LEAF = (5, 10, 15, 20)
-TUNE_DEPTH = (6, 8, 10)
+TUNE_LEAF = (5, 10, 15, 20, 30)
+TUNE_DEPTH = (6, 8, 10, 12)
 # Tuning folds: use first 2 folds only (fast, avoids data leakage from test years)
 TUNE_FOLDS = [
     ("2020-12-31", "2021-01-01", "2021-12-31", "TFold1"),
@@ -130,15 +130,15 @@ FEATURE_COLS = [
     "momentum_acceleration", "oi_delta_direction", "oi_net_confluence",
     "flip_flag", "extreme_flag", "usd_index_cot", "rank_in_8",
     "spread_vs_usd", "weeks_since_flip",
-    # Group B — TFF
-    "lev_funds_net_index", "asset_mgr_net_direction", "dealer_net_contrarian",
-    "lev_vs_assetmgr_divergence",
+    # Group B — TFF (lev_funds_net_index & asset_mgr_net_direction excluded:
+    # zero-variance in training data — TFF fields missing from Socrata pivot)
+    "dealer_net_contrarian", "lev_vs_assetmgr_divergence",
     # Group C — Macro
     "rate_diff_vs_usd", "rate_diff_trend_3m", "rate_hike_expectation",
     "cpi_diff_vs_usd", "cpi_trend", "pmi_composite_diff",
     "yield_10y_diff", "vix_regime",
-    # Group D — Cross-asset & Seasonal
-    "gold_cot_index", "oil_cot_direction", "month", "quarter",
+    # Group D — Cross-asset & Seasonal (month excluded: r=0.97 with quarter)
+    "gold_cot_index", "oil_cot_direction", "quarter",
 ]
 
 LABEL_CLASSES = ["BULL", "BEAR", "NEUTRAL"]
