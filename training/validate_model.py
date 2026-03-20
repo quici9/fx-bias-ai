@@ -730,12 +730,21 @@ def main() -> int:
     logger.info(f"\nMean RF−COT gap: {mean_gap:+.4f}")
     logger.info(f"Gate (≥+5%): {'PASS ✓' if gate_overall else 'FAIL ✗'}")
 
-    # --- B3-02e: Hyperparameter grid search (min_samples_leaf × max_depth) ---
-    logger.info("\n=== Hyperparameter Grid Search (B3-02e) ===")
-    grid_results = tune_hyperparams(df, currency_encoder)
-    best_params = max(grid_results, key=grid_results.get)
-    best_leaf, best_depth = best_params
-    best_grid_acc = grid_results[best_params]
+    # --- B3-02e: Load tuning grid from B3-01 initial_training.json ---
+    # train_model.py already ran a full 4-fold grid search; reading results
+    # here avoids running the same search twice (~15 min saved per CI run).
+    logger.info("\n=== Hyperparameter Grid (B3-02e) — loaded from B3-01 ===")
+    initial_metrics_path = METRICS_DIR / "initial_training.json"
+    with open(initial_metrics_path) as f:
+        initial_metrics = json.load(f)
+    grid_raw = initial_metrics.get("tuning_grid", [])
+    grid_results = {(e["leaf"], e["depth"]): e["acc"] for e in grid_raw}
+    if grid_results:
+        best_params = max(grid_results, key=grid_results.get)
+        best_leaf, best_depth = best_params
+        best_grid_acc = grid_results[best_params]
+    else:
+        best_leaf, best_depth, best_grid_acc = 10, 8, 0.0
     logger.info(f"Best: min_samples_leaf={best_leaf}, max_depth={best_depth} → acc={best_grid_acc:.4f}")
 
     # Slice at best_depth for DECISIONS.md / model card leaf breakdown

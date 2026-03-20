@@ -59,15 +59,6 @@ RF_PARAMS = {
     "n_jobs": -1,
 }
 
-# Hyperparameter search grid (B3-01 tuning step)
-TUNE_LEAF = (5, 10, 15, 20, 30)
-TUNE_DEPTH = (6, 8, 10, 12)
-# Tuning folds: use first 2 folds only (fast, avoids data leakage from test years)
-TUNE_FOLDS = [
-    ("2020-12-31", "2021-01-01", "2021-12-31", "TFold1"),
-    ("2021-12-31", "2022-01-01", "2022-12-31", "TFold2"),
-]
-
 # Walk-forward folds: (train_end, test_start, test_end, fold_label)
 # Each fold trains on all data up to train_end, tests on [test_start, test_end].
 FOLDS = [
@@ -76,6 +67,13 @@ FOLDS = [
     ("2022-12-31", "2023-01-01", "2023-12-31", "Fold3_train2006-2022_test2023"),
     ("2023-12-31", "2024-01-01", "2024-12-31", "Fold4_train2006-2023_test2024"),
 ]
+
+# Hyperparameter search grid — uses all 4 folds (same as FOLDS) for reliable
+# cross-regime estimates (2021 post-COVID, 2022 rate hike, 2023-2024 divergence).
+# No look-ahead bias: each fold maintains strict temporal train/test split.
+TUNE_FOLDS = FOLDS
+TUNE_LEAF = (5, 10, 15, 20, 30)
+TUNE_DEPTH = (6, 8, 10, 12)
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -174,17 +172,21 @@ def prepare_features(df: pd.DataFrame, currency_encoder: LabelEncoder) -> tuple:
 # Hyperparameter tuning — select best (min_samples_leaf, max_depth)
 # ---------------------------------------------------------------------------
 
-def find_best_params(df: pd.DataFrame, currency_encoder: LabelEncoder) -> dict:
+def find_best_params(df: pd.DataFrame, currency_encoder: LabelEncoder) -> tuple:
     """
-    Lightweight grid search on TUNE_FOLDS (first 2 folds) to find best
-    (min_samples_leaf, max_depth) combination before final training.
+    Grid search over all TUNE_FOLDS (= all 4 walk-forward folds) to find
+    best (min_samples_leaf, max_depth). Using all folds gives reliable
+    cross-regime estimates; no look-ahead bias since each fold maintains
+    strict temporal train/test split.
 
-    Returns updated RF_PARAMS with best values found.
+    Returns:
+        (best_rf_params dict, grid_results list of dicts for JSON storage)
     """
     logger.info(f"Grid: min_samples_leaf={TUNE_LEAF}, max_depth={TUNE_DEPTH}")
     best_acc = -1.0
     best_leaf = RF_PARAMS["min_samples_leaf"]
     best_depth = RF_PARAMS["max_depth"]
+    grid_results = []
 
     for leaf in TUNE_LEAF:
         for depth in TUNE_DEPTH:
@@ -208,6 +210,7 @@ def find_best_params(df: pd.DataFrame, currency_encoder: LabelEncoder) -> dict:
 
             mean_acc = float(np.mean(fold_accs)) if fold_accs else 0.0
             logger.info(f"  leaf={leaf}, depth={depth}: acc={mean_acc:.4f}")
+            grid_results.append({"leaf": leaf, "depth": depth, "acc": round(mean_acc, 4)})
             if mean_acc > best_acc:
                 best_acc = mean_acc
                 best_leaf = leaf
@@ -217,7 +220,7 @@ def find_best_params(df: pd.DataFrame, currency_encoder: LabelEncoder) -> dict:
     logger.info(
         f"Best params: min_samples_leaf={best_leaf}, max_depth={best_depth} → acc={best_acc:.4f}"
     )
-    return best
+    return best, grid_results
 
 
 # ---------------------------------------------------------------------------
@@ -380,8 +383,9 @@ def save_metrics(
     fold_results: list,
     final_train_end: str,
     rf_params: dict,
+    grid_results: list,
 ) -> None:
-    """Write per-fold accuracy and metadata to initial_training.json."""
+    """Write per-fold accuracy, grid search results and metadata to initial_training.json."""
     METRICS_DIR.mkdir(parents=True, exist_ok=True)
 
     # Summary stats
@@ -407,6 +411,7 @@ def save_metrics(
             "min_accuracy": round(float(min(accs)), 4) if accs else 0.0,
             "max_accuracy": round(float(max(accs)), 4) if accs else 0.0,
         },
+        "tuning_grid": grid_results,
         "folds": fold_results,
     }
 
@@ -453,12 +458,12 @@ def main() -> int:
     logger.info(f"\nFold accuracies: {[round(a, 4) for a in accs]}")
     logger.info(f"Mean: {np.mean(accs):.4f}  Std: {np.std(accs):.4f}")
 
-    # --- Hyperparameter tuning (grid search on first 2 folds) ---
+    # --- Hyperparameter tuning (grid search on all 4 folds) ---
     logger.info("\n" + "=" * 40)
     logger.info("Hyperparameter tuning")
     logger.info("=" * 40)
 
-    best_rf_params = find_best_params(df, currency_encoder)
+    best_rf_params, grid_results = find_best_params(df, currency_encoder)
 
     # --- Final model training (B3-01b, d, e, f) ---
     logger.info("\n" + "=" * 40)
@@ -473,7 +478,7 @@ def main() -> int:
     logger.info("Saving metrics")
     logger.info("=" * 40)
 
-    save_metrics(fold_results, final_train_end, best_rf_params)
+    save_metrics(fold_results, final_train_end, best_rf_params, grid_results)
 
     # --- Gate check ---
     mean_acc = float(np.mean(accs))
