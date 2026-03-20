@@ -1,5 +1,5 @@
 {
-  "fetchDate": "2026-03-19",
+  "fetchDate": "2026-03-20",
   "commodities": {
     "gold": {
       "cot_index": 3.68,
@@ -62,19 +62,19 @@
   "yield_differentials": [
     {
       "pair": "US-DE",
-      "spread": 1.3933,
+      "spread": 1.4533,
       "delta_4w": 0.0,
       "direction": "STABLE"
     },
     {
       "pair": "US-JP",
-      "spread": 2.09,
+      "spread": 2.15,
       "delta_4w": 0.0,
       "direction": "STABLE"
     },
     {
       "pair": "US-GB",
-      "spread": -0.2324,
+      "spread": -0.1724,
       "delta_4w": 0.0,
       "direction": "STABLE"
     }
