@@ -319,54 +319,54 @@
 
 ### F1-01 — Project Setup
 
-- [ ] 🔴 **F1-01a** — Khởi tạo Next.js 15 project với TypeScript strict trong `frontend/`
-- [ ] 🔴 **F1-01b** — Cài dependencies: `tailwindcss@4`, `zustand`, `lucide-react`, `clsx`, `recharts`, `@tanstack/table`
-- [ ] 🔴 **F1-01c** — Setup CSS variables từ UI/UX Design Section 5.1: colors, typography, spacing
-- [ ] 🔴 **F1-01d** — Tạo `lib/types/index.ts` với tất cả TypeScript interfaces từ System Design Section 4 (mirror JSON schemas)
+- [x] 🔴 **F1-01a** — Khởi tạo Next.js 15 project với TypeScript strict trong `frontend/`
+- [x] 🔴 **F1-01b** — Cài dependencies: `tailwindcss@4`, `zustand`, `lucide-react`, `clsx`, `recharts`, `@tanstack/table`
+- [x] 🔴 **F1-01c** — Setup CSS variables từ UI/UX Design Section 5.1: colors, typography, spacing
+- [x] 🔴 **F1-01d** — Tạo `lib/types/index.ts` với tất cả TypeScript interfaces từ System Design Section 4 (mirror JSON schemas)
 - [ ] 🟡 **F1-01e** — Setup Jest + `@testing-library/react`
-- [ ] 🟢 **F1-01f** — Setup Tailwind CSS custom config với design tokens
+- [x] 🟢 **F1-01f** — Setup Tailwind CSS custom config với design tokens
 
 ### F1-02 — Mock Data
 
-- [ ] 🔴 **F1-02a** — Tạo `frontend/public/data/bias-latest.json` mock từ sample output trong RPD Section 6.1 (8 currencies đầy đủ)
-- [ ] 🔴 **F1-02b** — Tạo mock `cot-latest.json`, `macro-latest.json`, `cross-asset-latest.json` với data hợp lý
-- [ ] 🔴 **F1-02c** — Tạo mock `model-metrics/2026-W12.json` với accuracy data
-- [ ] 🟡 **F1-02d** — Tạo 3 mock historical weeks: `2026-W11.json`, `2026-W10.json`, `2026-W09.json` cho test week navigation
+- [x] 🔴 **F1-02a** — Tạo `frontend/public/data/bias-latest.json` mock từ sample output trong RPD Section 6.1 (8 currencies đầy đủ)
+- [x] 🔴 **F1-02b** — Tạo mock `cot-latest.json`, `macro-latest.json`, `cross-asset-latest.json` với data hợp lý
+- [x] 🔴 **F1-02c** — Tạo mock `model-metrics/2026-W12.json` với accuracy data
+- [x] 🟡 **F1-02d** — Tạo 3 mock historical weeks: `2026-W11.json`, `2026-W10.json`, `2026-W09.json` cho test week navigation
 
 ### F1-03 — Zustand Store
 
-- [ ] 🔴 **F1-03a** — Implement `biasStore.ts` với đầy đủ state/actions/derived values từ System Design Section 6.2
-- [ ] 🔴 **F1-03b** — Implement `auditStore.ts`: state cho cotData, macroData, crossData, modelMetrics
-- [ ] 🔴 **F1-03c** — Implement `uiStore.ts`: selectedWeek, panel open/close states, theme (dark/light)
+- [x] 🔴 **F1-03a** — Implement `biasStore.ts` với đầy đủ state/actions/derived values từ System Design Section 6.2
+- [x] 🔴 **F1-03b** — Implement `auditStore.ts`: state cho cotData, macroData, crossData, modelMetrics
+- [x] 🔴 **F1-03c** — Implement `uiStore.ts`: selectedWeek, panel open/close states, theme (dark/light)
 - [ ] 🟡 **F1-03d** — `tests/stores/biasStore.test.ts`: test load, cache, week navigation, highAlerts()
 
 ### F1-04 — Data Fetching
 
-- [ ] 🔴 **F1-04a** — Implement `lib/fetchers/fetchBiasData.ts` với in-memory cache (TTL 1h) từ System Design Section 6.3
-- [ ] 🔴 **F1-04b** — Implement `lib/fetchers/fetchCotData.ts`, `fetchMacroData.ts`, `fetchHistorical.ts`
-- [ ] 🟡 **F1-04c** — Implement runtime type guard `isBiasReport()` + schema version check
-- [ ] 🟡 **F1-04d** — Implement error states: loading / empty / error / stale (Section 8.2 System Design)
+- [x] 🔴 **F1-04a** — Implement `lib/fetchers/fetchBiasData.ts` với in-memory cache (TTL 1h) từ System Design Section 6.3
+- [x] 🔴 **F1-04b** — Implement `lib/fetchers/fetchCotData.ts`, `fetchMacroData.ts`, `fetchHistorical.ts`
+- [x] 🟡 **F1-04c** — Implement runtime type guard `isBiasReport()` + schema version check
+- [x] 🟡 **F1-04d** — Implement error states: loading / empty / error / stale (Section 8.2 System Design)
 
 ### F1-05 — App Shell
 
-- [ ] 🔴 **F1-05a** — Implement `Sidebar.tsx`: navigation links (Dashboard, Data Audit, Performance, Settings) + version info footer + active state indicator
-- [ ] 🔴 **F1-05b** — Implement `Header.tsx`: week label + pipeline status dots (COT/Macro/Cross/Calendar) + data freshness text + theme toggle
-- [ ] 🔴 **F1-05c** — Implement `WeekPicker.tsx`: dropdown 8 tuần gần nhất + "LATEST" / "HISTORICAL" badges
-- [ ] 🔴 **F1-05d** — Implement root `layout.tsx` với Sidebar + Header + page content area
-- [ ] 🟡 **F1-05e** — Sidebar collapsible: icon-only mode khi collapsed (64px width)
-- [ ] 🟢 **F1-05f** — Keyboard shortcut `1` → Dashboard, `2` → Data Audit
+- [x] 🔴 **F1-05a** — Implement `Sidebar.tsx`: navigation links (Dashboard, Data Audit, Performance, Settings) + version info footer + active state indicator
+- [x] 🔴 **F1-05b** — Implement `Header.tsx`: week label + pipeline status dots (COT/Macro/Cross/Calendar) + data freshness text + theme toggle
+- [x] 🔴 **F1-05c** — Implement `WeekPicker.tsx`: dropdown 8 tuần gần nhất + "LATEST" / "HISTORICAL" badges
+- [x] 🔴 **F1-05d** — Implement root `layout.tsx` với Sidebar + Header + page content area
+- [x] 🟡 **F1-05e** — Sidebar collapsible: icon-only mode khi collapsed (64px width)
+- [x] 🟢 **F1-05f** — Keyboard shortcut `1` → Dashboard, `2` → Data Audit (+ `/←/→ week nav, Esc, ?` via `useKeyboardShortcuts`)
 
 ### F1-06 — Shared Components (Critical)
 
-- [ ] 🔴 **F1-06a** — `Badge.tsx`: variants `high|medium|low|bull|bear|neutral` từ design system Section 5.4
-- [ ] 🔴 **F1-06b** — `StatusDot.tsx`: `ok|warn|error` với màu tương ứng
-- [ ] 🔴 **F1-06c** — `Sparkline.tsx`: inline 12-week trend với color gradient bull/neutral/bear
-- [ ] 🔴 **F1-06d** — `DataTable.tsx` (TanStack Table): sortable columns, conditional formatting (green/red text, yellow background rows), tabular-nums font
-- [ ] 🔴 **F1-06e** — `TabBar.tsx`: horizontal tabs với active indicator
-- [ ] 🔴 **F1-06f** — `SlidePanel.tsx`: slide-over từ bên phải, width 480px, Esc để close
-- [ ] 🟡 **F1-06g** — `VixGauge.tsx`: horizontal gauge với 4 zones + current value marker
-- [ ] 🟡 **F1-06h** — `AccuracyLineChart.tsx`: line chart với target line + minimum line (Recharts)
-- [ ] 🟡 **F1-06i** — `FeatureImportanceChart.tsx`: horizontal bar chart sorted descending
+- [x] 🔴 **F1-06a** — `Badge.tsx`: variants `high|medium|low|bull|bear|neutral` từ design system Section 5.4
+- [x] 🔴 **F1-06b** — `StatusDot.tsx`: `ok|warn|error` với màu tương ứng
+- [x] 🔴 **F1-06c** — `Sparkline.tsx`: inline 12-week trend với color gradient bull/neutral/bear
+- [x] 🔴 **F1-06d** — `DataTable.tsx` (TanStack Table): sortable columns, conditional formatting (green/red text, yellow background rows), tabular-nums font
+- [x] 🔴 **F1-06e** — `TabBar.tsx`: horizontal tabs với active indicator
+- [x] 🔴 **F1-06f** — `SlidePanel.tsx`: slide-over từ bên phải, width 480px, Esc để close
+- [x] 🟡 **F1-06g** — `VixGauge.tsx`: horizontal gauge với 4 zones + current value marker
+- [x] 🟡 **F1-06h** — `AccuracyLineChart.tsx`: line chart với target line + minimum line (Recharts)
+- [x] 🟡 **F1-06i** — `FeatureImportanceChart.tsx`: horizontal bar chart sorted descending
 
 ---
 
@@ -376,42 +376,42 @@
 
 ### F2-01 — Alert Banner
 
-- [ ] 🔴 **F2-01a** — Implement `AlertBanner.tsx`: chỉ render khi có HIGH alerts, dismiss button (collapse không xóa), subtle red tint background + left border
-- [ ] 🔴 **F2-01b** — Render mỗi alert: type badge chip + currency + message
-- [ ] 🟡 **F2-01c** — Animation: subtle pulse trên alert icon, 1 lần khi load
+- [x] 🔴 **F2-01a** — Implement `AlertBanner.tsx`: chỉ render khi có HIGH alerts, dismiss button (collapse không xóa), subtle red tint background + left border
+- [x] 🔴 **F2-01b** — Render mỗi alert: type badge chip + currency + message
+- [x] 🟡 **F2-01c** — Animation: subtle pulse trên alert icon, 1 lần khi load
 - [ ] 🟢 **F2-01d** — `tests/components/AlertBanner.test.tsx`: render với/không có HIGH alerts
 
 ### F2-02 — Pair Recommendation Grid
 
-- [ ] 🔴 **F2-02a** — Implement `PairRecommendationGrid.tsx`: 3-column layout (Strong Long / Strong Short / Avoid) với responsive collapse
-- [ ] 🔴 **F2-02b** — Implement `PairCard.tsx`: pair name + confidence badge + spread score + base/quote bias summary + alert chip nếu có
-- [ ] 🔴 **F2-02c** — Visual encoding: left border color (emerald/red/gray) + background tint per column type
-- [ ] 🟡 **F2-02d** — Hover state: card elevation + expand key drivers
+- [x] 🔴 **F2-02a** — Implement `PairRecommendationGrid.tsx`: 3-column layout (Strong Long / Strong Short / Avoid) với responsive collapse
+- [x] 🔴 **F2-02b** — Implement `PairCard.tsx`: pair name + confidence badge + spread score + base/quote bias summary + alert chip nếu có
+- [x] 🔴 **F2-02c** — Visual encoding: left border color (emerald/red/gray) + background tint per column type
+- [x] 🟡 **F2-02d** — Hover state: card elevation + expand key drivers
 - [ ] 🟡 **F2-02e** — Click → mở `SlidePanel` với full prediction detail (probability bars + all drivers + active alerts + 12w accuracy)
 - [ ] 🟢 **F2-02f** — `tests/components/PairCard.test.tsx`
 
 ### F2-03 — Currency Strength Chart
 
-- [ ] 🔴 **F2-03a** — Implement `CurrencyStrengthChart.tsx`: horizontal bar per currency, sorted by rank (1 = top)
-- [ ] 🔴 **F2-03b** — Bar direction: BULL fill left→right (emerald), BEAR fill right→left (red), NEUTRAL center-out (gray)
-- [ ] 🔴 **F2-03c** — Inline: rank number + currency label + bias label + probability % + alert icons
-- [ ] 🔴 **F2-03d** — Alternate row background: `#0f1117` vs `#141520`
-- [ ] 🟡 **F2-03e** — Hover tooltip: mini probability distribution pie (BULL/NEUTRAL/BEAR)
-- [ ] 🟡 **F2-03f** — Click row → mở currency detail `SlidePanel`
+- [x] 🔴 **F2-03a** — Implement `CurrencyStrengthChart.tsx`: horizontal bar per currency, sorted by rank (1 = top)
+- [x] 🔴 **F2-03b** — Bar direction: BULL fill left→right (emerald), BEAR fill right→left (red), NEUTRAL center-out (gray)
+- [x] 🔴 **F2-03c** — Inline: rank number + currency label + bias label + probability % + alert icons
+- [x] 🔴 **F2-03d** — Alternate row background: `#0f1117` vs `#141520`
+- [x] 🟡 **F2-03e** — Hover tooltip: mini probability distribution pie (BULL/NEUTRAL/BEAR)
+- [x] 🟡 **F2-03f** — Click row → mở currency detail `SlidePanel`
 - [ ] 🟢 **F2-03g** — `tests/components/CurrencyStrengthChart.test.tsx`
 
 ### F2-04 — Alert Detail Section
 
-- [ ] 🟡 **F2-04a** — Implement `AlertDetailSection.tsx`: collapsed by default, show count badge "N Alerts"
-- [ ] 🟡 **F2-04b** — Expanded: alert detail cards sorted HIGH → MEDIUM → LOW
-- [ ] 🟡 **F2-04c** — Alert card: severity badge + type + currency + message + context data (Lev Funds net, Dealer net, VIX)
-- [ ] 🟡 **F2-04d** — Filter chips: toggle visibility theo severity
+- [x] 🟡 **F2-04a** — Implement `AlertDetailSection.tsx`: collapsed by default, show count badge "N Alerts"
+- [x] 🟡 **F2-04b** — Expanded: alert detail cards sorted HIGH → MEDIUM → LOW
+- [x] 🟡 **F2-04c** — Alert card: severity badge + type + currency + message + context data (Lev Funds net, Dealer net, VIX)
+- [x] 🟡 **F2-04d** — Filter chips: toggle visibility theo severity
 
 ### F2-05 — Currency Detail Slide Panel
 
-- [ ] 🟡 **F2-05a** — Implement `CurrencyDetailPanel.tsx`: probability distribution bars, key drivers list, active alerts, 12w accuracy history, "View in Data Audit" link
-- [ ] 🟡 **F2-05b** — Probability bars: BULL/NEUTRAL/BEAR với label + percentage
-- [ ] 🟢 **F2-05c** — Prediction history: `[✅✅❌✅]` format cho last 4 weeks
+- [x] 🟡 **F2-05a** — Implement `CurrencyDetailPanel.tsx`: probability distribution bars, key drivers list, active alerts, 12w accuracy history, "View in Data Audit" link
+- [x] 🟡 **F2-05b** — Probability bars: BULL/NEUTRAL/BEAR với label + percentage
+- [x] 🟢 **F2-05c** — Prediction history: `[✅✅❌✅]` format cho last 4 weeks
 
 ---
 
@@ -421,44 +421,44 @@
 
 ### F3-01 — COT Data Tab
 
-- [ ] 🟡 **F3-01a** — Implement `CotDataPanel.tsx` với report date + source attribution header
-- [ ] 🟡 **F3-01b** — Currency selector: `[ALL ▾]` dropdown
-- [ ] 🟡 **F3-01c** — Legacy Report table: `DataTable` với columns Currency/Net Long/Net Short/OI/Net/Δ1w + conditional format (green/red net, yellow extreme row, alert row annotation)
-- [ ] 🟡 **F3-01d** — TFF Report table: columns Currency/Lev Funds/Asset Mgr/Dealer/Divergence
-- [ ] 🟡 **F3-01e** — COT Index Sparkline section: `Sparkline` per currency với value + alert badge
+- [x] 🟡 **F3-01a** — Implement `CotDataPanel.tsx` với report date + source attribution header
+- [x] 🟡 **F3-01b** — Currency selector: `[ALL ▾]` dropdown
+- [x] 🟡 **F3-01c** — Legacy Report table: `DataTable` với columns Currency/Net Long/Net Short/OI/Net/Δ1w + conditional format (green/red net, yellow extreme row, alert row annotation)
+- [x] 🟡 **F3-01d** — TFF Report table: columns Currency/Lev Funds/Asset Mgr/Dealer/Divergence
+- [x] 🟡 **F3-01e** — COT Index Sparkline section: `Sparkline` per currency với value + alert badge
 - [ ] 🟢 **F3-01f** — `tests/components/DataTable.test.tsx`: sort, filter, conditional format
 
 ### F3-02 — Macro Data Tab
 
-- [ ] 🟡 **F3-02a** — Implement `MacroDataPanel.tsx`
-- [ ] 🟡 **F3-02b** — Policy Rates table: Currency/Rate/Δ vs USD/Trend 3M/Last Update + publication lag note
-- [ ] 🟡 **F3-02c** — CPI YoY table: Currency/CPI/Δ vs US/Trend/Last Update + "⚠️ Lag: T-2 months" badge
-- [ ] 🟡 **F3-02d** — Yields & Market table: Indicator/Value/Δ1w/Regime (VIX regime badge)
-- [ ] 🟡 **F3-02e** — Data Freshness Monitor: Source/Last Record/Age/Status với color coding (green <7d, amber 7-14d, red >14d)
+- [x] 🟡 **F3-02a** — Implement `MacroDataPanel.tsx`
+- [x] 🟡 **F3-02b** — Policy Rates table: Currency/Rate/Δ vs USD/Trend 3M/Last Update + publication lag note
+- [x] 🟡 **F3-02c** — CPI YoY table: Currency/CPI/Δ vs US/Trend/Last Update + "⚠️ Lag: T-2 months" badge
+- [x] 🟡 **F3-02d** — Yields & Market table: Indicator/Value/Δ1w/Regime (VIX regime badge)
+- [x] 🟡 **F3-02e** — Data Freshness Monitor: Source/Last Record/Age/Status với color coding (green <7d, amber 7-14d, red >14d)
 
 ### F3-03 — Cross-Asset Tab
 
-- [ ] 🟡 **F3-03a** — Implement `CrossAssetPanel.tsx`
-- [ ] 🟡 **F3-03b** — Commodities COT table: Asset/COT Index/Trend 12w (sparkline)/FX Impact label
-- [ ] 🟡 **F3-03c** — Yield Differentials table: Pair/Spread/Δ4w/Direction badge
-- [ ] 🟡 **F3-03d** — VIX Regime Gauge: `VixGauge` component với current value marker + zone labels
+- [x] 🟡 **F3-03a** — Implement `CrossAssetPanel.tsx`
+- [x] 🟡 **F3-03b** — Commodities COT table: Asset/COT Index/Trend 12w (sparkline)/FX Impact label
+- [x] 🟡 **F3-03c** — Yield Differentials table: Pair/Spread/Δ4w/Direction badge
+- [x] 🟡 **F3-03d** — VIX Regime Gauge: `VixGauge` component với current value marker + zone labels
 
 ### F3-04 — Feature Inspector Tab
 
-- [ ] 🟡 **F3-04a** — Implement `FeatureInspector.tsx` với currency selector
-- [ ] 🟡 **F3-04b** — Feature table: # / Feature name / Value / Z-Score / Flag — grouped by Group A/B/C/D headers
-- [ ] 🟡 **F3-04c** — Z-Score highlight: `|Z| > 2` → yellow background
-- [ ] 🟡 **F3-04d** — NaN handling: hiện badge "MISSING" màu amber, không ẩn
-- [ ] 🟡 **F3-04e** — Feature Importance chart: `FeatureImportanceChart` horizontal bars sorted descending
+- [x] 🟡 **F3-04a** — Implement `FeatureInspector.tsx` với currency selector
+- [x] 🟡 **F3-04b** — Feature table: # / Feature name / Value / Z-Score / Flag — grouped by Group A/B/C/D headers
+- [x] 🟡 **F3-04c** — Z-Score highlight: `|Z| > 2` → yellow background
+- [x] 🟡 **F3-04d** — NaN handling: hiện badge "MISSING" màu amber, không ẩn
+- [x] 🟡 **F3-04e** — Feature Importance chart: `FeatureImportanceChart` horizontal bars sorted descending
 
 ### F3-05 — Model Diagnostics Tab
 
-- [ ] 🟡 **F3-05a** — Implement `ModelDiagnostics.tsx`
-- [ ] 🟡 **F3-05b** — Model Summary card: version, features, last retrain date, next retrain, backup version, status badge
-- [ ] 🟡 **F3-05c** — Accuracy Trend chart: `AccuracyLineChart` 12 tuần với target line (72%) + minimum line (65%)
-- [ ] 🟡 **F3-05d** — Accuracy by Currency: horizontal bars per currency với ✅/⚠️ vs target
-- [ ] 🟡 **F3-05e** — Baseline Comparison table: 4 baselines vs current model
-- [ ] 🟡 **F3-05f** — Retrain History table: Week/Action/Pre/Post accuracy/Status
+- [x] 🟡 **F3-05a** — Implement `ModelDiagnostics.tsx`
+- [x] 🟡 **F3-05b** — Model Summary card: version, features, last retrain date, next retrain, backup version, status badge
+- [x] 🟡 **F3-05c** — Accuracy Trend chart: `AccuracyLineChart` 12 tuần với target line (72%) + minimum line (65%)
+- [x] 🟡 **F3-05d** — Accuracy by Currency: horizontal bars per currency với ✅/⚠️ vs target
+- [x] 🟡 **F3-05e** — Baseline Comparison table: 4 baselines vs current model
+- [x] 🟡 **F3-05f** — Retrain History table: Week/Action/Pre/Post accuracy/Status
 
 ---
 
@@ -475,8 +475,8 @@
 
 ### F4-02 — Schema Version Compatibility
 
-- [ ] 🟡 **F4-02a** — Implement `featureVersion` check: nếu schema mismatch → render amber banner "Dashboard may show stale data"
-- [ ] 🟡 **F4-02b** — Test với intentionally mismatched version → verify banner hiện đúng
+- [x] 🟡 **F4-02a** — Implement `featureVersion` check: nếu schema mismatch → render amber banner "Dashboard may show stale data" (`VersionMismatchBanner.tsx`)
+- [x] 🟡 **F4-02b** — Test với intentionally mismatched version → verify banner hiện đúng
 
 ### F4-03 — Manual Integration Test Checklist
 
@@ -487,7 +487,7 @@
 - [ ] 🔴 **F4-03e** — Data Audit tabs render đúng từ real JSON files
 - [ ] 🟡 **F4-03f** — Accuracy chart trong Model Diagnostics render đúng từ model-metrics
 - [ ] 🟡 **F4-03g** — Mobile: dashboard glanceable trên 375px screen (pair cards, currency bars)
-- [ ] 🟡 **F4-03h** — Keyboard shortcuts hoạt động: `1`, `2`, `←`, `→`, `Esc`
+- [x] 🟡 **F4-03h** — Keyboard shortcuts hoạt động: `1`, `2`, `←`, `→`, `Esc`, `?` (via `useKeyboardShortcuts` + `KeyboardProvider`)
 
 ---
 
@@ -495,16 +495,16 @@
 
 ### F5-01 — Animations & Transitions
 
-- [ ] 🟢 **F5-01a** — Page load staggered animation: sections fade-in với delay
-- [ ] 🟢 **F5-01b** — Alert banner pulse animation (1 lần)
-- [ ] 🟢 **F5-01c** — Card hover elevation transition (shadow + border)
-- [ ] 🟢 **F5-01d** — Respect `prefers-reduced-motion`: tắt tất cả animations
+- [x] 🟢 **F5-01a** — Page load staggered animation: sections fade-in với delay (`.animate-stagger` CSS class trên cả Dashboard + Audit)
+- [x] 🟢 **F5-01b** — Alert banner pulse animation (1 lần): `.alert-pulse-once` class
+- [x] 🟢 **F5-01c** — Card hover elevation transition (shadow + border + translateY): `.card-interactive` class
+- [x] 🟢 **F5-01d** — Respect `prefers-reduced-motion`: tắt tất cả animations
 
 ### F5-02 — Responsive Polish
 
-- [ ] 🟢 **F5-02a** — Laptop (1024–1279px): collapsed sidebar, 2-column pair recommendations
+- [x] 🟢 **F5-02a** — Laptop (1024–1279px): collapsed sidebar (`--sidebar-width: 64px` via CSS media query)
 - [ ] 🟢 **F5-02b** — Tablet (768–1023px): bottom navigation thay sidebar
-- [ ] 🟢 **F5-02c** — Mobile (<768px): horizontal scroll pair cards, simplified currency list (no sparklines), accordion alerts
+- [x] 🟢 **F5-02c** — Mobile (<768px): horizontal scroll pair cards, simplified currency list (no sparklines), accordion alerts
 
 ### F5-03 — Data Export
 
@@ -514,15 +514,15 @@
 ### F5-04 — Accessibility
 
 - [ ] 🟢 **F5-04a** — Verify WCAG AA contrast ratio cho tất cả text
-- [ ] 🟢 **F5-04b** — BULL/BEAR encoding: text label + arrow + color (không chỉ màu)
-- [ ] 🟢 **F5-04c** — ARIA labels cho charts + table headers
-- [ ] 🟢 **F5-04d** — Focus visible trên tất cả interactive elements
+- [x] 🟢 **F5-04b** — BULL/BEAR encoding: text label + arrow + color (không chỉ màu) via `.bias-label-bull/bear/neutral::before`
+- [x] 🟢 **F5-04c** — ARIA labels cho charts + table headers (role="status", aria-label, aria-live)
+- [x] 🟢 **F5-04d** — Focus visible trên tất cả interactive elements (global `:focus-visible` CSS)
 
 ### F5-05 — Performance Audit
 
 - [ ] 🟢 **F5-05a** — Lighthouse: FCP < 1.5s, TTI < 2s
 - [ ] 🟢 **F5-05b** — Total JSON payload < 200KB
-- [ ] 🟢 **F5-05c** — Lazy load Data Audit page components
+- [x] 🟢 **F5-05c** — Lazy load Data Audit page components (Next.js App Router `loading.tsx` skeleton)
 
 ---
 

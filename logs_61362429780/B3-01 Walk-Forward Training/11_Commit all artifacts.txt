@@ -1,0 +1,32 @@
+﻿2026-03-20T11:20:57.2470148Z ##[group]Run git config --local user.email "github-actions[bot]@users.noreply.github.com"
+2026-03-20T11:20:57.2471477Z [36;1mgit config --local user.email "github-actions[bot]@users.noreply.github.com"[0m
+2026-03-20T11:20:57.2472225Z [36;1mgit config --local user.name "github-actions[bot]"[0m
+2026-03-20T11:20:57.2472781Z [36;1mgit add training/data/features_2006_2026.csv[0m
+2026-03-20T11:20:57.2473316Z [36;1mgit add models/model.pkl models/calibrator.pkl[0m
+2026-03-20T11:20:57.2473853Z [36;1mgit add models/model_lr_fallback.pkl[0m
+2026-03-20T11:20:57.2474297Z [36;1mgit add models/model_card.md[0m
+2026-03-20T11:20:57.2474698Z [36;1mgit add DECISIONS.md[0m
+2026-03-20T11:20:57.2475173Z [36;1mgit add data/history/model-metrics/initial_training.json[0m
+2026-03-20T11:20:57.2475840Z [36;1mgit add data/history/model-metrics/validation_results.json[0m
+2026-03-20T11:20:57.2476487Z [36;1mgit add models/validation_chart.png 2>/dev/null || true[0m
+2026-03-20T11:20:57.2477036Z [36;1mif git diff --staged --quiet; then[0m
+2026-03-20T11:20:57.2477512Z [36;1m  echo "No changes to commit"[0m
+2026-03-20T11:20:57.2477893Z [36;1melse[0m
+2026-03-20T11:20:57.2478433Z [36;1m  git commit -m "training: B3-01 walk-forward + B3-02 validation + B3-03 LR fallback"[0m
+2026-03-20T11:20:57.2479142Z [36;1m  git push[0m
+2026-03-20T11:20:57.2479430Z [36;1mfi[0m
+2026-03-20T11:20:57.2533147Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:20:57.2533506Z env:
+2026-03-20T11:20:57.2534400Z   FRED_API_KEY: ***
+2026-03-20T11:20:57.2534829Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2535491Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:20:57.2536159Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2536743Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2537328Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2537925Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:20:57.2538426Z ##[endgroup]
+2026-03-20T11:20:57.6143527Z [main 782b1a0] training: B3-01 walk-forward + B3-02 validation + B3-03 LR fallback
+2026-03-20T11:20:57.6144946Z  8 files changed, 7453 insertions(+), 7453 deletions(-)
+2026-03-20T11:20:59.2346953Z Uploading LFS objects: 100% (1/1), 29 MB | 0 B/s, done.
+2026-03-20T11:21:00.0419349Z To https://github.com/quici9/fx-bias-ai
+2026-03-20T11:21:00.0420309Z    2f87305..782b1a0  main -> main

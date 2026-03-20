@@ -1,0 +1,25 @@
+﻿2026-03-20T11:09:40.2576997Z ##[group]Run python3 -c "
+2026-03-20T11:09:40.2577299Z [36;1mpython3 -c "[0m
+2026-03-20T11:09:40.2577524Z [36;1mimport pandas as pd[0m
+2026-03-20T11:09:40.2577843Z [36;1mdf = pd.read_csv('training/data/features_2006_2026.csv')[0m
+2026-03-20T11:09:40.2578327Z [36;1mmacro_cols = ['rate_diff_vs_usd','cpi_diff_vs_usd','yield_10y_diff','vix_regime'][0m
+2026-03-20T11:09:40.2578772Z [36;1mprint(f'Rows: {len(df)}')[0m
+2026-03-20T11:09:40.2579039Z [36;1mfor c in macro_cols:[0m
+2026-03-20T11:09:40.2579294Z [36;1m    n_nonzero = (df[c] != 0).sum()[0m
+2026-03-20T11:09:40.2579701Z [36;1m    print(f'  {c}: {n_nonzero} non-zero rows ({n_nonzero/len(df)*100:.1f}%)')[0m
+2026-03-20T11:09:40.2580091Z [36;1m"[0m
+2026-03-20T11:09:40.2633922Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:09:40.2634201Z env:
+2026-03-20T11:09:40.2634566Z   FRED_API_KEY: ***
+2026-03-20T11:09:40.2634840Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.2635263Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:09:40.2635718Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.2636076Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.2636431Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.2636801Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:09:40.2637111Z ##[endgroup]
+2026-03-20T11:09:40.6269248Z Rows: 7271
+2026-03-20T11:09:40.6279814Z   rate_diff_vs_usd: 5086 non-zero rows (69.9%)
+2026-03-20T11:09:40.6280289Z   cpi_diff_vs_usd: 5108 non-zero rows (70.3%)
+2026-03-20T11:09:40.6280860Z   yield_10y_diff: 3117 non-zero rows (42.9%)
+2026-03-20T11:09:40.6281241Z   vix_regime: 4640 non-zero rows (63.8%)

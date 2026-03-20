@@ -1,0 +1,37 @@
+﻿2026-03-20T11:20:57.2002792Z ##[group]Run echo "=== B3-02 outputs ==="
+2026-03-20T11:20:57.2003336Z [36;1mecho "=== B3-02 outputs ==="[0m
+2026-03-20T11:20:57.2003925Z [36;1mls -lh models/model_card.md models/model_lr_fallback.pkl || true[0m
+2026-03-20T11:20:57.2004850Z [36;1mls -lh models/validation_chart.png 2>/dev/null && echo "Chart generated" || echo "Chart skipped (no matplotlib)"[0m
+2026-03-20T11:20:57.2005662Z [36;1mpython3 -c "[0m
+2026-03-20T11:20:57.2006312Z [36;1mimport json[0m
+2026-03-20T11:20:57.2006821Z [36;1mv = json.load(open('data/history/model-metrics/validation_results.json'))[0m
+2026-03-20T11:20:57.2007617Z [36;1mprint(f'Gate (RF beats COT by >=5%): {\"PASS\" if v[\"gate_pass\"] else \"FAIL\"}')[0m
+2026-03-20T11:20:57.2008356Z [36;1mprint(f'Mean RF-COT gap: {v[\"mean_rf_vs_cot_gap\"]:+.4f}')[0m
+2026-03-20T11:20:57.2008984Z [36;1mprint(f'Best min_samples_leaf: {v[\"best_min_samples_leaf\"]}')[0m
+2026-03-20T11:20:57.2009620Z [36;1mprint(f'Group B in top-10: {v[\"group_b_in_top10\"]}')[0m
+2026-03-20T11:20:57.2010306Z [36;1mfor fold, res in v['folds'].items():[0m
+2026-03-20T11:20:57.2011265Z [36;1m    print(f'  {fold}: RF={res[\"rf\"]:.4f} COT={res[\"cot_rule\"]:.4f} gap={res[\"rf_vs_cot_gap\"]:+.4f}')[0m
+2026-03-20T11:20:57.2011907Z [36;1m"[0m
+2026-03-20T11:20:57.2076752Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:20:57.2077040Z env:
+2026-03-20T11:20:57.2077570Z   FRED_API_KEY: ***
+2026-03-20T11:20:57.2077987Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2078587Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:20:57.2079216Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2079806Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2080684Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2081272Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:20:57.2081780Z ##[endgroup]
+2026-03-20T11:20:57.2171289Z === B3-02 outputs ===
+2026-03-20T11:20:57.2190744Z -rw-r--r-- 1 runner runner 2.8K Mar 20 11:20 models/model_card.md
+2026-03-20T11:20:57.2191493Z -rw-r--r-- 1 runner runner  11K Mar 20 11:20 models/model_lr_fallback.pkl
+2026-03-20T11:20:57.2211094Z -rw-r--r-- 1 runner runner 60K Mar 20 11:20 models/validation_chart.png
+2026-03-20T11:20:57.2216739Z Chart generated
+2026-03-20T11:20:57.2398764Z Gate (RF beats COT by >=5%): PASS
+2026-03-20T11:20:57.2402018Z Mean RF-COT gap: +0.1761
+2026-03-20T11:20:57.2404543Z Best min_samples_leaf: 5
+2026-03-20T11:20:57.2406344Z Group B in top-10: ['dealer_net_contrarian', 'lev_vs_assetmgr_divergence']
+2026-03-20T11:20:57.2407502Z   Fold1_2021: RF=0.5526 COT=0.3100 gap=+0.2426
+2026-03-20T11:20:57.2409905Z   Fold2_2022: RF=0.5165 COT=0.3571 gap=+0.1593
+2026-03-20T11:20:57.2410801Z   Fold3_2023: RF=0.4566 COT=0.3053 gap=+0.1513
+2026-03-20T11:20:57.2411911Z   Fold4_2024: RF=0.4890 COT=0.3379 gap=+0.1511

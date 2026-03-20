@@ -1,0 +1,663 @@
+﻿2026-03-20T11:09:00.8212640Z Current runner version: '2.332.0'
+2026-03-20T11:09:00.8288871Z ##[group]Runner Image Provisioner
+2026-03-20T11:09:00.8290137Z Hosted Compute Agent
+2026-03-20T11:09:00.8291199Z Version: 20260213.493
+2026-03-20T11:09:00.8292269Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+2026-03-20T11:09:00.8293365Z Build Date: 2026-02-13T00:28:41Z
+2026-03-20T11:09:00.8294384Z Worker ID: {fc248726-3b55-461a-856f-bb2ce8f0d906}
+2026-03-20T11:09:00.8295551Z Azure Region: northcentralus
+2026-03-20T11:09:00.8296416Z ##[endgroup]
+2026-03-20T11:09:00.8298422Z ##[group]Operating System
+2026-03-20T11:09:00.8299301Z Ubuntu
+2026-03-20T11:09:00.8300109Z 24.04.3
+2026-03-20T11:09:00.8322893Z LTS
+2026-03-20T11:09:00.8323784Z ##[endgroup]
+2026-03-20T11:09:00.8324706Z ##[group]Runner Image
+2026-03-20T11:09:00.8325566Z Image: ubuntu-24.04
+2026-03-20T11:09:00.8326456Z Version: 20260309.50.1
+2026-03-20T11:09:00.8328440Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260309.50/images/ubuntu/Ubuntu2404-Readme.md
+2026-03-20T11:09:00.8331220Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260309.50
+2026-03-20T11:09:00.8332674Z ##[endgroup]
+2026-03-20T11:09:00.8334353Z ##[group]GITHUB_TOKEN Permissions
+2026-03-20T11:09:00.8337435Z Contents: write
+2026-03-20T11:09:00.8338208Z Metadata: read
+2026-03-20T11:09:00.8339115Z ##[endgroup]
+2026-03-20T11:09:00.8362822Z Secret source: Actions
+2026-03-20T11:09:00.8364376Z Prepare workflow directory
+2026-03-20T11:09:00.9421354Z Prepare all required actions
+2026-03-20T11:09:00.9521097Z Getting action download info
+2026-03-20T11:09:01.3515489Z Download action repository 'actions/checkout@v4' (SHA:34e114876b0b11c390a56381ad16ebd13914f8d5)
+2026-03-20T11:09:01.4889728Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-03-20T11:09:01.6842147Z Complete job name: B3-01 Walk-Forward Training
+2026-03-20T11:09:01.7534934Z ##[group]Run actions/checkout@v4
+2026-03-20T11:09:01.7536140Z with:
+2026-03-20T11:09:01.7536742Z   lfs: true
+2026-03-20T11:09:01.7537343Z   repository: quici9/fx-bias-ai
+2026-03-20T11:09:01.7538363Z   token: ***
+2026-03-20T11:09:01.7538928Z   ssh-strict: true
+2026-03-20T11:09:01.7539523Z   ssh-user: git
+2026-03-20T11:09:01.7540122Z   persist-credentials: true
+2026-03-20T11:09:01.7541154Z   clean: true
+2026-03-20T11:09:01.7541772Z   sparse-checkout-cone-mode: true
+2026-03-20T11:09:01.7542486Z   fetch-depth: 1
+2026-03-20T11:09:01.7543060Z   fetch-tags: false
+2026-03-20T11:09:01.7543658Z   show-progress: true
+2026-03-20T11:09:01.7544288Z   submodules: false
+2026-03-20T11:09:01.7544898Z   set-safe-directory: true
+2026-03-20T11:09:01.7545798Z env:
+2026-03-20T11:09:01.7546524Z   FRED_API_KEY: ***
+2026-03-20T11:09:01.7547122Z ##[endgroup]
+2026-03-20T11:09:01.9693746Z Syncing repository: quici9/fx-bias-ai
+2026-03-20T11:09:01.9696470Z ##[group]Getting Git version info
+2026-03-20T11:09:01.9697669Z Working directory is '/home/runner/work/fx-bias-ai/fx-bias-ai'
+2026-03-20T11:09:01.9699772Z [command]/usr/bin/git version
+2026-03-20T11:09:01.9701086Z git version 2.53.0
+2026-03-20T11:09:01.9702880Z [command]/usr/bin/git lfs version
+2026-03-20T11:09:01.9703648Z git-lfs/3.7.1 (GitHub; linux amd64; go 1.24.4)
+2026-03-20T11:09:01.9706000Z ##[endgroup]
+2026-03-20T11:09:01.9712360Z Temporarily overriding HOME='/home/runner/work/_temp/fd272387-b839-41d3-b13a-6b2b04a6e5b6' before making global git config changes
+2026-03-20T11:09:01.9714808Z Adding repository directory to the temporary git global config as a safe directory
+2026-03-20T11:09:01.9716541Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/fx-bias-ai/fx-bias-ai
+2026-03-20T11:09:01.9719170Z Deleting the contents of '/home/runner/work/fx-bias-ai/fx-bias-ai'
+2026-03-20T11:09:01.9720986Z ##[group]Initializing the repository
+2026-03-20T11:09:01.9722019Z [command]/usr/bin/git init /home/runner/work/fx-bias-ai/fx-bias-ai
+2026-03-20T11:09:01.9727921Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-03-20T11:09:01.9729853Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-03-20T11:09:01.9731518Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-03-20T11:09:01.9732617Z hint: call:
+2026-03-20T11:09:01.9733169Z hint:
+2026-03-20T11:09:01.9733865Z hint: 	git config --global init.defaultBranch <name>
+2026-03-20T11:09:01.9734735Z hint:
+2026-03-20T11:09:01.9735548Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-03-20T11:09:01.9736886Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-03-20T11:09:01.9738017Z hint:
+2026-03-20T11:09:01.9738589Z hint: 	git branch -m <name>
+2026-03-20T11:09:01.9739236Z hint:
+2026-03-20T11:09:01.9740127Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-03-20T11:09:01.9742082Z Initialized empty Git repository in /home/runner/work/fx-bias-ai/fx-bias-ai/.git/
+2026-03-20T11:09:01.9744369Z [command]/usr/bin/git remote add origin https://github.com/quici9/fx-bias-ai
+2026-03-20T11:09:01.9746491Z ##[endgroup]
+2026-03-20T11:09:01.9747853Z ##[group]Disabling automatic garbage collection
+2026-03-20T11:09:01.9749180Z [command]/usr/bin/git config --local gc.auto 0
+2026-03-20T11:09:01.9781891Z ##[endgroup]
+2026-03-20T11:09:01.9782910Z ##[group]Setting up auth
+2026-03-20T11:09:01.9789652Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-03-20T11:09:01.9832574Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-03-20T11:09:02.0159690Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-03-20T11:09:02.0201395Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-03-20T11:09:02.0527013Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-03-20T11:09:02.0572321Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-03-20T11:09:02.0976043Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-03-20T11:09:02.0978407Z ##[endgroup]
+2026-03-20T11:09:02.0979024Z [command]/usr/bin/git lfs install --local
+2026-03-20T11:09:02.1389617Z Updated Git hooks.
+2026-03-20T11:09:02.1391569Z Git LFS initialized.
+2026-03-20T11:09:02.1406983Z ##[group]Fetching the repository
+2026-03-20T11:09:02.1417571Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +2f87305de8ad8a4ce00bc77fba09e5e0de4d8635:refs/remotes/origin/main
+2026-03-20T11:09:02.6364442Z From https://github.com/quici9/fx-bias-ai
+2026-03-20T11:09:02.6366135Z  * [new ref]         2f87305de8ad8a4ce00bc77fba09e5e0de4d8635 -> origin/main
+2026-03-20T11:09:02.6412765Z ##[endgroup]
+2026-03-20T11:09:02.6414123Z ##[group]Determining the checkout info
+2026-03-20T11:09:02.6415555Z ##[endgroup]
+2026-03-20T11:09:02.6417990Z ##[group]Fetching LFS objects
+2026-03-20T11:09:02.6424680Z [command]/usr/bin/git lfs fetch origin refs/remotes/origin/main
+2026-03-20T11:09:02.6782250Z Fetching reference refs/remotes/origin/main
+2026-03-20T11:09:04.3416298Z ##[endgroup]
+2026-03-20T11:09:04.3416951Z [command]/usr/bin/git sparse-checkout disable
+2026-03-20T11:09:04.3467855Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-03-20T11:09:04.3503379Z ##[group]Checking out the ref
+2026-03-20T11:09:04.3508696Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-03-20T11:09:04.6010168Z Switched to a new branch 'main'
+2026-03-20T11:09:04.6019249Z branch 'main' set up to track 'origin/main'.
+2026-03-20T11:09:04.6329590Z ##[endgroup]
+2026-03-20T11:09:04.6378908Z [command]/usr/bin/git log -1 --format=%H
+2026-03-20T11:09:04.6411173Z 2f87305de8ad8a4ce00bc77fba09e5e0de4d8635
+2026-03-20T11:09:04.6657639Z ##[group]Run actions/setup-python@v5
+2026-03-20T11:09:04.6657984Z with:
+2026-03-20T11:09:04.6658204Z   python-version: 3.11
+2026-03-20T11:09:04.6658449Z   cache: pip
+2026-03-20T11:09:04.6658664Z   check-latest: false
+2026-03-20T11:09:04.6659078Z   token: ***
+2026-03-20T11:09:04.6659325Z   update-environment: true
+2026-03-20T11:09:04.6659624Z   allow-prereleases: false
+2026-03-20T11:09:04.6659893Z   freethreaded: false
+2026-03-20T11:09:04.6660124Z env:
+2026-03-20T11:09:04.6660687Z   FRED_API_KEY: ***
+2026-03-20T11:09:04.6661047Z ##[endgroup]
+2026-03-20T11:09:04.8659037Z ##[group]Installed versions
+2026-03-20T11:09:04.8808347Z Successfully set up CPython (3.11.15)
+2026-03-20T11:09:04.8809265Z ##[endgroup]
+2026-03-20T11:09:04.9944298Z [command]/opt/hostedtoolcache/Python/3.11.15/x64/bin/pip cache dir
+2026-03-20T11:09:05.2806786Z /home/runner/.cache/pip
+2026-03-20T11:09:05.4980010Z Cache hit for: setup-python-Linux-x64-24.04-Ubuntu-python-3.11.15-pip-9b0d7cfe77fabceea9412e2fa8165c99a2df38003b29ccc976fc8276879648f4
+2026-03-20T11:09:06.2893229Z Received 75775845 of 75775845 (100.0%), 104.3 MBs/sec
+2026-03-20T11:09:06.2905031Z Cache Size: ~72 MB (75775845 B)
+2026-03-20T11:09:06.2936580Z [command]/usr/bin/tar -xf /home/runner/work/_temp/e828a5cf-d2ca-4869-88af-9f58c61dd869/cache.tzst -P -C /home/runner/work/fx-bias-ai/fx-bias-ai --use-compress-program unzstd
+2026-03-20T11:09:06.5013385Z Cache restored successfully
+2026-03-20T11:09:06.5201436Z Cache restored from key: setup-python-Linux-x64-24.04-Ubuntu-python-3.11.15-pip-9b0d7cfe77fabceea9412e2fa8165c99a2df38003b29ccc976fc8276879648f4
+2026-03-20T11:09:06.5390637Z ##[group]Run pip install -r requirements.txt matplotlib
+2026-03-20T11:09:06.5391267Z [36;1mpip install -r requirements.txt matplotlib[0m
+2026-03-20T11:09:06.5453244Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:09:06.5453541Z env:
+2026-03-20T11:09:06.5453938Z   FRED_API_KEY: ***
+2026-03-20T11:09:06.5454244Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:06.5454665Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:09:06.5455072Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:06.5455430Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:06.5455801Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:06.5456164Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:09:06.5456482Z ##[endgroup]
+2026-03-20T11:09:07.3157416Z Collecting matplotlib
+2026-03-20T11:09:07.4039179Z   Downloading matplotlib-3.10.8-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (52 kB)
+2026-03-20T11:09:07.4674975Z Collecting requests>=2.31 (from -r requirements.txt (line 4))
+2026-03-20T11:09:07.4697757Z   Using cached requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+2026-03-20T11:09:07.5662263Z Collecting pandas>=2.1 (from -r requirements.txt (line 5))
+2026-03-20T11:09:07.5680830Z   Using cached pandas-3.0.1-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)
+2026-03-20T11:09:07.7407266Z Collecting numpy>=1.26 (from -r requirements.txt (line 6))
+2026-03-20T11:09:07.7426955Z   Using cached numpy-2.4.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+2026-03-20T11:09:07.8343416Z Collecting scikit-learn>=1.4 (from -r requirements.txt (line 7))
+2026-03-20T11:09:07.8370796Z   Using cached scikit_learn-1.8.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (11 kB)
+2026-03-20T11:09:07.8551748Z Collecting joblib>=1.3 (from -r requirements.txt (line 8))
+2026-03-20T11:09:07.8566668Z   Using cached joblib-1.5.3-py3-none-any.whl.metadata (5.5 kB)
+2026-03-20T11:09:07.8740623Z Collecting jsonschema>=4.21 (from -r requirements.txt (line 9))
+2026-03-20T11:09:07.8758301Z   Using cached jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+2026-03-20T11:09:07.8867819Z Collecting python-dateutil>=2.8 (from -r requirements.txt (line 10))
+2026-03-20T11:09:07.8885234Z   Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+2026-03-20T11:09:07.9409255Z Collecting contourpy>=1.0.1 (from matplotlib)
+2026-03-20T11:09:07.9553958Z   Downloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.5 kB)
+2026-03-20T11:09:07.9671430Z Collecting cycler>=0.10 (from matplotlib)
+2026-03-20T11:09:07.9814124Z   Downloading cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+2026-03-20T11:09:08.1063779Z Collecting fonttools>=4.22.0 (from matplotlib)
+2026-03-20T11:09:08.1209300Z   Downloading fonttools-4.62.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (117 kB)
+2026-03-20T11:09:08.1955558Z Collecting kiwisolver>=1.3.1 (from matplotlib)
+2026-03-20T11:09:08.2101135Z   Downloading kiwisolver-1.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.1 kB)
+2026-03-20T11:09:08.2277819Z Collecting packaging>=20.0 (from matplotlib)
+2026-03-20T11:09:08.2420313Z   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+2026-03-20T11:09:08.4232058Z Collecting pillow>=8 (from matplotlib)
+2026-03-20T11:09:08.4377245Z   Downloading pillow-12.1.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (8.8 kB)
+2026-03-20T11:09:08.4603590Z Collecting pyparsing>=3 (from matplotlib)
+2026-03-20T11:09:08.4747016Z   Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+2026-03-20T11:09:08.5546477Z Collecting charset_normalizer<4,>=2 (from requests>=2.31->-r requirements.txt (line 4))
+2026-03-20T11:09:08.5565000Z   Using cached charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+2026-03-20T11:09:08.5701954Z Collecting idna<4,>=2.5 (from requests>=2.31->-r requirements.txt (line 4))
+2026-03-20T11:09:08.5718475Z   Using cached idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+2026-03-20T11:09:08.5939371Z Collecting urllib3<3,>=1.21.1 (from requests>=2.31->-r requirements.txt (line 4))
+2026-03-20T11:09:08.5956246Z   Using cached urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+2026-03-20T11:09:08.6105112Z Collecting certifi>=2017.4.17 (from requests>=2.31->-r requirements.txt (line 4))
+2026-03-20T11:09:08.6120047Z   Using cached certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+2026-03-20T11:09:08.7170039Z Collecting scipy>=1.10.0 (from scikit-learn>=1.4->-r requirements.txt (line 7))
+2026-03-20T11:09:08.7187954Z   Using cached scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+2026-03-20T11:09:08.7392466Z Collecting threadpoolctl>=3.2.0 (from scikit-learn>=1.4->-r requirements.txt (line 7))
+2026-03-20T11:09:08.7407656Z   Using cached threadpoolctl-3.6.0-py3-none-any.whl.metadata (13 kB)
+2026-03-20T11:09:08.7532401Z Collecting attrs>=22.2.0 (from jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:08.7677521Z   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+2026-03-20T11:09:08.7795782Z Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:08.7811973Z   Using cached jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+2026-03-20T11:09:08.7977973Z Collecting referencing>=0.28.4 (from jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:08.7993791Z   Using cached referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+2026-03-20T11:09:09.0662392Z Collecting rpds-py>=0.25.0 (from jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:09.0679695Z   Using cached rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+2026-03-20T11:09:09.0796348Z Collecting six>=1.5 (from python-dateutil>=2.8->-r requirements.txt (line 10))
+2026-03-20T11:09:09.0811272Z   Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+2026-03-20T11:09:09.1023361Z Collecting typing-extensions>=4.4.0 (from referencing>=0.28.4->jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:09.1038533Z   Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+2026-03-20T11:09:09.1237680Z Downloading matplotlib-3.10.8-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (8.7 MB)
+2026-03-20T11:09:09.2083069Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.7/8.7 MB 121.3 MB/s  0:00:00
+2026-03-20T11:09:09.2102571Z Using cached requests-2.32.5-py3-none-any.whl (64 kB)
+2026-03-20T11:09:09.2118279Z Using cached charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (204 kB)
+2026-03-20T11:09:09.2133717Z Using cached idna-3.11-py3-none-any.whl (71 kB)
+2026-03-20T11:09:09.2147631Z Using cached urllib3-2.6.3-py3-none-any.whl (131 kB)
+2026-03-20T11:09:09.2162062Z Using cached pandas-3.0.1-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (11.3 MB)
+2026-03-20T11:09:09.2258443Z Using cached numpy-2.4.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+2026-03-20T11:09:09.2390037Z Using cached scikit_learn-1.8.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (9.1 MB)
+2026-03-20T11:09:09.2467135Z Using cached joblib-1.5.3-py3-none-any.whl (309 kB)
+2026-03-20T11:09:09.2484239Z Using cached jsonschema-4.26.0-py3-none-any.whl (90 kB)
+2026-03-20T11:09:09.2498659Z Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+2026-03-20T11:09:09.2651401Z Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+2026-03-20T11:09:09.2699340Z Using cached certifi-2026.2.25-py3-none-any.whl (153 kB)
+2026-03-20T11:09:09.2854088Z Downloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (355 kB)
+2026-03-20T11:09:09.3033453Z Downloading cycler-0.12.1-py3-none-any.whl (8.3 kB)
+2026-03-20T11:09:09.3214656Z Downloading fonttools-4.62.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.1 MB)
+2026-03-20T11:09:09.3492244Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 209.2 MB/s  0:00:00
+2026-03-20T11:09:09.3501496Z Using cached jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+2026-03-20T11:09:09.3645942Z Downloading kiwisolver-1.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.4 MB)
+2026-03-20T11:09:09.3741111Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 170.3 MB/s  0:00:00
+2026-03-20T11:09:09.3886076Z Downloading packaging-26.0-py3-none-any.whl (74 kB)
+2026-03-20T11:09:09.4059898Z Downloading pillow-12.1.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (7.0 MB)
+2026-03-20T11:09:09.4516812Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.0/7.0 MB 159.8 MB/s  0:00:00
+2026-03-20T11:09:09.4661649Z Downloading pyparsing-3.3.2-py3-none-any.whl (122 kB)
+2026-03-20T11:09:09.4705530Z Using cached referencing-0.37.0-py3-none-any.whl (26 kB)
+2026-03-20T11:09:09.4719700Z Using cached rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+2026-03-20T11:09:09.4737352Z Using cached scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+2026-03-20T11:09:09.4999773Z Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+2026-03-20T11:09:09.5015407Z Using cached threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
+2026-03-20T11:09:09.5030675Z Using cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+2026-03-20T11:09:09.7209277Z Installing collected packages: urllib3, typing-extensions, threadpoolctl, six, rpds-py, pyparsing, pillow, packaging, numpy, kiwisolver, joblib, idna, fonttools, cycler, charset_normalizer, certifi, attrs, scipy, requests, referencing, python-dateutil, contourpy, scikit-learn, pandas, matplotlib, jsonschema-specifications, jsonschema
+2026-03-20T11:09:25.5134051Z 
+2026-03-20T11:09:25.5153778Z Successfully installed attrs-26.1.0 certifi-2026.2.25 charset_normalizer-3.4.6 contourpy-1.3.3 cycler-0.12.1 fonttools-4.62.1 idna-3.11 joblib-1.5.3 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 kiwisolver-1.5.0 matplotlib-3.10.8 numpy-2.4.3 packaging-26.0 pandas-3.0.1 pillow-12.1.1 pyparsing-3.3.2 python-dateutil-2.9.0.post0 referencing-0.37.0 requests-2.32.5 rpds-py-0.30.0 scikit-learn-1.8.0 scipy-1.17.1 six-1.17.0 threadpoolctl-3.6.0 typing-extensions-4.15.0 urllib3-2.6.3
+2026-03-20T11:09:25.8955925Z ##[group]Run python training/build_dataset.py
+2026-03-20T11:09:25.8956272Z [36;1mpython training/build_dataset.py[0m
+2026-03-20T11:09:25.9012930Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:09:25.9013191Z env:
+2026-03-20T11:09:25.9013535Z   FRED_API_KEY: ***
+2026-03-20T11:09:25.9013829Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:25.9014260Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:09:25.9014667Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:25.9015037Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:25.9015403Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:25.9015768Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:09:25.9016075Z ##[endgroup]
+2026-03-20T11:09:26.4458291Z 2026-03-20 11:09:26 INFO     ============================================================
+2026-03-20T11:09:26.4474108Z 2026-03-20 11:09:26 INFO     Phase B2-04: Build Training Dataset
+2026-03-20T11:09:26.4474832Z 2026-03-20 11:09:26 INFO     ============================================================
+2026-03-20T11:09:26.4475557Z 2026-03-20 11:09:26 INFO     
+2026-03-20T11:09:26.4476191Z Loading COT history from cot_historical_2006_2026.csv...
+2026-03-20T11:09:26.4592749Z 2026-03-20 11:09:26 INFO       Rows: 8429
+2026-03-20T11:09:26.4656319Z 2026-03-20 11:09:26 INFO       Aligned to Fridays. Date range: 2006-01-06 → 2026-03-13
+2026-03-20T11:09:26.4663318Z 2026-03-20 11:09:26 INFO     
+2026-03-20T11:09:26.4663750Z Loading prices from prices_2006_2026.csv...
+2026-03-20T11:09:26.4682885Z 2026-03-20 11:09:26 INFO       Rows: 1054, Currencies: ['EUR', 'GBP', 'JPY', 'AUD', 'CAD', 'CHF', 'NZD']
+2026-03-20T11:09:26.4684354Z 2026-03-20 11:09:26 INFO     === Downloading macro data ===
+2026-03-20T11:09:26.4686720Z 2026-03-20 11:09:26 INFO     Downloading policy rates...
+2026-03-20T11:09:26.7731119Z 2026-03-20 11:09:26 INFO       ✓ FEDFUNDS: 242 observations
+2026-03-20T11:09:26.9477073Z 2026-03-20 11:09:26 INFO       ✓ IR3TIB01GBM156N: 241 observations
+2026-03-20T11:09:27.0988695Z 2026-03-20 11:09:27 INFO       ✓ IRSTCB01JPM156N: 216 observations
+2026-03-20T11:09:27.2734537Z 2026-03-20 11:09:27 INFO       ✓ IR3TBB01AUM156N: 216 observations
+2026-03-20T11:09:27.5243293Z 2026-03-20 11:09:27 INFO       ✓ IRSTCB01CAM156N: 216 observations
+2026-03-20T11:09:27.7144858Z 2026-03-20 11:09:27 INFO       ✓ IR3TIB01CHM156N: 242 observations
+2026-03-20T11:09:27.8851901Z 2026-03-20 11:09:27 INFO       ✓ IR3TBB01NZM156N: 216 observations
+2026-03-20T11:09:28.6430882Z 2026-03-20 11:09:28 INFO       ✓ ECB DFR (EUR policy rate): 47 observations
+2026-03-20T11:09:28.6479113Z 2026-03-20 11:09:28 INFO     Downloading CPI data...
+2026-03-20T11:09:28.7818579Z 2026-03-20 11:09:28 INFO       ✓ CPIAUCSL: 241 observations
+2026-03-20T11:09:28.9780760Z 2026-03-20 11:09:28 INFO       ✓ GBRCPIALLMINMEI: 231 observations
+2026-03-20T11:09:29.1609180Z 2026-03-20 11:09:29 INFO       ✓ CPALCY01JPM661N: 196 observations
+2026-03-20T11:09:29.3715834Z 2026-03-20 11:09:29 INFO       ✓ CPALTT01AUQ657N: 72 observations
+2026-03-20T11:09:29.6016260Z 2026-03-20 11:09:29 INFO       ✓ CPALCY01CAM661N: 215 observations
+2026-03-20T11:09:29.8036664Z 2026-03-20 11:09:29 INFO       ✓ CHECPIALLMINMEI: 232 observations
+2026-03-20T11:09:29.9465056Z 2026-03-20 11:09:29 INFO       ✓ CPALTT01NZQ657N: 72 observations
+2026-03-20T11:09:34.2678173Z 2026-03-20 11:09:34 INFO       ✓ ECB HICP (EUR CPI): 240 observations
+2026-03-20T11:09:34.2720236Z 2026-03-20 11:09:34 INFO     Downloading 10Y yields...
+2026-03-20T11:09:34.4381839Z 2026-03-20 11:09:34 INFO       ✓ DGS10: 5055 observations
+2026-03-20T11:09:34.5911217Z 2026-03-20 11:09:34 INFO       ✓ IRLTLT01DEM156N: 241 observations
+2026-03-20T11:09:34.8695494Z 2026-03-20 11:09:34 INFO       ✓ IRLTLT01GBM156N: 242 observations
+2026-03-20T11:09:35.1186876Z 2026-03-20 11:09:35 INFO       ✓ IRLTLT01JPM156N: 242 observations
+2026-03-20T11:09:35.1229532Z 2026-03-20 11:09:35 INFO     Downloading VIX...
+2026-03-20T11:09:35.2509474Z 2026-03-20 11:09:35 INFO       ✓ VIXCLS: 5112 observations
+2026-03-20T11:09:35.2529548Z 2026-03-20 11:09:35 INFO     
+2026-03-20T11:09:35.2530519Z === Building feature matrix ===
+2026-03-20T11:09:35.2533039Z 2026-03-20 11:09:35 INFO     Pivoting COT data to wide format...
+2026-03-20T11:09:35.2812038Z 2026-03-20 11:09:35 INFO     Computing Group D features (cross-asset + seasonal)...
+2026-03-20T11:09:35.2817894Z 2026-03-20 11:09:35 INFO     Computing features for EUR...
+2026-03-20T11:09:36.0544017Z 2026-03-20 11:09:36 INFO     Computing features for GBP...
+2026-03-20T11:09:36.8325005Z 2026-03-20 11:09:36 INFO     Computing features for JPY...
+2026-03-20T11:09:37.6098071Z 2026-03-20 11:09:37 INFO     Computing features for AUD...
+2026-03-20T11:09:38.1845612Z 2026-03-20 11:09:38 INFO     Computing features for CAD...
+2026-03-20T11:09:38.7627672Z 2026-03-20 11:09:38 INFO     Computing features for CHF...
+2026-03-20T11:09:39.3247790Z 2026-03-20 11:09:39 INFO     Computing features for NZD...
+2026-03-20T11:09:39.8941048Z 2026-03-20 11:09:39 INFO     Historical features built: 7378 rows (1054 weeks × 7 currencies)
+2026-03-20T11:09:39.8942191Z 2026-03-20 11:09:39 INFO     Feature matrix: (7378, 30)
+2026-03-20T11:09:39.8942945Z 2026-03-20 11:09:39 INFO     
+2026-03-20T11:09:39.8943628Z === Building labels ===
+2026-03-20T11:09:39.8944272Z 2026-03-20 11:09:39 INFO     Building labels for all currencies...
+2026-03-20T11:09:39.9081568Z 2026-03-20 11:09:39 INFO       EUR: BULL=23.6%  BEAR=23.5%  NEUTRAL=52.9%  n=1039
+2026-03-20T11:09:39.9229858Z 2026-03-20 11:09:39 INFO       GBP: BULL=23.2%  BEAR=24.4%  NEUTRAL=52.5%  n=1039
+2026-03-20T11:09:39.9373635Z 2026-03-20 11:09:39 INFO       JPY: BULL=24.4%  BEAR=26.4%  NEUTRAL=49.2%  n=1039
+2026-03-20T11:09:39.9519143Z 2026-03-20 11:09:39 INFO       AUD: BULL=26.4%  BEAR=22.6%  NEUTRAL=51.0%  n=1039
+2026-03-20T11:09:39.9658928Z 2026-03-20 11:09:39 INFO       CAD: BULL=23.4%  BEAR=24.4%  NEUTRAL=52.2%  n=1039
+2026-03-20T11:09:39.9799087Z 2026-03-20 11:09:39 INFO       CHF: BULL=25.2%  BEAR=27.6%  NEUTRAL=47.2%  n=1039
+2026-03-20T11:09:39.9941620Z 2026-03-20 11:09:39 INFO       NZD: BULL=25.1%  BEAR=24.0%  NEUTRAL=50.9%  n=1037
+2026-03-20T11:09:40.0041384Z 2026-03-20 11:09:40 INFO     Labels built: 7271 rows
+2026-03-20T11:09:40.0044895Z 2026-03-20 11:09:40 INFO     
+2026-03-20T11:09:40.0045284Z === Joining features with labels (B2-04c) ===
+2026-03-20T11:09:40.1534689Z 2026-03-20 11:09:40 INFO     
+2026-03-20T11:09:40.1536045Z Saved: /home/runner/work/fx-bias-ai/fx-bias-ai/training/data/features_2006_2026.csv
+2026-03-20T11:09:40.1542308Z 2026-03-20 11:09:40 INFO       Shape: (7271, 31)  (1039 weeks × 7 currencies)
+2026-03-20T11:09:40.1546859Z 2026-03-20 11:09:40 INFO       Date range: 2006-01-06 00:00:00 → 2026-03-06 00:00:00
+2026-03-20T11:09:40.1550700Z 2026-03-20 11:09:40 INFO       Columns: ['date', 'currency', 'cot_index', 'cot_index_4w_change', 'net_pct_change_1w', 'momentum_acceleration', 'oi_delta_direction', 'oi_net_confluence', 'flip_flag', 'extreme_flag', 'usd_index_cot', 'rank_in_8', 'spread_vs_usd', 'weeks_since_flip', 'lev_funds_net_index', 'asset_mgr_net_direction', 'dealer_net_contrarian', 'lev_vs_assetmgr_divergence', 'rate_diff_vs_usd', 'rate_diff_trend_3m', 'rate_hike_expectation', 'cpi_diff_vs_usd', 'cpi_trend', 'pmi_composite_diff', 'yield_10y_diff', 'vix_regime', 'gold_cot_index', 'oil_cot_direction', 'month', 'quarter', 'label']
+2026-03-20T11:09:40.1554284Z 2026-03-20 11:09:40 INFO     
+2026-03-20T11:09:40.1558787Z ============================================================
+2026-03-20T11:09:40.1559303Z 2026-03-20 11:09:40 INFO     EXPLORATORY ANALYSIS
+2026-03-20T11:09:40.1559883Z 2026-03-20 11:09:40 INFO     ============================================================
+2026-03-20T11:09:40.1561917Z 2026-03-20 11:09:40 INFO     Missing values: none in feature columns
+2026-03-20T11:09:40.1562467Z 2026-03-20 11:09:40 INFO     
+2026-03-20T11:09:40.1563157Z Class distribution per currency:
+2026-03-20T11:09:40.1581865Z 2026-03-20 11:09:40 INFO       EUR: BULL=23.6%  BEAR=23.5%  NEUTRAL=52.9%  n=1039
+2026-03-20T11:09:40.1597289Z 2026-03-20 11:09:40 INFO       GBP: BULL=23.2%  BEAR=24.4%  NEUTRAL=52.5%  n=1039
+2026-03-20T11:09:40.1611440Z 2026-03-20 11:09:40 INFO       JPY: BULL=24.4%  BEAR=26.4%  NEUTRAL=49.2%  n=1039
+2026-03-20T11:09:40.1625934Z 2026-03-20 11:09:40 INFO       AUD: BULL=26.4%  BEAR=22.6%  NEUTRAL=51.0%  n=1039
+2026-03-20T11:09:40.1640019Z 2026-03-20 11:09:40 INFO       CAD: BULL=23.4%  BEAR=24.4%  NEUTRAL=52.2%  n=1039
+2026-03-20T11:09:40.1654572Z 2026-03-20 11:09:40 INFO       CHF: BULL=25.2%  BEAR=27.6%  NEUTRAL=47.2%  n=1039
+2026-03-20T11:09:40.1668996Z 2026-03-20 11:09:40 INFO       NZD: BULL=25.1%  BEAR=24.0%  NEUTRAL=50.9%  n=1037
+2026-03-20T11:09:40.1678842Z 2026-03-20 11:09:40 INFO     
+2026-03-20T11:09:40.1679601Z Overall: BULL=24.5%  BEAR=24.7%  NEUTRAL=50.8%  n=7271
+2026-03-20T11:09:40.1682325Z 2026-03-20 11:09:40 INFO     
+2026-03-20T11:09:40.1683047Z Top correlated feature pairs (|r| > 0.7):
+2026-03-20T11:09:40.1849254Z 2026-03-20 11:09:40 INFO       month ↔ quarter: r=0.972
+2026-03-20T11:09:40.1850648Z 2026-03-20 11:09:40 INFO       cot_index ↔ dealer_net_contrarian: r=0.896
+2026-03-20T11:09:40.1854339Z 2026-03-20 11:09:40 INFO       usd_index_cot ↔ spread_vs_usd: r=0.849
+2026-03-20T11:09:40.1856500Z 2026-03-20 11:09:40 INFO       cot_index ↔ lev_funds_net_index: r=0.836
+2026-03-20T11:09:40.1857578Z 2026-03-20 11:09:40 INFO       cot_index ↔ spread_vs_usd: r=0.823
+2026-03-20T11:09:40.1859014Z 2026-03-20 11:09:40 INFO       lev_funds_net_index ↔ dealer_net_contrarian: r=0.809
+2026-03-20T11:09:40.1860222Z 2026-03-20 11:09:40 INFO       spread_vs_usd ↔ dealer_net_contrarian: r=0.786
+2026-03-20T11:09:40.1870249Z 2026-03-20 11:09:40 INFO       cot_index ↔ rank_in_8: r=0.776
+2026-03-20T11:09:40.1871358Z 2026-03-20 11:09:40 INFO       spread_vs_usd ↔ lev_funds_net_index: r=0.702
+2026-03-20T11:09:40.1871971Z 2026-03-20 11:09:40 INFO     
+2026-03-20T11:09:40.1872336Z Feature value ranges:
+2026-03-20T11:09:40.1873032Z 2026-03-20 11:09:40 INFO       cot_index                       [     0.00,    100.00]  μ=   49.97
+2026-03-20T11:09:40.1874042Z 2026-03-20 11:09:40 INFO       cot_index_4w_change             [  -100.00,    100.00]  μ=   -0.00
+2026-03-20T11:09:40.1875002Z 2026-03-20 11:09:40 INFO       net_pct_change_1w               [  -500.00,    500.00]  μ=    0.05
+2026-03-20T11:09:40.1875989Z 2026-03-20 11:09:40 INFO       momentum_acceleration           [  -500.00,    500.00]  μ=   -0.54
+2026-03-20T11:09:40.1876947Z 2026-03-20 11:09:40 INFO       oi_delta_direction              [    -1.00,      1.00]  μ=    0.17
+2026-03-20T11:09:40.1877881Z 2026-03-20 11:09:40 INFO       oi_net_confluence               [     0.00,      4.00]  μ=    2.42
+2026-03-20T11:09:40.1878754Z 2026-03-20 11:09:40 INFO       flip_flag                       [     0.00,      1.00]  μ=    0.06
+2026-03-20T11:09:40.1879593Z 2026-03-20 11:09:40 INFO       extreme_flag                    [     0.00,      1.00]  μ=    0.31
+2026-03-20T11:09:40.1880767Z 2026-03-20 11:09:40 INFO       usd_index_cot                   [     0.00,    100.00]  μ=   45.17
+2026-03-20T11:09:40.1881523Z 2026-03-20 11:09:40 INFO       rank_in_8                       [     1.00,      8.00]  μ=    4.25
+2026-03-20T11:09:40.1882534Z 2026-03-20 11:09:40 INFO       spread_vs_usd                   [  -100.00,    100.00]  μ=    4.80
+2026-03-20T11:09:40.1884017Z 2026-03-20 11:09:40 INFO       weeks_since_flip                [     0.00,    235.00]  μ=   35.77
+2026-03-20T11:09:40.1885038Z 2026-03-20 11:09:40 INFO       lev_funds_net_index             [     0.00,    100.00]  μ=   51.21
+2026-03-20T11:09:40.1886247Z 2026-03-20 11:09:40 INFO       asset_mgr_net_direction         [    -1.00,      1.00]  μ=   -0.01
+2026-03-20T11:09:40.1887134Z 2026-03-20 11:09:40 INFO     
+2026-03-20T11:09:40.1887696Z ============================================================
+2026-03-20T11:09:40.1889837Z 2026-03-20 11:09:40 INFO     B2-04 COMPLETE
+2026-03-20T11:09:40.1890713Z 2026-03-20 11:09:40 INFO       Macro mode : FULL (28 features)
+2026-03-20T11:09:40.1891599Z 2026-03-20 11:09:40 INFO       Output     : /home/runner/work/fx-bias-ai/fx-bias-ai/training/data/features_2006_2026.csv
+2026-03-20T11:09:40.1892420Z 2026-03-20 11:09:40 INFO       Total rows : 7271
+2026-03-20T11:09:40.1893132Z 2026-03-20 11:09:40 INFO       Next step  : B2-05 — Look-ahead bias tests
+2026-03-20T11:09:40.1893914Z 2026-03-20 11:09:40 INFO       Then:        B3-01 — train_model.py (walk-forward)
+2026-03-20T11:09:40.1894593Z 2026-03-20 11:09:40 INFO     ============================================================
+2026-03-20T11:09:40.2577013Z ##[group]Run python3 -c "
+2026-03-20T11:09:40.2577301Z [36;1mpython3 -c "[0m
+2026-03-20T11:09:40.2577527Z [36;1mimport pandas as pd[0m
+2026-03-20T11:09:40.2577846Z [36;1mdf = pd.read_csv('training/data/features_2006_2026.csv')[0m
+2026-03-20T11:09:40.2578329Z [36;1mmacro_cols = ['rate_diff_vs_usd','cpi_diff_vs_usd','yield_10y_diff','vix_regime'][0m
+2026-03-20T11:09:40.2578775Z [36;1mprint(f'Rows: {len(df)}')[0m
+2026-03-20T11:09:40.2579042Z [36;1mfor c in macro_cols:[0m
+2026-03-20T11:09:40.2579297Z [36;1m    n_nonzero = (df[c] != 0).sum()[0m
+2026-03-20T11:09:40.2579704Z [36;1m    print(f'  {c}: {n_nonzero} non-zero rows ({n_nonzero/len(df)*100:.1f}%)')[0m
+2026-03-20T11:09:40.2580093Z [36;1m"[0m
+2026-03-20T11:09:40.2633936Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:09:40.2634204Z env:
+2026-03-20T11:09:40.2634569Z   FRED_API_KEY: ***
+2026-03-20T11:09:40.2634843Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.2635313Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:09:40.2635721Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.2636078Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.2636433Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.2636804Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:09:40.2637113Z ##[endgroup]
+2026-03-20T11:09:40.6269294Z Rows: 7271
+2026-03-20T11:09:40.6279820Z   rate_diff_vs_usd: 5086 non-zero rows (69.9%)
+2026-03-20T11:09:40.6280294Z   cpi_diff_vs_usd: 5108 non-zero rows (70.3%)
+2026-03-20T11:09:40.6280865Z   yield_10y_diff: 3117 non-zero rows (42.9%)
+2026-03-20T11:09:40.6281245Z   vix_regime: 4640 non-zero rows (63.8%)
+2026-03-20T11:09:40.6846115Z ##[group]Run python training/train_model.py
+2026-03-20T11:09:40.6846459Z [36;1mpython training/train_model.py[0m
+2026-03-20T11:09:40.6900824Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:09:40.6901068Z env:
+2026-03-20T11:09:40.6901411Z   FRED_API_KEY: ***
+2026-03-20T11:09:40.6901694Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.6902116Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:09:40.6902522Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.6902903Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.6903258Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:40.6903616Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:09:40.6903921Z ##[endgroup]
+2026-03-20T11:09:42.0345119Z 2026-03-20 11:09:42 INFO     ============================================================
+2026-03-20T11:09:42.0348212Z 2026-03-20 11:09:42 INFO     Phase B3-01: train_model.py — Walk-Forward + Final Model
+2026-03-20T11:09:42.0350084Z 2026-03-20 11:09:42 INFO     ============================================================
+2026-03-20T11:09:42.0645174Z 2026-03-20 11:09:42 INFO     Loaded: 7271 rows, 7 currencies, 2006-01-06 → 2026-03-06
+2026-03-20T11:09:42.0654901Z 2026-03-20 11:09:42 INFO     Currencies: ['AUD', 'CAD', 'CHF', 'EUR', 'GBP', 'JPY', 'NZD']
+2026-03-20T11:09:42.0655738Z 2026-03-20 11:09:42 INFO     
+2026-03-20T11:09:42.0656115Z ========================================
+2026-03-20T11:09:42.0661302Z 2026-03-20 11:09:42 INFO     Walk-forward validation
+2026-03-20T11:09:42.0662338Z 2026-03-20 11:09:42 INFO     ========================================
+2026-03-20T11:09:49.0146356Z 2026-03-20 11:09:49 INFO     Fold1_train2006-2020_test2021: acc=0.5526  train_n=5388  test_n=371  test=2021-01→2021-12
+2026-03-20T11:09:56.3305917Z 2026-03-20 11:09:56 INFO     Fold2_train2006-2021_test2022: acc=0.5165  train_n=5759  test_n=364  test=2022-01→2022-12
+2026-03-20T11:10:03.8744744Z 2026-03-20 11:10:03 INFO     Fold3_train2006-2022_test2023: acc=0.4566  train_n=6123  test_n=357  test=2023-01→2023-12
+2026-03-20T11:10:11.7864096Z 2026-03-20 11:10:11 INFO     Fold4_train2006-2023_test2024: acc=0.4890  train_n=6480  test_n=364  test=2024-01→2024-12
+2026-03-20T11:10:11.7888310Z 2026-03-20 11:10:11 INFO     
+2026-03-20T11:10:11.7889543Z Fold accuracies: [0.5526, 0.5165, 0.4566, 0.489]
+2026-03-20T11:10:11.7892879Z 2026-03-20 11:10:11 INFO     Mean: 0.5037  Std: 0.0353
+2026-03-20T11:10:11.7893471Z 2026-03-20 11:10:11 INFO     
+2026-03-20T11:10:11.7893846Z ========================================
+2026-03-20T11:10:11.7894296Z 2026-03-20 11:10:11 INFO     Hyperparameter tuning
+2026-03-20T11:10:11.7894839Z 2026-03-20 11:10:11 INFO     ========================================
+2026-03-20T11:10:11.7895556Z 2026-03-20 11:10:11 INFO     Grid: min_samples_leaf=(5, 10, 15, 20, 30), max_depth=(6, 8, 10, 12)
+2026-03-20T11:10:37.4405153Z 2026-03-20 11:10:37 INFO       leaf=5, depth=6: acc=0.5030
+2026-03-20T11:11:07.7070749Z 2026-03-20 11:11:07 INFO       leaf=5, depth=8: acc=0.5127
+2026-03-20T11:11:41.7208761Z 2026-03-20 11:11:41 INFO       leaf=5, depth=10: acc=0.5057
+2026-03-20T11:12:18.5852718Z 2026-03-20 11:12:18 INFO       leaf=5, depth=12: acc=0.5024
+2026-03-20T11:12:43.9313784Z 2026-03-20 11:12:43 INFO       leaf=10, depth=6: acc=0.4939
+2026-03-20T11:13:13.2684742Z 2026-03-20 11:13:13 INFO       leaf=10, depth=8: acc=0.5037
+2026-03-20T11:13:46.1029496Z 2026-03-20 11:13:46 INFO       leaf=10, depth=10: acc=0.5004
+2026-03-20T11:14:20.8087484Z 2026-03-20 11:14:20 INFO       leaf=10, depth=12: acc=0.4990
+2026-03-20T11:14:46.2153002Z 2026-03-20 11:14:46 INFO       leaf=15, depth=6: acc=0.4906
+2026-03-20T11:15:15.3549857Z 2026-03-20 11:15:15 INFO       leaf=15, depth=8: acc=0.4974
+2026-03-20T11:15:46.9862627Z 2026-03-20 11:15:46 INFO       leaf=15, depth=10: acc=0.5030
+2026-03-20T11:16:19.7311109Z 2026-03-20 11:16:19 INFO       leaf=15, depth=12: acc=0.5058
+2026-03-20T11:16:44.7016612Z 2026-03-20 11:16:44 INFO       leaf=20, depth=6: acc=0.4906
+2026-03-20T11:17:13.0841702Z 2026-03-20 11:17:13 INFO       leaf=20, depth=8: acc=0.5003
+2026-03-20T11:17:43.5724931Z 2026-03-20 11:17:43 INFO       leaf=20, depth=10: acc=0.5051
+2026-03-20T11:18:14.9586173Z 2026-03-20 11:18:14 INFO       leaf=20, depth=12: acc=0.5058
+2026-03-20T11:18:39.6620087Z 2026-03-20 11:18:39 INFO       leaf=30, depth=6: acc=0.4886
+2026-03-20T11:19:07.2281273Z 2026-03-20 11:19:07 INFO       leaf=30, depth=8: acc=0.5003
+2026-03-20T11:19:36.0951885Z 2026-03-20 11:19:36 INFO       leaf=30, depth=10: acc=0.4976
+2026-03-20T11:20:05.2207487Z 2026-03-20 11:20:05 INFO       leaf=30, depth=12: acc=0.4997
+2026-03-20T11:20:05.2210633Z 2026-03-20 11:20:05 INFO     Best params: min_samples_leaf=5, max_depth=8 → acc=0.5127
+2026-03-20T11:20:05.2227367Z 2026-03-20 11:20:05 INFO     
+2026-03-20T11:20:05.2229713Z ========================================
+2026-03-20T11:20:05.2231577Z 2026-03-20 11:20:05 INFO     Training final production model
+2026-03-20T11:20:05.2232693Z 2026-03-20 11:20:05 INFO     ========================================
+2026-03-20T11:20:05.2255586Z 2026-03-20 11:20:05 INFO     Final model: training on 6480 rows (≤ 2023-12-31)
+2026-03-20T11:20:05.2257369Z 2026-03-20 11:20:05 INFO     Final RF params: {'n_estimators': 300, 'max_depth': 8, 'min_samples_leaf': 5, 'max_features': 'sqrt', 'class_weight': 'balanced', 'random_state': 42, 'n_jobs': -1}
+2026-03-20T11:20:05.2290717Z 2026-03-20 11:20:05 INFO     Features used (27): ['cot_index', 'cot_index_4w_change', 'net_pct_change_1w', 'momentum_acceleration', 'oi_delta_direction', 'oi_net_confluence', 'flip_flag', 'extreme_flag', 'usd_index_cot', 'rank_in_8', 'spread_vs_usd', 'weeks_since_flip', 'dealer_net_contrarian', 'lev_vs_assetmgr_divergence', 'asset_mgr_net_direction', 'rate_diff_vs_usd', 'rate_diff_trend_3m', 'rate_hike_expectation', 'cpi_diff_vs_usd', 'cpi_trend', 'pmi_composite_diff', 'yield_10y_diff', 'vix_regime', 'gold_cot_index', 'oil_cot_direction', 'quarter', 'currency_enc']
+2026-03-20T11:20:13.4279584Z 2026-03-20 11:20:13 INFO     In-sample accuracy (sanity): 0.7995
+2026-03-20T11:20:14.1333932Z 2026-03-20 11:20:14 INFO     Saved: /home/runner/work/fx-bias-ai/fx-bias-ai/models/model.pkl
+2026-03-20T11:20:14.1336707Z 2026-03-20 11:20:14 INFO     Saved: /home/runner/work/fx-bias-ai/fx-bias-ai/models/calibrator.pkl
+2026-03-20T11:20:14.1342763Z 2026-03-20 11:20:14 INFO     
+2026-03-20T11:20:14.1343120Z ========================================
+2026-03-20T11:20:14.1343534Z 2026-03-20 11:20:14 INFO     Saving metrics
+2026-03-20T11:20:14.1344054Z 2026-03-20 11:20:14 INFO     ========================================
+2026-03-20T11:20:14.1398653Z 2026-03-20 11:20:14 INFO     Metrics saved: /home/runner/work/fx-bias-ai/fx-bias-ai/data/history/model-metrics/initial_training.json
+2026-03-20T11:20:14.1401351Z 2026-03-20 11:20:14 INFO     Walk-forward mean accuracy: 0.5037 ± 0.0353  (min=0.4566  max=0.5526)
+2026-03-20T11:20:14.1401997Z 2026-03-20 11:20:14 INFO     
+2026-03-20T11:20:14.1402363Z ============================================================
+2026-03-20T11:20:14.1444820Z 2026-03-20 11:20:14 INFO     B3-01 COMPLETE
+2026-03-20T11:20:14.1457766Z 2026-03-20 11:20:14 INFO       Walk-forward mean accuracy : 0.5037
+2026-03-20T11:20:14.1458736Z 2026-03-20 11:20:14 INFO       Phase gate (≥52%)          : FAIL — below gate, investigate
+2026-03-20T11:20:14.1459535Z 2026-03-20 11:20:14 INFO       model.pkl                  : /home/runner/work/fx-bias-ai/fx-bias-ai/models/model.pkl
+2026-03-20T11:20:14.1472081Z 2026-03-20 11:20:14 INFO       calibrator.pkl             : /home/runner/work/fx-bias-ai/fx-bias-ai/models/calibrator.pkl
+2026-03-20T11:20:14.1473162Z 2026-03-20 11:20:14 INFO       metrics                    : /home/runner/work/fx-bias-ai/fx-bias-ai/data/history/model-metrics/initial_training.json
+2026-03-20T11:20:14.1474195Z 2026-03-20 11:20:14 INFO       Next: B3-02 — validate_model.py (baseline comparison)
+2026-03-20T11:20:14.1475194Z 2026-03-20 11:20:14 INFO     ============================================================
+2026-03-20T11:20:14.2702211Z ##[group]Run echo "=== B3-01 outputs ==="
+2026-03-20T11:20:14.2702710Z [36;1mecho "=== B3-01 outputs ==="[0m
+2026-03-20T11:20:14.2703187Z [36;1mls -lh models/model.pkl models/calibrator.pkl[0m
+2026-03-20T11:20:14.2703533Z [36;1mpython3 -c "[0m
+2026-03-20T11:20:14.2704351Z [36;1mimport json[0m
+2026-03-20T11:20:14.2704685Z [36;1mm = json.load(open('data/history/model-metrics/initial_training.json'))[0m
+2026-03-20T11:20:14.2705077Z [36;1ms = m['walk_forward_summary'][0m
+2026-03-20T11:20:14.2705361Z [36;1mprint(f'Folds: {s[\"n_folds\"]}')[0m
+2026-03-20T11:20:14.2705678Z [36;1mprint(f'Mean accuracy: {s[\"mean_accuracy\"]:.4f}')[0m
+2026-03-20T11:20:14.2705999Z [36;1mgate = s['mean_accuracy'] >= 0.52[0m
+2026-03-20T11:20:14.2706315Z [36;1mprint(f'Gate (>=52%): {\"PASS\" if gate else \"FAIL\"}')[0m
+2026-03-20T11:20:14.2706632Z [36;1mfor fold in m['folds']:[0m
+2026-03-20T11:20:14.2706936Z [36;1m    print(f'  {fold[\"fold\"]}: {fold[\"accuracy\"]:.4f}')[0m
+2026-03-20T11:20:14.2707265Z [36;1m"[0m
+2026-03-20T11:20:14.2760564Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:20:14.2760808Z env:
+2026-03-20T11:20:14.2761163Z   FRED_API_KEY: ***
+2026-03-20T11:20:14.2761439Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:14.2761853Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:20:14.2762259Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:14.2762624Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:14.2763240Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:14.2763600Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:20:14.2763910Z ##[endgroup]
+2026-03-20T11:20:14.2840677Z === B3-01 outputs ===
+2026-03-20T11:20:14.2857328Z -rw-r--r-- 1 runner runner 29M Mar 20 11:20 models/calibrator.pkl
+2026-03-20T11:20:14.2860151Z -rw-r--r-- 1 runner runner 29M Mar 20 11:20 models/model.pkl
+2026-03-20T11:20:14.3046772Z Folds: 4
+2026-03-20T11:20:14.3049218Z Mean accuracy: 0.5037
+2026-03-20T11:20:14.3051443Z Gate (>=52%): FAIL
+2026-03-20T11:20:14.3051963Z   Fold1_train2006-2020_test2021: 0.5526
+2026-03-20T11:20:14.3052568Z   Fold2_train2006-2021_test2022: 0.5165
+2026-03-20T11:20:14.3053701Z   Fold3_train2006-2022_test2023: 0.4566
+2026-03-20T11:20:14.3054417Z   Fold4_train2006-2023_test2024: 0.4890
+2026-03-20T11:20:14.3108104Z ##[group]Run python training/validate_model.py
+2026-03-20T11:20:14.3108442Z [36;1mpython training/validate_model.py[0m
+2026-03-20T11:20:14.3156053Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:20:14.3156293Z env:
+2026-03-20T11:20:14.3156606Z   FRED_API_KEY: ***
+2026-03-20T11:20:14.3156872Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:14.3157288Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:20:14.3157696Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:14.3158055Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:14.3158417Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:14.3158786Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:20:14.3159108Z ##[endgroup]
+2026-03-20T11:20:15.5812552Z 2026-03-20 11:20:15 INFO     ============================================================
+2026-03-20T11:20:15.5815787Z 2026-03-20 11:20:15 INFO     Phase B3-02: validate_model.py — Baseline Comparison
+2026-03-20T11:20:15.5818103Z 2026-03-20 11:20:15 INFO     ============================================================
+2026-03-20T11:20:15.6118888Z 2026-03-20 11:20:15 INFO     Currencies: ['AUD', 'CAD', 'CHF', 'EUR', 'GBP', 'JPY', 'NZD']
+2026-03-20T11:20:15.6121973Z 2026-03-20 11:20:15 INFO     
+2026-03-20T11:20:15.6125046Z === Walk-Forward Validation + Baseline Comparison ===
+2026-03-20T11:20:23.1392374Z 2026-03-20 11:20:23 INFO     Fold1_2021: RF=0.5526 | COT=0.3100 | LR=0.5283 | Random=0.3235 | Gap(RF-COT)=+0.2426 | Gate=✓
+2026-03-20T11:20:31.0087267Z 2026-03-20 11:20:31 INFO     Fold2_2022: RF=0.5165 | COT=0.3571 | LR=0.5220 | Random=0.3571 | Gap(RF-COT)=+0.1593 | Gate=✓
+2026-03-20T11:20:39.2040033Z 2026-03-20 11:20:39 INFO     Fold3_2023: RF=0.4566 | COT=0.3053 | LR=0.4650 | Random=0.3025 | Gap(RF-COT)=+0.1513 | Gate=✓
+2026-03-20T11:20:47.7039385Z 2026-03-20 11:20:47 INFO     Fold4_2024: RF=0.4890 | COT=0.3379 | LR=0.4368 | Random=0.3242 | Gap(RF-COT)=+0.1511 | Gate=✓
+2026-03-20T11:20:47.7072205Z 2026-03-20 11:20:47 INFO     
+2026-03-20T11:20:47.7101849Z Mean RF−COT gap: +0.1761
+2026-03-20T11:20:47.7102532Z 2026-03-20 11:20:47 INFO     Gate (≥+5%): PASS ✓
+2026-03-20T11:20:47.7102939Z 2026-03-20 11:20:47 INFO     
+2026-03-20T11:20:47.7103412Z === Hyperparameter Grid (B3-02e) — loaded from B3-01 ===
+2026-03-20T11:20:47.7104080Z 2026-03-20 11:20:47 INFO     Best: min_samples_leaf=5, max_depth=8 → acc=0.5127
+2026-03-20T11:20:47.7104573Z 2026-03-20 11:20:47 INFO     
+2026-03-20T11:20:47.7104906Z === Feature Importance Analysis (B3-02f) ===
+2026-03-20T11:20:55.8722119Z 2026-03-20 11:20:55 INFO     Top 10 features:
+2026-03-20T11:20:55.8724104Z 2026-03-20 11:20:55 INFO        1. net_pct_change_1w                   0.350025
+2026-03-20T11:20:55.8724810Z 2026-03-20 11:20:55 INFO        2. oi_net_confluence                   0.333278
+2026-03-20T11:20:55.8725481Z 2026-03-20 11:20:55 INFO        3. momentum_acceleration               0.065567
+2026-03-20T11:20:55.8726121Z 2026-03-20 11:20:55 INFO        4. cot_index_4w_change                 0.040793
+2026-03-20T11:20:55.8729106Z 2026-03-20 11:20:55 INFO        5. cot_index                           0.028785
+2026-03-20T11:20:55.8729701Z 2026-03-20 11:20:55 INFO        6. usd_index_cot                       0.019801
+2026-03-20T11:20:55.8730562Z 2026-03-20 11:20:55 INFO        7. dealer_net_contrarian               0.019132 [GROUP B]
+2026-03-20T11:20:55.8731216Z 2026-03-20 11:20:55 INFO        8. spread_vs_usd                       0.019001
+2026-03-20T11:20:55.8731844Z 2026-03-20 11:20:55 INFO        9. lev_vs_assetmgr_divergence          0.018872 [GROUP B]
+2026-03-20T11:20:55.8732491Z 2026-03-20 11:20:55 INFO       10. rate_diff_trend_3m                  0.015032
+2026-03-20T11:20:55.8734278Z 2026-03-20 11:20:55 INFO     Group B features in top-10: ['dealer_net_contrarian', 'lev_vs_assetmgr_divergence'] — positive contribution confirmed ✓
+2026-03-20T11:20:55.8735754Z 2026-03-20 11:20:55 INFO     
+2026-03-20T11:20:55.8736263Z === Plotting accuracy chart (B3-02g) ===
+2026-03-20T11:20:56.3135976Z 2026-03-20 11:20:56 INFO     Failed to extract font properties from /usr/share/fonts/truetype/noto/NotoColorEmoji.ttf: Can not load face (unknown file format; error code 0x2)
+2026-03-20T11:20:56.3176149Z 2026-03-20 11:20:56 INFO     generated new fontManager
+2026-03-20T11:20:56.6649718Z 2026-03-20 11:20:56 INFO     Chart saved: /home/runner/work/fx-bias-ai/fx-bias-ai/models/validation_chart.png
+2026-03-20T11:20:56.6656447Z 2026-03-20 11:20:56 INFO     
+2026-03-20T11:20:56.6656855Z === Writing model card (B3-02d) ===
+2026-03-20T11:20:56.6657512Z 2026-03-20 11:20:56 INFO     Model card saved: /home/runner/work/fx-bias-ai/fx-bias-ai/models/model_card.md
+2026-03-20T11:20:56.6658864Z 2026-03-20 11:20:56 INFO     DECISIONS.md already has Hyperparameter Grid Search section — skipping append
+2026-03-20T11:20:56.6659876Z 2026-03-20 11:20:56 INFO     DECISIONS.md updated: /home/runner/work/fx-bias-ai/fx-bias-ai/DECISIONS.md
+2026-03-20T11:20:56.6661290Z 2026-03-20 11:20:56 INFO     
+2026-03-20T11:20:56.6661795Z === Training LR Fallback (B3-03) ===
+2026-03-20T11:20:56.9251852Z 2026-03-20 11:20:56 INFO     LR fallback saved: /home/runner/work/fx-bias-ai/fx-bias-ai/models/model_lr_fallback.pkl
+2026-03-20T11:20:56.9528799Z 2026-03-20 11:20:56 INFO     LR fallback in-sample accuracy: 0.5295
+2026-03-20T11:20:56.9556244Z 2026-03-20 11:20:56 INFO     Validation JSON: /home/runner/work/fx-bias-ai/fx-bias-ai/data/history/model-metrics/validation_results.json
+2026-03-20T11:20:56.9557646Z 2026-03-20 11:20:56 INFO     
+2026-03-20T11:20:56.9558403Z ============================================================
+2026-03-20T11:20:56.9559831Z 2026-03-20 11:20:56 INFO     B3-02 COMPLETE
+2026-03-20T11:20:56.9560592Z 2026-03-20 11:20:56 INFO       RF mean accuracy     : 0.5037
+2026-03-20T11:20:56.9567350Z 2026-03-20 11:20:56 INFO       RF vs COT mean gap   : +0.1761
+2026-03-20T11:20:56.9568546Z 2026-03-20 11:20:56 INFO       Phase gate (≥+5%)    : PASS ✓
+2026-03-20T11:20:56.9569246Z 2026-03-20 11:20:56 INFO       best min_samples_leaf: 5
+2026-03-20T11:20:56.9570139Z 2026-03-20 11:20:56 INFO       model_card.md        : /home/runner/work/fx-bias-ai/fx-bias-ai/models/model_card.md
+2026-03-20T11:20:56.9572044Z 2026-03-20 11:20:56 INFO       model_lr_fallback.pkl: /home/runner/work/fx-bias-ai/fx-bias-ai/models/model_lr_fallback.pkl
+2026-03-20T11:20:56.9573279Z 2026-03-20 11:20:56 INFO       Next: B3-03 ✓ (LR fallback already trained above)
+2026-03-20T11:20:56.9621295Z 2026-03-20 11:20:56 INFO       Then: B4 — Inference pipeline
+2026-03-20T11:20:56.9622229Z 2026-03-20 11:20:56 INFO     ============================================================
+2026-03-20T11:20:57.2002811Z ##[group]Run echo "=== B3-02 outputs ==="
+2026-03-20T11:20:57.2003340Z [36;1mecho "=== B3-02 outputs ==="[0m
+2026-03-20T11:20:57.2003929Z [36;1mls -lh models/model_card.md models/model_lr_fallback.pkl || true[0m
+2026-03-20T11:20:57.2004863Z [36;1mls -lh models/validation_chart.png 2>/dev/null && echo "Chart generated" || echo "Chart skipped (no matplotlib)"[0m
+2026-03-20T11:20:57.2005666Z [36;1mpython3 -c "[0m
+2026-03-20T11:20:57.2006316Z [36;1mimport json[0m
+2026-03-20T11:20:57.2006834Z [36;1mv = json.load(open('data/history/model-metrics/validation_results.json'))[0m
+2026-03-20T11:20:57.2007623Z [36;1mprint(f'Gate (RF beats COT by >=5%): {\"PASS\" if v[\"gate_pass\"] else \"FAIL\"}')[0m
+2026-03-20T11:20:57.2008361Z [36;1mprint(f'Mean RF-COT gap: {v[\"mean_rf_vs_cot_gap\"]:+.4f}')[0m
+2026-03-20T11:20:57.2008987Z [36;1mprint(f'Best min_samples_leaf: {v[\"best_min_samples_leaf\"]}')[0m
+2026-03-20T11:20:57.2009682Z [36;1mprint(f'Group B in top-10: {v[\"group_b_in_top10\"]}')[0m
+2026-03-20T11:20:57.2010311Z [36;1mfor fold, res in v['folds'].items():[0m
+2026-03-20T11:20:57.2011270Z [36;1m    print(f'  {fold}: RF={res[\"rf\"]:.4f} COT={res[\"cot_rule\"]:.4f} gap={res[\"rf_vs_cot_gap\"]:+.4f}')[0m
+2026-03-20T11:20:57.2011911Z [36;1m"[0m
+2026-03-20T11:20:57.2076759Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:20:57.2077043Z env:
+2026-03-20T11:20:57.2077574Z   FRED_API_KEY: ***
+2026-03-20T11:20:57.2077991Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2078591Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:20:57.2079219Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2079810Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2080689Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2081275Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:20:57.2081785Z ##[endgroup]
+2026-03-20T11:20:57.2171320Z === B3-02 outputs ===
+2026-03-20T11:20:57.2190758Z -rw-r--r-- 1 runner runner 2.8K Mar 20 11:20 models/model_card.md
+2026-03-20T11:20:57.2191498Z -rw-r--r-- 1 runner runner  11K Mar 20 11:20 models/model_lr_fallback.pkl
+2026-03-20T11:20:57.2211111Z -rw-r--r-- 1 runner runner 60K Mar 20 11:20 models/validation_chart.png
+2026-03-20T11:20:57.2216748Z Chart generated
+2026-03-20T11:20:57.2398789Z Gate (RF beats COT by >=5%): PASS
+2026-03-20T11:20:57.2402025Z Mean RF-COT gap: +0.1761
+2026-03-20T11:20:57.2404548Z Best min_samples_leaf: 5
+2026-03-20T11:20:57.2406352Z Group B in top-10: ['dealer_net_contrarian', 'lev_vs_assetmgr_divergence']
+2026-03-20T11:20:57.2407507Z   Fold1_2021: RF=0.5526 COT=0.3100 gap=+0.2426
+2026-03-20T11:20:57.2409911Z   Fold2_2022: RF=0.5165 COT=0.3571 gap=+0.1593
+2026-03-20T11:20:57.2410805Z   Fold3_2023: RF=0.4566 COT=0.3053 gap=+0.1513
+2026-03-20T11:20:57.2411916Z   Fold4_2024: RF=0.4890 COT=0.3379 gap=+0.1511
+2026-03-20T11:20:57.2470162Z ##[group]Run git config --local user.email "github-actions[bot]@users.noreply.github.com"
+2026-03-20T11:20:57.2471487Z [36;1mgit config --local user.email "github-actions[bot]@users.noreply.github.com"[0m
+2026-03-20T11:20:57.2472231Z [36;1mgit config --local user.name "github-actions[bot]"[0m
+2026-03-20T11:20:57.2472794Z [36;1mgit add training/data/features_2006_2026.csv[0m
+2026-03-20T11:20:57.2473321Z [36;1mgit add models/model.pkl models/calibrator.pkl[0m
+2026-03-20T11:20:57.2473857Z [36;1mgit add models/model_lr_fallback.pkl[0m
+2026-03-20T11:20:57.2474301Z [36;1mgit add models/model_card.md[0m
+2026-03-20T11:20:57.2474702Z [36;1mgit add DECISIONS.md[0m
+2026-03-20T11:20:57.2475177Z [36;1mgit add data/history/model-metrics/initial_training.json[0m
+2026-03-20T11:20:57.2475844Z [36;1mgit add data/history/model-metrics/validation_results.json[0m
+2026-03-20T11:20:57.2476493Z [36;1mgit add models/validation_chart.png 2>/dev/null || true[0m
+2026-03-20T11:20:57.2477087Z [36;1mif git diff --staged --quiet; then[0m
+2026-03-20T11:20:57.2477516Z [36;1m  echo "No changes to commit"[0m
+2026-03-20T11:20:57.2477896Z [36;1melse[0m
+2026-03-20T11:20:57.2478438Z [36;1m  git commit -m "training: B3-01 walk-forward + B3-02 validation + B3-03 LR fallback"[0m
+2026-03-20T11:20:57.2479147Z [36;1m  git push[0m
+2026-03-20T11:20:57.2479433Z [36;1mfi[0m
+2026-03-20T11:20:57.2533156Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:20:57.2533518Z env:
+2026-03-20T11:20:57.2534406Z   FRED_API_KEY: ***
+2026-03-20T11:20:57.2534833Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2535496Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:20:57.2536162Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2536746Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2537331Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:20:57.2537938Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:20:57.2538430Z ##[endgroup]
+2026-03-20T11:20:57.6143566Z [main 782b1a0] training: B3-01 walk-forward + B3-02 validation + B3-03 LR fallback
+2026-03-20T11:20:57.6144951Z  8 files changed, 7453 insertions(+), 7453 deletions(-)
+2026-03-20T11:20:59.2347012Z Uploading LFS objects: 100% (1/1), 29 MB | 0 B/s, done.
+2026-03-20T11:21:00.0419398Z To https://github.com/quici9/fx-bias-ai
+2026-03-20T11:21:00.0420315Z    2f87305..782b1a0  main -> main
+2026-03-20T11:21:00.0575979Z Post job cleanup.
+2026-03-20T11:21:00.2595682Z Cache hit occurred on the primary key setup-python-Linux-x64-24.04-Ubuntu-python-3.11.15-pip-9b0d7cfe77fabceea9412e2fa8165c99a2df38003b29ccc976fc8276879648f4, not saving cache.
+2026-03-20T11:21:00.2773415Z Post job cleanup.
+2026-03-20T11:21:00.3769126Z [command]/usr/bin/git version
+2026-03-20T11:21:00.3813556Z git version 2.53.0
+2026-03-20T11:21:00.3862764Z Temporarily overriding HOME='/home/runner/work/_temp/81dfdb62-0945-4056-a203-3abe7c82a0ea' before making global git config changes
+2026-03-20T11:21:00.3864671Z Adding repository directory to the temporary git global config as a safe directory
+2026-03-20T11:21:00.3871073Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/fx-bias-ai/fx-bias-ai
+2026-03-20T11:21:00.3925762Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-03-20T11:21:00.3967369Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-03-20T11:21:00.4254309Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-03-20T11:21:00.4284616Z http.https://github.com/.extraheader
+2026-03-20T11:21:00.4300772Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-03-20T11:21:00.4340036Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-03-20T11:21:00.4616207Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-03-20T11:21:00.4660616Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-03-20T11:21:00.5222184Z Cleaning up orphan processes
+2026-03-20T11:21:00.5564734Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v4, actions/setup-python@v5. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

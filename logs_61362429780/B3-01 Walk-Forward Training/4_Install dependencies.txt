@@ -1,0 +1,100 @@
+﻿2026-03-20T11:09:06.5390328Z ##[group]Run pip install -r requirements.txt matplotlib
+2026-03-20T11:09:06.5391255Z [36;1mpip install -r requirements.txt matplotlib[0m
+2026-03-20T11:09:06.5453216Z shell: /usr/bin/bash -e {0}
+2026-03-20T11:09:06.5453531Z env:
+2026-03-20T11:09:06.5453933Z   FRED_API_KEY: ***
+2026-03-20T11:09:06.5454239Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:06.5454662Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib/pkgconfig
+2026-03-20T11:09:06.5455060Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:06.5455426Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:06.5455797Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.15/x64
+2026-03-20T11:09:06.5456160Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.15/x64/lib
+2026-03-20T11:09:06.5456478Z ##[endgroup]
+2026-03-20T11:09:07.3157064Z Collecting matplotlib
+2026-03-20T11:09:07.4039036Z   Downloading matplotlib-3.10.8-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (52 kB)
+2026-03-20T11:09:07.4674930Z Collecting requests>=2.31 (from -r requirements.txt (line 4))
+2026-03-20T11:09:07.4697730Z   Using cached requests-2.32.5-py3-none-any.whl.metadata (4.9 kB)
+2026-03-20T11:09:07.5662212Z Collecting pandas>=2.1 (from -r requirements.txt (line 5))
+2026-03-20T11:09:07.5680791Z   Using cached pandas-3.0.1-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl.metadata (79 kB)
+2026-03-20T11:09:07.7407214Z Collecting numpy>=1.26 (from -r requirements.txt (line 6))
+2026-03-20T11:09:07.7426927Z   Using cached numpy-2.4.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+2026-03-20T11:09:07.8343364Z Collecting scikit-learn>=1.4 (from -r requirements.txt (line 7))
+2026-03-20T11:09:07.8370757Z   Using cached scikit_learn-1.8.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (11 kB)
+2026-03-20T11:09:07.8551704Z Collecting joblib>=1.3 (from -r requirements.txt (line 8))
+2026-03-20T11:09:07.8566604Z   Using cached joblib-1.5.3-py3-none-any.whl.metadata (5.5 kB)
+2026-03-20T11:09:07.8740582Z Collecting jsonschema>=4.21 (from -r requirements.txt (line 9))
+2026-03-20T11:09:07.8758276Z   Using cached jsonschema-4.26.0-py3-none-any.whl.metadata (7.6 kB)
+2026-03-20T11:09:07.8867797Z Collecting python-dateutil>=2.8 (from -r requirements.txt (line 10))
+2026-03-20T11:09:07.8885211Z   Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl.metadata (8.4 kB)
+2026-03-20T11:09:07.9409204Z Collecting contourpy>=1.0.1 (from matplotlib)
+2026-03-20T11:09:07.9553924Z   Downloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (5.5 kB)
+2026-03-20T11:09:07.9671376Z Collecting cycler>=0.10 (from matplotlib)
+2026-03-20T11:09:07.9814095Z   Downloading cycler-0.12.1-py3-none-any.whl.metadata (3.8 kB)
+2026-03-20T11:09:08.1063723Z Collecting fonttools>=4.22.0 (from matplotlib)
+2026-03-20T11:09:08.1209209Z   Downloading fonttools-4.62.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (117 kB)
+2026-03-20T11:09:08.1955507Z Collecting kiwisolver>=1.3.1 (from matplotlib)
+2026-03-20T11:09:08.2101082Z   Downloading kiwisolver-1.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (5.1 kB)
+2026-03-20T11:09:08.2277772Z Collecting packaging>=20.0 (from matplotlib)
+2026-03-20T11:09:08.2420276Z   Downloading packaging-26.0-py3-none-any.whl.metadata (3.3 kB)
+2026-03-20T11:09:08.4232005Z Collecting pillow>=8 (from matplotlib)
+2026-03-20T11:09:08.4377190Z   Downloading pillow-12.1.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (8.8 kB)
+2026-03-20T11:09:08.4603532Z Collecting pyparsing>=3 (from matplotlib)
+2026-03-20T11:09:08.4746966Z   Downloading pyparsing-3.3.2-py3-none-any.whl.metadata (5.8 kB)
+2026-03-20T11:09:08.5546430Z Collecting charset_normalizer<4,>=2 (from requests>=2.31->-r requirements.txt (line 4))
+2026-03-20T11:09:08.5564612Z   Using cached charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (40 kB)
+2026-03-20T11:09:08.5701903Z Collecting idna<4,>=2.5 (from requests>=2.31->-r requirements.txt (line 4))
+2026-03-20T11:09:08.5718443Z   Using cached idna-3.11-py3-none-any.whl.metadata (8.4 kB)
+2026-03-20T11:09:08.5939328Z Collecting urllib3<3,>=1.21.1 (from requests>=2.31->-r requirements.txt (line 4))
+2026-03-20T11:09:08.5956216Z   Using cached urllib3-2.6.3-py3-none-any.whl.metadata (6.9 kB)
+2026-03-20T11:09:08.6105069Z Collecting certifi>=2017.4.17 (from requests>=2.31->-r requirements.txt (line 4))
+2026-03-20T11:09:08.6120018Z   Using cached certifi-2026.2.25-py3-none-any.whl.metadata (2.5 kB)
+2026-03-20T11:09:08.7169986Z Collecting scipy>=1.10.0 (from scikit-learn>=1.4->-r requirements.txt (line 7))
+2026-03-20T11:09:08.7187924Z   Using cached scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+2026-03-20T11:09:08.7392415Z Collecting threadpoolctl>=3.2.0 (from scikit-learn>=1.4->-r requirements.txt (line 7))
+2026-03-20T11:09:08.7407595Z   Using cached threadpoolctl-3.6.0-py3-none-any.whl.metadata (13 kB)
+2026-03-20T11:09:08.7532369Z Collecting attrs>=22.2.0 (from jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:08.7677490Z   Downloading attrs-26.1.0-py3-none-any.whl.metadata (8.8 kB)
+2026-03-20T11:09:08.7795747Z Collecting jsonschema-specifications>=2023.03.6 (from jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:08.7811950Z   Using cached jsonschema_specifications-2025.9.1-py3-none-any.whl.metadata (2.9 kB)
+2026-03-20T11:09:08.7977923Z Collecting referencing>=0.28.4 (from jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:08.7993762Z   Using cached referencing-0.37.0-py3-none-any.whl.metadata (2.8 kB)
+2026-03-20T11:09:09.0662340Z Collecting rpds-py>=0.25.0 (from jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:09.0679659Z   Using cached rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (4.1 kB)
+2026-03-20T11:09:09.0796271Z Collecting six>=1.5 (from python-dateutil>=2.8->-r requirements.txt (line 10))
+2026-03-20T11:09:09.0811246Z   Using cached six-1.17.0-py2.py3-none-any.whl.metadata (1.7 kB)
+2026-03-20T11:09:09.1023316Z Collecting typing-extensions>=4.4.0 (from referencing>=0.28.4->jsonschema>=4.21->-r requirements.txt (line 9))
+2026-03-20T11:09:09.1038509Z   Using cached typing_extensions-4.15.0-py3-none-any.whl.metadata (3.3 kB)
+2026-03-20T11:09:09.1237638Z Downloading matplotlib-3.10.8-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (8.7 MB)
+2026-03-20T11:09:09.2083011Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 8.7/8.7 MB 121.3 MB/s  0:00:00
+2026-03-20T11:09:09.2102542Z Using cached requests-2.32.5-py3-none-any.whl (64 kB)
+2026-03-20T11:09:09.2118253Z Using cached charset_normalizer-3.4.6-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (204 kB)
+2026-03-20T11:09:09.2133695Z Using cached idna-3.11-py3-none-any.whl (71 kB)
+2026-03-20T11:09:09.2147573Z Using cached urllib3-2.6.3-py3-none-any.whl (131 kB)
+2026-03-20T11:09:09.2162045Z Using cached pandas-3.0.1-cp311-cp311-manylinux_2_24_x86_64.manylinux_2_28_x86_64.whl (11.3 MB)
+2026-03-20T11:09:09.2258408Z Using cached numpy-2.4.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.9 MB)
+2026-03-20T11:09:09.2389990Z Using cached scikit_learn-1.8.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (9.1 MB)
+2026-03-20T11:09:09.2467107Z Using cached joblib-1.5.3-py3-none-any.whl (309 kB)
+2026-03-20T11:09:09.2484212Z Using cached jsonschema-4.26.0-py3-none-any.whl (90 kB)
+2026-03-20T11:09:09.2498638Z Using cached python_dateutil-2.9.0.post0-py2.py3-none-any.whl (229 kB)
+2026-03-20T11:09:09.2651376Z Downloading attrs-26.1.0-py3-none-any.whl (67 kB)
+2026-03-20T11:09:09.2699318Z Using cached certifi-2026.2.25-py3-none-any.whl (153 kB)
+2026-03-20T11:09:09.2854045Z Downloading contourpy-1.3.3-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (355 kB)
+2026-03-20T11:09:09.3033077Z Downloading cycler-0.12.1-py3-none-any.whl (8.3 kB)
+2026-03-20T11:09:09.3214604Z Downloading fonttools-4.62.1-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (5.1 MB)
+2026-03-20T11:09:09.3492193Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 5.1/5.1 MB 209.2 MB/s  0:00:00
+2026-03-20T11:09:09.3501468Z Using cached jsonschema_specifications-2025.9.1-py3-none-any.whl (18 kB)
+2026-03-20T11:09:09.3645903Z Downloading kiwisolver-1.5.0-cp311-cp311-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (1.4 MB)
+2026-03-20T11:09:09.3741066Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 MB 170.3 MB/s  0:00:00
+2026-03-20T11:09:09.3886022Z Downloading packaging-26.0-py3-none-any.whl (74 kB)
+2026-03-20T11:09:09.4059847Z Downloading pillow-12.1.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (7.0 MB)
+2026-03-20T11:09:09.4516751Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.0/7.0 MB 159.8 MB/s  0:00:00
+2026-03-20T11:09:09.4661594Z Downloading pyparsing-3.3.2-py3-none-any.whl (122 kB)
+2026-03-20T11:09:09.4705452Z Using cached referencing-0.37.0-py3-none-any.whl (26 kB)
+2026-03-20T11:09:09.4719675Z Using cached rpds_py-0.30.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (390 kB)
+2026-03-20T11:09:09.4737333Z Using cached scipy-1.17.1-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (35.3 MB)
+2026-03-20T11:09:09.4999722Z Using cached six-1.17.0-py2.py3-none-any.whl (11 kB)
+2026-03-20T11:09:09.5015374Z Using cached threadpoolctl-3.6.0-py3-none-any.whl (18 kB)
+2026-03-20T11:09:09.5030644Z Using cached typing_extensions-4.15.0-py3-none-any.whl (44 kB)
+2026-03-20T11:09:09.7209217Z Installing collected packages: urllib3, typing-extensions, threadpoolctl, six, rpds-py, pyparsing, pillow, packaging, numpy, kiwisolver, joblib, idna, fonttools, cycler, charset_normalizer, certifi, attrs, scipy, requests, referencing, python-dateutil, contourpy, scikit-learn, pandas, matplotlib, jsonschema-specifications, jsonschema
+2026-03-20T11:09:25.5133989Z 
+2026-03-20T11:09:25.5153716Z Successfully installed attrs-26.1.0 certifi-2026.2.25 charset_normalizer-3.4.6 contourpy-1.3.3 cycler-0.12.1 fonttools-4.62.1 idna-3.11 joblib-1.5.3 jsonschema-4.26.0 jsonschema-specifications-2025.9.1 kiwisolver-1.5.0 matplotlib-3.10.8 numpy-2.4.3 packaging-26.0 pandas-3.0.1 pillow-12.1.1 pyparsing-3.3.2 python-dateutil-2.9.0.post0 referencing-0.37.0 requests-2.32.5 rpds-py-0.30.0 scikit-learn-1.8.0 scipy-1.17.1 six-1.17.0 threadpoolctl-3.6.0 typing-extensions-4.15.0 urllib3-2.6.3

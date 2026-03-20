@@ -1,0 +1,33 @@
+{
+  "fetchDate": "2026-03-22T07:00:00Z",
+  "commodities": {
+    "gold": {
+      "cot_index": 71,
+      "trend_12w": [52, 55, 58, 60, 62, 64, 66, 68, 69, 70, 71, 71],
+      "trend_direction": "RISING",
+      "fx_impact": "CHF_BULL AUD_BULL"
+    },
+    "oil": {
+      "cot_index": 38,
+      "trend_12w": [60, 58, 55, 52, 50, 47, 44, 42, 40, 39, 38, 38],
+      "trend_direction": "FALLING",
+      "fx_impact": "CAD_BEAR NOK_BEAR"
+    },
+    "sp500": {
+      "cot_index": 65,
+      "trend_12w": [50, 52, 55, 57, 59, 61, 63, 64, 65, 65, 65, 65],
+      "trend_direction": "RISING",
+      "fx_impact": "RISK_ON JPY_BEAR CHF_BEAR"
+    }
+  },
+  "yield_differentials": [
+    { "pair": "USD-JPY", "spread": 3.56, "delta_4w": 0.15, "direction": "WIDENING" },
+    { "pair": "USD-EUR", "spread": 1.91, "delta_4w": 0.09, "direction": "WIDENING" },
+    { "pair": "GBP-EUR", "spread": 1.77, "delta_4w": 0.02, "direction": "STABLE" },
+    { "pair": "AUD-JPY", "spread": 3.32, "delta_4w": 0.12, "direction": "WIDENING" },
+    { "pair": "NZD-JPY", "spread": 3.80, "delta_4w": 0.14, "direction": "WIDENING" },
+    { "pair": "USD-CHF", "spread": 3.54, "delta_4w": 0.11, "direction": "WIDENING" },
+    { "pair": "GBP-USD", "spread": -0.14, "delta_4w": -0.03, "direction": "NARROWING" },
+    { "pair": "AUD-USD", "spread": -0.24, "delta_4w": 0.02, "direction": "STABLE" }
+  ]
+}

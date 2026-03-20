@@ -1,0 +1,304 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+/* ─── Design System Tokens (UI Design Section 5.1) ─────────────────────────── */
+
+:root {
+  /* Background */
+  --bg-primary: #0a0b10;
+  --bg-secondary: #0f1117;
+  --bg-card: #121314;
+  --bg-card-hover: #1a1b1f;
+  --bg-sidebar: #0d0e12;
+  --bg-header: #0f1117;
+
+  /* Text */
+  --text-primary: #e8eaf0;
+  --text-secondary: #8b8fa8;
+  --text-muted: #555968;
+  --text-inverse: #0a0b10;
+
+  /* Accents — Bull / Bear / Neutral */
+  --accent-bull: #10b981;
+  --accent-bull-muted: #064e3b;
+  --accent-bull-glow: rgba(16, 185, 129, 0.15);
+  --accent-bear: #ef4444;
+  --accent-bear-muted: #7f1d1d;
+  --accent-bear-glow: rgba(239, 68, 68, 0.15);
+  --accent-neutral: #6b7280;
+  --accent-neutral-muted: #1f2937;
+
+  /* Severity */
+  --severity-high: #ef4444;
+  --severity-high-bg: rgba(239, 68, 68, 0.1);
+  --severity-medium: #f59e0b;
+  --severity-medium-bg: rgba(245, 158, 11, 0.1);
+  --severity-low: #6b7280;
+  --severity-low-bg: rgba(107, 114, 128, 0.1);
+
+  /* Confidence */
+  --confidence-high: #10b981;
+  --confidence-medium: #f59e0b;
+  --confidence-low: #6b7280;
+
+  /* UI */
+  --border: #1e2030;
+  --border-muted: #151720;
+  --ring: rgba(99, 102, 241, 0.5);
+  --scrollbar-track: #0f1117;
+  --scrollbar-thumb: #2a2d3e;
+
+  /* Accent brand */
+  --brand: #6366f1;
+  --brand-muted: rgba(99, 102, 241, 0.15);
+
+  /* Layout */
+  --sidebar-width: 240px;
+  --sidebar-collapsed-width: 64px;
+  --header-height: 56px;
+  --content-padding: 24px;
+  --card-padding: 20px;
+  --card-radius: 12px;
+  --card-radius-sm: 8px;
+
+  /* Typography scale */
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+
+  /* Font families */
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* ─── Base Reset ────────────────────────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background-color: var(--bg-primary);
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3a3d52;
+}
+
+/* ─── Global Typography ─────────────────────────────────────────────────────── */
+
+code,
+kbd,
+pre,
+samp {
+  font-family: var(--font-mono);
+}
+
+/* ─── Utilities ─────────────────────────────────────────────────────────────── */
+
+.monospace {
+  font-family: var(--font-mono);
+}
+
+.text-bull {
+  color: var(--accent-bull);
+}
+
+.text-bear {
+  color: var(--accent-bear);
+}
+
+.text-neutral {
+  color: var(--accent-neutral);
+}
+
+/* ─── Card ──────────────────────────────────────────────────────────────────── */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+}
+
+.card-sm {
+  border-radius: var(--card-radius-sm);
+  padding: 12px;
+}
+
+/* ─── Focus Ring ────────────────────────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ─── Animations (F5-01) ────────────────────────────────────────────────────── */
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes pulseFade {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+/* ─── Page-level stagger (attach to page-content sections) ─── */
+
+.animate-stagger > * {
+  animation: fadeInUp var(--transition-slow) ease both;
+}
+
+.animate-stagger > *:nth-child(1) { animation-delay: 0ms;   }
+.animate-stagger > *:nth-child(2) { animation-delay: 60ms;  }
+.animate-stagger > *:nth-child(3) { animation-delay: 120ms; }
+.animate-stagger > *:nth-child(4) { animation-delay: 180ms; }
+.animate-stagger > *:nth-child(5) { animation-delay: 240ms; }
+
+/* ─── Card hover elevation (F5-01c) ─────────────────────────────────────────── */
+
+.card-interactive {
+  transition:
+    box-shadow var(--transition-base),
+    border-color var(--transition-base),
+    transform var(--transition-fast);
+  cursor: pointer;
+}
+
+.card-interactive:hover {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  border-color: var(--brand-muted);
+  transform: translateY(-1px);
+}
+
+.card-interactive:active {
+  transform: translateY(0);
+}
+
+/* ─── Alert pulse (F5-01b) ───────────────────────────────────────────────────── */
+
+.alert-pulse-once {
+  animation: pulseFade 1s ease 1;
+}
+
+/* ─── Responsive: Sidebar collapse on laptop (F5-02a) ───────────────────────── */
+
+@media (max-width: 1279px) {
+  :root {
+    --sidebar-width: var(--sidebar-collapsed-width);
+    --content-padding: 16px;
+  }
+}
+
+/* ─── Responsive: Mobile (F5-02c) ───────────────────────────────────────────── */
+
+@media (max-width: 767px) {
+  :root {
+    --sidebar-width: 0px;
+    --content-padding: 12px;
+    --header-height: 48px;
+  }
+
+  #main-wrapper {
+    margin-left: 0 !important;
+  }
+
+  /* Horizontal scroll for pair cards on mobile */
+  .pair-cards-mobile {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 12px;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .pair-cards-mobile > * {
+    scroll-snap-align: start;
+    min-width: 260px;
+    flex-shrink: 0;
+  }
+}
+
+/* ─── Accessibility: Respect prefers-reduced-motion (F5-01d / F5-04) ────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ─── Accessibility: High-contrast for severity color encoding (F5-04b) ────── */
+
+/* Ensures bias labels are text + color, never color-only */
+.bias-label-bull::before { content: "▲  "; }
+.bias-label-bear::before { content: "▼  "; }
+.bias-label-neutral::before { content: "—  "; }
+
