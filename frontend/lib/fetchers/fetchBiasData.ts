@@ -1,10 +1,10 @@
 import type { BiasReport } from "@/lib/types";
+import { DATA_BASE_URL } from "./base-url";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 const SUPPORTED_FEATURE_VERSION = "v1.2";
-const BASE_URL = process.env.NEXT_PUBLIC_DATA_BASE_URL ?? "";
 
 // ─── Cache ────────────────────────────────────────────────────────────────────
 
@@ -75,8 +75,8 @@ export async function fetchBiasData(
 
   const url =
     week === "latest"
-      ? `${BASE_URL}/data/bias-latest.json`
-      : `${BASE_URL}/data/history/bias/${week}.json`;
+      ? `${DATA_BASE_URL}/data/bias-latest.json`
+      : `${DATA_BASE_URL}/data/history/bias/${week}.json`;
 
   const response = await fetch(url, { cache: "no-store" });
 

@@ -1,7 +1,7 @@
 import type { CotReport } from "@/lib/types";
+import { DATA_BASE_URL } from "./base-url";
 
 const CACHE_TTL_MS = 60 * 60 * 1000;
-const BASE_URL = process.env.NEXT_PUBLIC_DATA_BASE_URL ?? "";
 
 const cache = new Map<string, { data: CotReport; fetchedAt: number }>();
 
@@ -24,7 +24,7 @@ export async function fetchCotData(force = false): Promise<CotReport> {
     }
   }
 
-  const response = await fetch(`${BASE_URL}/data/cot-latest.json`, {
+  const response = await fetch(`${DATA_BASE_URL}/data/cot-latest.json`, {
     cache: "no-store",
   });
 

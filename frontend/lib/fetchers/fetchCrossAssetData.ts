@@ -1,7 +1,7 @@
 import type { CrossAssetReport } from "@/lib/types";
+import { DATA_BASE_URL } from "./base-url";
 
 const CACHE_TTL_MS = 60 * 60 * 1000;
-const BASE_URL = process.env.NEXT_PUBLIC_DATA_BASE_URL ?? "";
 
 const cache = new Map<string, { data: CrossAssetReport; fetchedAt: number }>();
 
@@ -20,7 +20,7 @@ export async function fetchCrossAssetData(force = false): Promise<CrossAssetRepo
     }
   }
 
-  const response = await fetch(`${BASE_URL}/data/cross-asset-latest.json`, {
+  const response = await fetch(`${DATA_BASE_URL}/data/cross-asset-latest.json`, {
     cache: "no-store",
   });
 
