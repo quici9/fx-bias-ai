@@ -88,12 +88,14 @@ FEATURE_COLS = [
     "momentum_acceleration", "oi_delta_direction", "oi_net_confluence",
     "flip_flag", "extreme_flag", "usd_index_cot", "rank_in_8",
     "spread_vs_usd", "weeks_since_flip",
-    "lev_funds_net_index", "asset_mgr_net_direction", "dealer_net_contrarian",
-    "lev_vs_assetmgr_divergence",
+    # lev_funds_net_index & asset_mgr_net_direction excluded:
+    # zero-variance in training data — TFF fields missing from Socrata pivot
+    "dealer_net_contrarian", "lev_vs_assetmgr_divergence",
     "rate_diff_vs_usd", "rate_diff_trend_3m", "rate_hike_expectation",
     "cpi_diff_vs_usd", "cpi_trend", "pmi_composite_diff",
     "yield_10y_diff", "vix_regime",
-    "gold_cot_index", "oil_cot_direction", "month", "quarter",
+    # month excluded: r=0.97 with quarter
+    "gold_cot_index", "oil_cot_direction", "quarter",
 ]
 
 # Currency → yield differential pair mapping (for cross-asset)
@@ -139,7 +141,7 @@ def build_feature_vector(
     """
     Build one feature vector for a single currency from live data.
 
-    Returns dict keyed by feature name (28 features + currency_enc).
+    Returns dict keyed by feature name (25 features + currency_enc).
     Defaults to 0.0 for any unavailable feature (non-fatal).
     """
     feat = {k: 0.0 for k in FEATURE_COLS}
