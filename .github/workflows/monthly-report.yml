@@ -1,0 +1,66 @@
+name: Monthly Accuracy Report
+
+# B5-01c — run on 1st of each month at 02:00 UTC (after Saturday predict job)
+# Also supports manual trigger with optional month override.
+on:
+  schedule:
+    - cron: '0 2 1 * *'   # 1st of month, 02:00 UTC
+  workflow_dispatch:
+    inputs:
+      month:
+        description: 'Target month (YYYY-MM). Leave empty for previous month.'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+env:
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  monthly-report:
+    name: Generate Monthly Accuracy Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Ensure weekly_accuracy.json is up to date before reporting
+      - name: Refresh weekly accuracy
+        run: python backend/scripts/calc_weekly_accuracy.py
+        continue-on-error: true
+
+      - name: Generate monthly report
+        run: |
+          MONTH_ARG=""
+          if [ -n "${{ github.event.inputs.month }}" ]; then
+            MONTH_ARG="--month ${{ github.event.inputs.month }}"
+          fi
+          python backend/scripts/monthly_report.py $MONTH_ARG
+
+      - name: Commit report
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/history/model-metrics/monthly_*.json    2>/dev/null || true
+          git add data/history/model-metrics/weekly_accuracy.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            MONTH_LABEL=$(date -u '+%Y-%m')
+            git commit -m "report: monthly accuracy ${MONTH_LABEL} [B5-01c]"
+            git push
+          fi

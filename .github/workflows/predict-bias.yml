@@ -95,6 +95,11 @@ jobs:
         run: python backend/scripts/rollback_model.py
         continue-on-error: true   # rollback failure must not block output commit
 
+      # B5-01a — compute live weekly accuracy from prediction history vs actuals
+      - name: Calculate weekly accuracy
+        run: python backend/scripts/calc_weekly_accuracy.py
+        continue-on-error: true   # non-fatal: skips gracefully when actuals unavailable
+
       # Sanity-check the output before committing
       - name: Verify bias-latest.json
         run: |
@@ -123,8 +128,9 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add data/bias-latest.json
           git add data/history/bias/
-          git add data/alerts-pending.json             2>/dev/null || true
-          git add data/history/model-metrics/          2>/dev/null || true
+          git add data/alerts-pending.json                              2>/dev/null || true
+          git add data/history/model-metrics/                           2>/dev/null || true
+          git add data/history/model-metrics/weekly_accuracy.json       2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else

@@ -113,29 +113,68 @@ def check_rollback_condition(metrics_dir: Path = METRICS_DIR) -> tuple[bool, dic
     """
     Determine if rollback is needed.
 
-    Reads:
-      - initial_training.json  → baseline accuracy (walk_forward_summary.mean_accuracy)
-      - validation_results.json → recent fold accuracies
+    Primary path: reads weekly_accuracy.json (live rolling accuracy from B5-01a).
+    Fallback: reads validation_results.json (training fold accuracies).
 
-    Rolling 4-week accuracy = mean of the 4 most recent folds' RF accuracy.
     Rollback if: accuracy_4w < baseline − ROLLBACK_MARGIN (5%).
 
     Returns:
         (should_rollback: bool, details: dict)
 
     details keys:
-        baseline_accuracy, accuracy_4w, drift, threshold, folds_used
+        baseline_accuracy, accuracy_4w, drift, threshold, folds_used, source
     """
-    baseline_file = metrics_dir / "initial_training.json"
-    val_file      = metrics_dir / "validation_results.json"
-
     details = {
         "baseline_accuracy": None,
         "accuracy_4w": None,
         "drift": None,
         "threshold": ROLLBACK_MARGIN,
         "folds_used": 0,
+        "source": None,
     }
+
+    # --- Primary: weekly_accuracy.json (live rolling accuracy) ---
+    acc_file = metrics_dir / "weekly_accuracy.json"
+    if acc_file.exists():
+        try:
+            with open(acc_file) as f:
+                acc_data = json.load(f)
+            rolling_4w = acc_data.get("rolling_4w_accuracy")
+            baseline_acc = acc_data.get("baseline_accuracy")
+            rolling_weeks = acc_data.get("rolling_4w_weeks", [])
+
+            if rolling_4w is not None and baseline_acc and baseline_acc > 0:
+                accuracy_4w = float(rolling_4w)
+                drift = float(baseline_acc) - accuracy_4w
+
+                details.update({
+                    "baseline_accuracy": round(float(baseline_acc), 4),
+                    "accuracy_4w": round(accuracy_4w, 4),
+                    "drift": round(drift, 4),
+                    "folds_used": len(rolling_weeks),
+                    "source": "weekly_accuracy",
+                    "rolling_weeks": rolling_weeks,
+                })
+
+                should_rollback = drift > ROLLBACK_MARGIN
+                if should_rollback:
+                    logger.warning(
+                        f"Rollback condition met (live): baseline={baseline_acc:.4f}, "
+                        f"accuracy_4w={accuracy_4w:.4f}, drift={drift:.4f} > {ROLLBACK_MARGIN}"
+                    )
+                else:
+                    logger.info(
+                        f"No rollback needed (live): baseline={baseline_acc:.4f}, "
+                        f"accuracy_4w={accuracy_4w:.4f}, drift={drift:.4f}"
+                    )
+                return should_rollback, details
+
+        except Exception as exc:
+            logger.warning(f"check_rollback_condition: weekly_accuracy.json read error: {exc}")
+
+    # --- Fallback: validation_results.json (training folds) ---
+    baseline_file = metrics_dir / "initial_training.json"
+    val_file      = metrics_dir / "validation_results.json"
 
     if not baseline_file.exists():
         logger.warning("check_rollback_condition: initial_training.json not found — skip")
@@ -175,6 +214,7 @@ def check_rollback_condition(metrics_dir: Path = METRICS_DIR) -> tuple[bool, dic
             "accuracy_4w": round(accuracy_4w, 4),
             "drift": round(drift, 4),
             "folds_used": len(rf_accs),
+            "source": "validation_results",
         })
 
         should_rollback = drift > ROLLBACK_MARGIN

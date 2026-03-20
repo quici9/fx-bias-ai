@@ -1,0 +1,99 @@
+{
+  "generated_at": "2026-03-20T18:19:01.903130+00:00",
+  "baseline_accuracy": 0.5142,
+  "rolling_4w_accuracy": 0.5,
+  "rolling_4w_weeks": [
+    "2026-W09",
+    "2026-W10"
+  ],
+  "weeks": [
+    {
+      "week_label": "2026-W09",
+      "date": "2026-02-27",
+      "accuracy": 0.5714,
+      "n_predictions": 7,
+      "n_correct": 4,
+      "per_currency": {
+        "AUD": {
+          "predicted": "NEUTRAL",
+          "actual": "NEUTRAL",
+          "correct": true
+        },
+        "CAD": {
+          "predicted": "NEUTRAL",
+          "actual": "BULL",
+          "correct": false
+        },
+        "CHF": {
+          "predicted": "BEAR",
+          "actual": "BEAR",
+          "correct": true
+        },
+        "EUR": {
+          "predicted": "NEUTRAL",
+          "actual": "BEAR",
+          "correct": false
+        },
+        "GBP": {
+          "predicted": "BEAR",
+          "actual": "BEAR",
+          "correct": true
+        },
+        "JPY": {
+          "predicted": "NEUTRAL",
+          "actual": "BEAR",
+          "correct": false
+        },
+        "NZD": {
+          "predicted": "NEUTRAL",
+          "actual": "NEUTRAL",
+          "correct": true
+        }
+      }
+    },
+    {
+      "week_label": "2026-W10",
+      "date": "2026-03-06",
+      "accuracy": 0.4286,
+      "n_predictions": 7,
+      "n_correct": 3,
+      "per_currency": {
+        "AUD": {
+          "predicted": "BULL",
+          "actual": "NEUTRAL",
+          "correct": false
+        },
+        "CAD": {
+          "predicted": "NEUTRAL",
+          "actual": "BEAR",
+          "correct": false
+        },
+        "CHF": {
+          "predicted": "NEUTRAL",
+          "actual": "BEAR",
+          "correct": false
+        },
+        "EUR": {
+          "predicted": "BEAR",
+          "actual": "BEAR",
+          "correct": true
+        },
+        "GBP": {
+          "predicted": "BEAR",
+          "actual": "BEAR",
+          "correct": true
+        },
+        "JPY": {
+          "predicted": "NEUTRAL",
+          "actual": "BEAR",
+          "correct": false
+        },
+        "NZD": {
+          "predicted": "BEAR",
+          "actual": "BEAR",
+          "correct": true
+        }
+      }
+    }
+  ]
+}

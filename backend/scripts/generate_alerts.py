@@ -139,13 +139,43 @@ def check_model_drift(metrics_dir: Path = METRICS_DIR) -> list:
     """
     Rolling 4-week accuracy < baseline − 5%.
 
-    Compares the stored rolling accuracy from validation_results.json
-    against the baseline accuracy from initial_training.json.
+    Primary path: reads weekly_accuracy.json (live accuracy from B5-01a).
+    Fallback: reads validation_results.json (training folds).
     If no rolling accuracy is available, skips (returns []).
     """
     alerts = []
 
     try:
+        # --- Primary: weekly_accuracy.json (live rolling accuracy) ---
+        acc_file = metrics_dir / "weekly_accuracy.json"
+        if acc_file.exists():
+            with open(acc_file) as f:
+                acc_data = json.load(f)
+            rolling_4w = acc_data.get("rolling_4w_accuracy")
+            baseline_acc = acc_data.get("baseline_accuracy")
+            if rolling_4w is not None and baseline_acc and baseline_acc > 0:
+                drift = baseline_acc - rolling_4w
+                if drift > MODEL_DRIFT_MARGIN:
+                    rolling_weeks = acc_data.get("rolling_4w_weeks", [])
+                    alerts.append(_alert(
+                        "MODEL_DRIFT",
+                        (
+                            f"Model accuracy drifted (live): baseline={baseline_acc:.3f}, "
+                            f"rolling_4w={rolling_4w:.3f}, drift={drift:.3f} > {MODEL_DRIFT_MARGIN:.2f}"
+                        ),
+                        "HIGH",
+                        context={
+                            "baseline_accuracy": round(baseline_acc, 4),
+                            "recent_accuracy": round(rolling_4w, 4),
+                            "drift": round(float(drift), 4),
+                            "threshold": MODEL_DRIFT_MARGIN,
+                            "source": "weekly_accuracy",
+                            "rolling_weeks": rolling_weeks,
+                        },
+                    ))
+                return alerts  # primary path handled — skip fallback
+
+        # --- Fallback: validation_results.json (training folds) ---
         baseline_file = metrics_dir / "initial_training.json"
         if not baseline_file.exists():
             return []
@@ -155,7 +185,6 @@ def check_model_drift(metrics_dir: Path = METRICS_DIR) -> list:
         if baseline_acc <= 0:
             return []
 
-        # Check validation results for drift flag
         val_file = metrics_dir / "validation_results.json"
         if not val_file.exists():
             return []
@@ -183,6 +212,7 @@ def check_model_drift(metrics_dir: Path = METRICS_DIR) -> list:
                     "recent_accuracy": round(mean_recent, 4),
                     "drift": round(float(drift), 4),
                     "threshold": MODEL_DRIFT_MARGIN,
+                    "source": "validation_results",
                 },
             ))
     except Exception as exc:
