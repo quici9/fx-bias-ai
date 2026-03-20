@@ -190,8 +190,8 @@ def parse_tff(records: list[dict], currency: str) -> pd.DataFrame:
             continue
         lf_l  = _int(r.get("lev_money_positions_long_all",   0))
         lf_s  = _int(r.get("lev_money_positions_short_all",  0))
-        am_l  = _int(r.get("asset_mgr_positions_long_all",   0))
-        am_s  = _int(r.get("asset_mgr_positions_short_all",  0))
+        am_l  = _int(r.get("asset_mgr_positions_long",   0))
+        am_s  = _int(r.get("asset_mgr_positions_short",  0))
         dl_l  = _int(r.get("dealer_positions_long_all",      0))
         dl_s  = _int(r.get("dealer_positions_short_all",     0))
         rows.append({

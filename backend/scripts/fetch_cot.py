@@ -209,8 +209,8 @@ def parse_tff_record(raw: dict, currency: str) -> dict:
     lev_short = int(raw.get("lev_money_positions_short_all", 0))
     lev_net = lev_long - lev_short
 
-    asset_long = int(raw.get("asset_mgr_positions_long_all", 0))
-    asset_short = int(raw.get("asset_mgr_positions_short_all", 0))
+    asset_long = int(raw.get("asset_mgr_positions_long", 0))
+    asset_short = int(raw.get("asset_mgr_positions_short", 0))
     asset_net = asset_long - asset_short
 
     dealer_long = int(raw.get("dealer_positions_long_all", 0))
