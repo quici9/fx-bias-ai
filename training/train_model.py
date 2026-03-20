@@ -129,8 +129,9 @@ FEATURE_COLS = [
     "flip_flag", "extreme_flag", "usd_index_cot", "rank_in_8",
     "spread_vs_usd", "weeks_since_flip",
     # Group B — TFF
+    # lev_funds_net_index excluded: r=0.836 với cot_index — redundant
     "dealer_net_contrarian", "lev_vs_assetmgr_divergence",
-    "asset_mgr_net_direction", "lev_funds_net_index",
+    "asset_mgr_net_direction",
     # Group C — Macro
     "rate_diff_vs_usd", "rate_diff_trend_3m", "rate_hike_expectation",
     "cpi_diff_vs_usd", "cpi_trend", "pmi_composite_diff",

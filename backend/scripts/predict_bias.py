@@ -89,8 +89,9 @@ FEATURE_COLS = [
     "flip_flag", "extreme_flag", "usd_index_cot", "rank_in_8",
     "spread_vs_usd", "weeks_since_flip",
     # Group B — TFF
+    # lev_funds_net_index excluded: r=0.836 với cot_index — redundant
     "dealer_net_contrarian", "lev_vs_assetmgr_divergence",
-    "asset_mgr_net_direction", "lev_funds_net_index",
+    "asset_mgr_net_direction",
     "rate_diff_vs_usd", "rate_diff_trend_3m", "rate_hike_expectation",
     "cpi_diff_vs_usd", "cpi_trend", "pmi_composite_diff",
     "yield_10y_diff", "vix_regime",
@@ -177,12 +178,16 @@ def build_feature_vector(
     else:
         feat["net_pct_change_1w"] = 0.0
 
-    # 4. momentum_acceleration — change in weekly delta (2nd derivative)
-    # Approximate from 12w trend: (t[0]-t[1]) - (t[1]-t[2])
+    # 4. momentum_acceleration — (delta[t] − delta[t−1]) / |net[t−1]| × 100
+    # Normalized as % of prior net, clipped ±500 — matches feature_engineering.py
     if len(trend_12w) >= 3:
         d1 = _safe(trend_12w[0]) - _safe(trend_12w[1])
         d2 = _safe(trend_12w[1]) - _safe(trend_12w[2])
-        feat["momentum_acceleration"] = d1 - d2
+        net_t1 = abs(_safe(trend_12w[1]))
+        if net_t1 > 1:
+            feat["momentum_acceleration"] = float(np.clip((d1 - d2) / net_t1 * 100.0, -500.0, 500.0))
+        else:
+            feat["momentum_acceleration"] = 0.0
 
     # 5. oi_delta_direction — not directly available in latest (no OI prev)
     # Default 0 (unavailable without history)
