@@ -35,16 +35,19 @@
 
 ---
 
-## ADR-003: Model Storage — Direct Commit (revisit after Phase B3)
+## ADR-003: Model Storage — Git LFS
 
-**Date:** 2026-03-19
-**Status:** Accepted (provisional)
+**Date:** 2026-03-19 (revised 2026-03-20)
+**Status:** Accepted
 **Context:** `model.pkl` needs to be stored in repo. Options: direct commit vs Git LFS.
-**Decision:** Direct commit if model < 5MB. Revisit after Phase B3 when actual model size is known.
+**Decision:** Git LFS cho `model.pkl`, `calibrator.pkl`, `model_backup.pkl`, `model_backup_prev.pkl`
 **Rationale:**
-- RandomForest with 200 trees, max_depth=8, 28 features → expected ~2-3MB
-- Direct commit avoids Git LFS setup complexity
-- If model > 5MB after training → migrate to Git LFS
+- B3 training thực tế: RF 300 trees, max_depth=10 → model.pkl = 28MB, calibrator.pkl = 28MB
+- Vượt ngưỡng 5MB đặt ra ban đầu → trigger migrate theo điều kiện đã định
+- Mỗi lần retrain (4 tuần/lần) sẽ push 56MB vào git history nếu dùng direct commit → repo phình nhanh
+- Git LFS chỉ store LFS pointer (133B) trong history, binary lưu riêng trên LFS server
+- `model_lr_fallback.pkl` (10KB) giữ direct commit — không cần LFS
+- Workflows cần `lfs: true` trong `actions/checkout@v4` để pull model files
 
 ---
 
