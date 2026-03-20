@@ -59,6 +59,15 @@ RF_PARAMS = {
     "n_jobs": -1,
 }
 
+# Hyperparameter search grid (B3-01 tuning step)
+TUNE_LEAF = (5, 10, 15, 20)
+TUNE_DEPTH = (6, 8, 10)
+# Tuning folds: use first 2 folds only (fast, avoids data leakage from test years)
+TUNE_FOLDS = [
+    ("2020-12-31", "2021-01-01", "2021-12-31", "TFold1"),
+    ("2021-12-31", "2022-01-01", "2022-12-31", "TFold2"),
+]
+
 # Walk-forward folds: (train_end, test_start, test_end, fold_label)
 # Each fold trains on all data up to train_end, tests on [test_start, test_end].
 FOLDS = [
@@ -159,6 +168,56 @@ def prepare_features(df: pd.DataFrame, currency_encoder: LabelEncoder) -> tuple:
 
     y = df["label"].values
     return X, y, present
+
+
+# ---------------------------------------------------------------------------
+# Hyperparameter tuning — select best (min_samples_leaf, max_depth)
+# ---------------------------------------------------------------------------
+
+def find_best_params(df: pd.DataFrame, currency_encoder: LabelEncoder) -> dict:
+    """
+    Lightweight grid search on TUNE_FOLDS (first 2 folds) to find best
+    (min_samples_leaf, max_depth) combination before final training.
+
+    Returns updated RF_PARAMS with best values found.
+    """
+    logger.info(f"Grid: min_samples_leaf={TUNE_LEAF}, max_depth={TUNE_DEPTH}")
+    best_acc = -1.0
+    best_leaf = RF_PARAMS["min_samples_leaf"]
+    best_depth = RF_PARAMS["max_depth"]
+
+    for leaf in TUNE_LEAF:
+        for depth in TUNE_DEPTH:
+            params = {**RF_PARAMS, "min_samples_leaf": leaf, "max_depth": depth}
+            fold_accs = []
+            for train_end, test_start, test_end, fold_label in TUNE_FOLDS:
+                df_train = df[df["date"] <= pd.Timestamp(train_end)]
+                df_test = df[
+                    (df["date"] >= pd.Timestamp(test_start)) &
+                    (df["date"] <= pd.Timestamp(test_end))
+                ]
+                if df_train.empty or df_test.empty:
+                    continue
+                X_tr, y_tr, _ = prepare_features(df_train, currency_encoder)
+                X_te, y_te, _ = prepare_features(df_test, currency_encoder)
+
+                base_rf = RandomForestClassifier(**params)
+                model = CalibratedClassifierCV(base_rf, method="sigmoid", cv=5)
+                model.fit(X_tr, y_tr)
+                fold_accs.append(accuracy_score(y_te, model.predict(X_te)))
+
+            mean_acc = float(np.mean(fold_accs)) if fold_accs else 0.0
+            logger.info(f"  leaf={leaf}, depth={depth}: acc={mean_acc:.4f}")
+            if mean_acc > best_acc:
+                best_acc = mean_acc
+                best_leaf = leaf
+                best_depth = depth
+
+    best = {**RF_PARAMS, "min_samples_leaf": best_leaf, "max_depth": best_depth}
+    logger.info(
+        f"Best params: min_samples_leaf={best_leaf}, max_depth={best_depth} → acc={best_acc:.4f}"
+    )
+    return best
 
 
 # ---------------------------------------------------------------------------
@@ -265,6 +324,7 @@ def train_final_model(
     df: pd.DataFrame,
     currency_encoder: LabelEncoder,
     final_train_end: str = "2023-12-31",
+    rf_params: dict = None,
 ) -> CalibratedClassifierCV:
     """
     Train final production model on data up to final_train_end.
@@ -273,18 +333,22 @@ def train_final_model(
       models/model.pkl        — CalibratedClassifierCV (Platt scaled)
       models/calibrator.pkl   — same object (alias per B3-01f spec)
     """
+    if rf_params is None:
+        rf_params = RF_PARAMS
+
     df_final = df[df["date"] <= pd.Timestamp(final_train_end)].copy()
     logger.info(
         f"Final model: training on {len(df_final)} rows "
         f"(≤ {final_train_end})"
     )
+    logger.info(f"Final RF params: {rf_params}")
 
     X, y, feat_cols_used = prepare_features(df_final, currency_encoder)
     logger.info(f"Features used ({len(feat_cols_used)}): {feat_cols_used}")
 
-    # B3-01b — RandomForestClassifier (baseline hyperparameters)
+    # B3-01b — RandomForestClassifier (tuned hyperparameters)
     # B3-01d — class_weight='balanced'
-    base_rf = RandomForestClassifier(**RF_PARAMS)
+    base_rf = RandomForestClassifier(**rf_params)
 
     # B3-01e — Platt Scaling calibration
     model = CalibratedClassifierCV(base_rf, method="sigmoid", cv=5)
@@ -389,20 +453,27 @@ def main() -> int:
     logger.info(f"\nFold accuracies: {[round(a, 4) for a in accs]}")
     logger.info(f"Mean: {np.mean(accs):.4f}  Std: {np.std(accs):.4f}")
 
+    # --- Hyperparameter tuning (grid search on first 2 folds) ---
+    logger.info("\n" + "=" * 40)
+    logger.info("Hyperparameter tuning")
+    logger.info("=" * 40)
+
+    best_rf_params = find_best_params(df, currency_encoder)
+
     # --- Final model training (B3-01b, d, e, f) ---
     logger.info("\n" + "=" * 40)
     logger.info("Training final production model")
     logger.info("=" * 40)
 
     final_train_end = "2023-12-31"
-    train_final_model(df, currency_encoder, final_train_end)
+    train_final_model(df, currency_encoder, final_train_end, rf_params=best_rf_params)
 
     # --- Save metrics (B3-01g) ---
     logger.info("\n" + "=" * 40)
     logger.info("Saving metrics")
     logger.info("=" * 40)
 
-    save_metrics(fold_results, final_train_end, RF_PARAMS)
+    save_metrics(fold_results, final_train_end, best_rf_params)
 
     # --- Gate check ---
     mean_acc = float(np.mean(accs))

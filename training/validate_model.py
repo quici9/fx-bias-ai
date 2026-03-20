@@ -227,13 +227,53 @@ def accuracy_by_confidence(
 # B3-02e — min_samples_leaf tuning
 # ---------------------------------------------------------------------------
 
+def tune_hyperparams(
+    df: pd.DataFrame,
+    currency_encoder: LabelEncoder,
+    leaf_candidates: list = (5, 10, 15, 20, 30),
+    depth_candidates: list = (6, 8, 10),
+) -> dict:
+    """
+    Joint grid search over min_samples_leaf × max_depth using walk-forward folds.
+    Uses all 4 folds for reliable estimates.
+    Returns dict: {(leaf, depth): mean_accuracy}.
+    """
+    results = {}
+    for leaf in leaf_candidates:
+        for depth in depth_candidates:
+            params = {**RF_PARAMS_BASE, "min_samples_leaf": leaf, "max_depth": depth}
+            fold_accs = []
+            for train_end, test_start, test_end, fold_label in FOLDS:
+                df_train = df[df["date"] <= pd.Timestamp(train_end)]
+                df_test = df[
+                    (df["date"] >= pd.Timestamp(test_start)) &
+                    (df["date"] <= pd.Timestamp(test_end))
+                ]
+                if df_train.empty or df_test.empty:
+                    continue
+                X_tr = prepare_X(df_train, currency_encoder)
+                y_tr = df_train["label"].values
+                X_te = prepare_X(df_test, currency_encoder)
+                y_te = df_test["label"].values
+
+                base_rf = RandomForestClassifier(**params)
+                model = CalibratedClassifierCV(base_rf, method="sigmoid", cv=5)
+                model.fit(X_tr, y_tr)
+                fold_accs.append(accuracy_score(y_te, model.predict(X_te)))
+
+            mean_acc = float(np.mean(fold_accs)) if fold_accs else 0.0
+            results[(leaf, depth)] = round(mean_acc, 4)
+            logger.info(f"  min_samples_leaf={leaf}, max_depth={depth}: mean_acc={mean_acc:.4f}")
+    return results
+
+
 def tune_min_samples_leaf(
     df: pd.DataFrame,
     currency_encoder: LabelEncoder,
-    candidates: list = (10, 15),
+    candidates: list = (5, 10, 15, 20, 30),
 ) -> dict:
     """
-    Run walk-forward for each candidate min_samples_leaf.
+    Run walk-forward for each candidate min_samples_leaf (fixed max_depth=8).
     Returns dict: {leaf_size: mean_accuracy}.
     """
     results = {}
@@ -441,6 +481,7 @@ def write_model_card(
     top_features: list,
     leaf_tune: dict,
     best_leaf: int,
+    best_depth: int,
     gate_overall: bool,
     generated_at: str,
 ) -> None:
@@ -465,7 +506,7 @@ def write_model_card(
         "|-------|-------|",
         "| Model type | RandomForestClassifier + Platt Scaling (CalibratedClassifierCV) |",
         "| n_estimators | 300 |",
-        "| max_depth | 8 |",
+        f"| max_depth | {best_depth} (tuned B3-02e) |",
         f"| min_samples_leaf | {best_leaf} (tuned B3-02e) |",
         "| max_features | sqrt |",
         "| class_weight | balanced |",
@@ -575,25 +616,32 @@ def write_model_card(
 # B3-02e — DECISIONS.md
 # ---------------------------------------------------------------------------
 
-def write_decisions(leaf_tune: dict, best_leaf: int, generated_at: str) -> None:
+def write_decisions(
+    leaf_tune: dict,
+    best_leaf: int,
+    best_depth: int,
+    grid_results: dict,
+    generated_at: str,
+) -> None:
+    best_acc = grid_results.get((best_leaf, best_depth), 0.0)
     decision_block = f"""
-## min_samples_leaf Tuning — B3-02e
+## Hyperparameter Grid Search — B3-02e
 
 **Date:** {generated_at}
 
-**Candidates tested:** {list(leaf_tune.keys())}
+**Grid:** min_samples_leaf ∈ {sorted(set(l for l, _ in grid_results))} × max_depth ∈ {sorted(set(d for _, d in grid_results))}
 
-| min_samples_leaf | Mean Walk-Forward Accuracy |
-|------------------|---------------------------|
+| min_samples_leaf | max_depth | Mean Walk-Forward Accuracy |
+|------------------|-----------|---------------------------|
 """
-    for leaf, acc in leaf_tune.items():
-        marker = " ← selected" if leaf == best_leaf else ""
-        decision_block += f"| {leaf} | {acc:.4f}{marker} |\n"
+    for (leaf, depth), acc in sorted(grid_results.items()):
+        marker = " ← selected" if (leaf, depth) == (best_leaf, best_depth) else ""
+        decision_block += f"| {leaf} | {depth} | {acc:.4f}{marker} |\n"
 
     decision_block += f"""
-**Selected:** `min_samples_leaf = {best_leaf}`
-**Reason:** Higher mean walk-forward accuracy across 4 folds.
-**Impact:** Lower values allow finer splits (risk overfit); higher values regularize more.
+**Selected:** `min_samples_leaf = {best_leaf}`, `max_depth = {best_depth}` → acc = {best_acc:.4f}
+**Reason:** Best mean walk-forward accuracy across all 4 folds in joint grid search.
+**Impact:** Joint tuning prevents sub-optimal local choices from single-dimension search.
 
 ---
 """
@@ -602,10 +650,10 @@ def write_decisions(leaf_tune: dict, best_leaf: int, generated_at: str) -> None:
     if decisions_path.exists():
         existing = decisions_path.read_text()
         # Avoid duplicating the section
-        if "min_samples_leaf Tuning" not in existing:
+        if "Hyperparameter Grid Search" not in existing:
             decisions_path.write_text(existing.rstrip() + "\n" + decision_block)
         else:
-            logger.info("DECISIONS.md already has min_samples_leaf section — skipping append")
+            logger.info("DECISIONS.md already has Hyperparameter Grid Search section — skipping append")
     else:
         decisions_path.write_text(f"# DECISIONS.md — FX Bias AI\n{decision_block}")
 
@@ -682,11 +730,16 @@ def main() -> int:
     logger.info(f"\nMean RF−COT gap: {mean_gap:+.4f}")
     logger.info(f"Gate (≥+5%): {'PASS ✓' if gate_overall else 'FAIL ✗'}")
 
-    # --- B3-02e: min_samples_leaf tuning ---
-    logger.info("\n=== Tuning min_samples_leaf (B3-02e) ===")
-    leaf_tune = tune_min_samples_leaf(df, currency_encoder, candidates=[10, 15])
-    best_leaf = max(leaf_tune, key=leaf_tune.get)
-    logger.info(f"Best min_samples_leaf: {best_leaf} (acc={leaf_tune[best_leaf]:.4f})")
+    # --- B3-02e: Hyperparameter grid search (min_samples_leaf × max_depth) ---
+    logger.info("\n=== Hyperparameter Grid Search (B3-02e) ===")
+    grid_results = tune_hyperparams(df, currency_encoder)
+    best_params = max(grid_results, key=grid_results.get)
+    best_leaf, best_depth = best_params
+    best_grid_acc = grid_results[best_params]
+    logger.info(f"Best: min_samples_leaf={best_leaf}, max_depth={best_depth} → acc={best_grid_acc:.4f}")
+
+    # Slice at best_depth for DECISIONS.md / model card leaf breakdown
+    leaf_tune = {leaf: acc for (leaf, depth), acc in grid_results.items() if depth == best_depth}
 
     # --- B3-02f: Feature importance ---
     logger.info("\n=== Feature Importance Analysis (B3-02f) ===")
@@ -719,10 +772,10 @@ def main() -> int:
 
     # --- B3-02d: Model card ---
     logger.info("\n=== Writing model card (B3-02d) ===")
-    write_model_card(fold_results, top_features, leaf_tune, best_leaf, gate_overall, generated_at)
+    write_model_card(fold_results, top_features, leaf_tune, best_leaf, best_depth, gate_overall, generated_at)
 
     # --- B3-02e: DECISIONS.md ---
-    write_decisions(leaf_tune, best_leaf, generated_at)
+    write_decisions(leaf_tune, best_leaf, best_depth, grid_results, generated_at)
 
     # --- B3-03: LR fallback ---
     logger.info("\n=== Training LR Fallback (B3-03) ===")
@@ -735,8 +788,11 @@ def main() -> int:
         "generated_at": generated_at,
         "gate_pass": gate_overall,
         "mean_rf_vs_cot_gap": round(mean_gap, 4),
-        "min_samples_leaf_tuning": {str(k): v for k, v in leaf_tune.items()},
+        "hyperparam_grid": {f"leaf={l}_depth={d}": acc for (l, d), acc in grid_results.items()},
         "best_min_samples_leaf": best_leaf,
+        "best_max_depth": best_depth,
+        "best_grid_accuracy": best_grid_acc,
+        "min_samples_leaf_tuning": {str(k): v for k, v in leaf_tune.items()},
         "top_10_features": top_features[:10],
         "group_b_in_top10": group_b_in_top10,
         "folds": {

@@ -20,6 +20,7 @@ Output:
 Reference: Task List B2-04, RPD Section 3.2–3.3
 """
 
+import io
 import logging
 import os
 import sys
@@ -160,32 +161,28 @@ def _fetch_ecb_rate() -> Optional[pd.Series]:
     try:
         resp = requests.get(url, params=params, timeout=REQUEST_TIMEOUT)
         resp.raise_for_status()
-        lines = resp.text.strip().splitlines()
+        df = pd.read_csv(io.StringIO(resp.text))
+        if "TIME_PERIOD" not in df.columns or "OBS_VALUE" not in df.columns:
+            raise ValueError(f"Unexpected ECB CSV columns: {list(df.columns)}")
         records = {}
-        for line in lines[1:]:  # skip header
-            parts = line.split(",")
-            if len(parts) >= 8:
-                period = parts[5].strip()
-                value = parts[7].strip()
-                if value and value not in ("", "N/A"):
-                    try:
-                        records[pd.Timestamp(period + "-01")] = float(value)
-                    except (ValueError, Exception):
-                        pass
-        if records:
-            s = pd.Series(records, dtype=float)
-            logger.info(f"  ✓ ECB DFR (EUR policy rate): {len(s)} observations")
-            return s
-        else:
+        for _, row in df.iterrows():
+            try:
+                records[pd.Timestamp(str(row["TIME_PERIOD"]) + "-01")] = float(row["OBS_VALUE"])
+            except (ValueError, TypeError):
+                pass
+        if not records:
             raise ValueError("Empty ECB response")
+        s = pd.Series(records, dtype=float)
+        logger.info(f"  ✓ ECB DFR (EUR policy rate): {len(s)} observations")
+        return s
     except Exception as exc:
         logger.warning(f"  ✗ ECB rate fetch failed: {exc} — EUR rate will be 0")
         return None
 
 
 def _fetch_ecb_cpi() -> Optional[pd.Series]:
-    """Fetch Euro Area HICP YoY from ECB Data Portal."""
-    # EA19 HICP YoY growth rate
+    """Fetch Euro Area HICP index from ECB Data Portal (index level; YoY computed by caller)."""
+    # EA HICP All Items index (2015=100), monthly
     url = "https://data-api.ecb.europa.eu/service/data/ICP/M.U2.N.000000.4.INX"
     params = {
         "format": "csvdata",
@@ -195,24 +192,20 @@ def _fetch_ecb_cpi() -> Optional[pd.Series]:
     try:
         resp = requests.get(url, params=params, timeout=REQUEST_TIMEOUT)
         resp.raise_for_status()
-        lines = resp.text.strip().splitlines()
+        df = pd.read_csv(io.StringIO(resp.text))
+        if "TIME_PERIOD" not in df.columns or "OBS_VALUE" not in df.columns:
+            raise ValueError(f"Unexpected ECB CSV columns: {list(df.columns)}")
         records = {}
-        for line in lines[1:]:
-            parts = line.split(",")
-            if len(parts) >= 8:
-                period = parts[5].strip()
-                value = parts[7].strip()
-                if value and value not in ("", "N/A"):
-                    try:
-                        records[pd.Timestamp(period + "-01")] = float(value)
-                    except (ValueError, Exception):
-                        pass
-        if records:
-            s = pd.Series(records, dtype=float)
-            logger.info(f"  ✓ ECB HICP (EUR CPI): {len(s)} observations")
-            return s
-        else:
+        for _, row in df.iterrows():
+            try:
+                records[pd.Timestamp(str(row["TIME_PERIOD"]) + "-01")] = float(row["OBS_VALUE"])
+            except (ValueError, TypeError):
+                pass
+        if not records:
             raise ValueError("Empty ECB CPI response")
+        s = pd.Series(records, dtype=float)
+        logger.info(f"  ✓ ECB HICP (EUR CPI): {len(s)} observations")
+        return s
     except Exception as exc:
         logger.warning(f"  ✗ ECB CPI fetch failed: {exc} — EUR CPI will use fallback")
         return None
@@ -279,10 +272,13 @@ def download_macro_data() -> dict:
         eur_cpi_yoy = eur_cpi.pct_change(12) * 100
         cpi_series["EUR"] = eur_cpi_yoy
     elif "EUR" not in cpi_series:
-        # Fallback: FRED HICP for Euro area
-        s = _fetch_fred("EA19CPIALLMINMEI", frequency="m")
+        # Fallback: FRED HICP for Euro Area (CP0000EZ19M086NEST = HICP All Items, index 2015=100)
+        # EA19CPIALLMINMEI was retired by FRED — use this replacement series
+        s = _fetch_fred("CP0000EZ19M086NEST", frequency="m")
         if s is not None:
-            cpi_series["EUR"] = s
+            # This series is an index level; compute YoY
+            eur_cpi_yoy = s.pct_change(12) * 100
+            cpi_series["EUR"] = eur_cpi_yoy
 
     macro_cpi = pd.DataFrame(cpi_series) if cpi_series else None
 
