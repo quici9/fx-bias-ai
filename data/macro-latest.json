@@ -95,12 +95,12 @@
     },
     {
       "currency": "JPY",
-      "value": 103.33418172563,
-      "diff_vs_usd": -223.2538,
+      "value": -62.58,
+      "diff_vs_usd": -389.168,
       "trend_3m": "RISING",
-      "last_update": "2022-04-01",
+      "last_update": "2025-11-01",
       "publication_lag_applied": 2,
-      "freshness_days": 1449,
+      "freshness_days": 139,
       "is_stale": true
     },
     {
