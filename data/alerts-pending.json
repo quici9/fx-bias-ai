@@ -1,17 +1,178 @@
 [
   {
+    "type": "EXTREME_POSITIONING",
+    "message": "GBP COT Index at extreme oversold level (6.2)",
+    "severity": "MEDIUM",
+    "currency": "GBP",
+    "context": {
+      "cot_index": 6.23,
+      "direction": "oversold"
+    }
+  },
+  {
+    "type": "EXTREME_POSITIONING",
+    "message": "JPY COT Index at extreme oversold level (1.7)",
+    "severity": "MEDIUM",
+    "currency": "JPY",
+    "context": {
+      "cot_index": 1.68,
+      "direction": "oversold"
+    }
+  },
+  {
+    "type": "EXTREME_POSITIONING",
+    "message": "AUD COT Index at extreme overbought level (91.9)",
+    "severity": "MEDIUM",
+    "currency": "AUD",
+    "context": {
+      "cot_index": 91.94,
+      "direction": "overbought"
+    }
+  },
+  {
+    "type": "EXTREME_POSITIONING",
+    "message": "CAD COT Index at extreme overbought level (100.0)",
+    "severity": "MEDIUM",
+    "currency": "CAD",
+    "context": {
+      "cot_index": 100.0,
+      "direction": "overbought"
+    }
+  },
+  {
+    "type": "FLIP_DETECTED",
+    "message": "JPY net position flipped (long \u2192 short): prev=-16,575 \u2192 now=-41,387",
+    "severity": "MEDIUM",
+    "currency": "JPY",
+    "context": {
+      "net_now": -41387,
+      "net_prev": -16575,
+      "direction": "long \u2192 short"
+    }
+  },
+  {
+    "type": "DATA_SOURCE_STALE",
+    "message": "USD policy_rates is stale: last_update=2026-02-01 (47 days ago)",
+    "severity": "MEDIUM",
+    "currency": "USD",
+    "context": {
+      "source": "policy_rates",
+      "last_update": "2026-02-01",
+      "days": 47
+    }
+  },
+  {
+    "type": "DATA_SOURCE_STALE",
+    "message": "GBP policy_rates is stale: last_update=2026-02-01 (47 days ago)",
+    "severity": "MEDIUM",
+    "currency": "GBP",
+    "context": {
+      "source": "policy_rates",
+      "last_update": "2026-02-01",
+      "days": 47
+    }
+  },
+  {
+    "type": "DATA_SOURCE_STALE",
+    "message": "JPY policy_rates is stale: last_update=2023-12-01 (840 days ago)",
+    "severity": "MEDIUM",
+    "currency": "JPY",
+    "context": {
+      "source": "policy_rates",
+      "last_update": "2023-12-01",
+      "days": 840
+    }
+  },
+  {
+    "type": "DATA_SOURCE_STALE",
+    "message": "AUD policy_rates is stale: last_update=2026-02-01 (47 days ago)",
+    "severity": "MEDIUM",
+    "currency": "AUD",
+    "context": {
+      "source": "policy_rates",
+      "last_update": "2026-02-01",
+      "days": 47
+    }
+  },
+  {
+    "type": "DATA_SOURCE_STALE",
+    "message": "CAD policy_rates is stale: last_update=2023-12-01 (840 days ago)",
+    "severity": "MEDIUM",
+    "currency": "CAD",
+    "context": {
+      "source": "policy_rates",
+      "last_update": "2023-12-01",
+      "days": 840
+    }
+  },
+  {
+    "type": "DATA_SOURCE_STALE",
+    "message": "CHF policy_rates is stale: last_update=2024-03-01 (749 days ago)",
+    "severity": "MEDIUM",
+    "currency": "CHF",
+    "context": {
+      "source": "policy_rates",
+      "last_update": "2024-03-01",
+      "days": 749
+    }
+  },
+  {
+    "type": "DATA_SOURCE_STALE",
+    "message": "NZD policy_rates is stale: last_update=2024-12-01 (474 days ago)",
+    "severity": "MEDIUM",
+    "currency": "NZD",
+    "context": {
+      "source": "policy_rates",
+      "last_update": "2024-12-01",
+      "days": 474
+    }
+  },
+  {
+    "type": "DATA_SOURCE_STALE",
+    "message": "EUR cpi_yoy is stale: last_update=2025-12-01 (109 days ago)",
+    "severity": "MEDIUM",
+    "currency": "EUR",
+    "context": {
+      "source": "cpi_yoy",
+      "last_update": "2025-12-01",
+      "days": 109
+    }
+  },
+  {
+    "type": "MOMENTUM_DECEL",
+    "message": "EUR momentum decelerating for 3+ consecutive weeks (accels=[-14.64, -3.63, -15.7])",
+    "severity": "LOW",
+    "currency": "EUR",
+    "context": {
+      "acceleration_3w": [
+        -14.64,
+        -3.63,
+        -15.7
+      ],
+      "trend_12w_current": 0.0
+    }
+  },
+  {
     "type": "CALENDAR_SOURCE_FALLBACK",
-    "message": "Using static calendar for 2026 \u2014 MQL5 unavailable",
-    "severity": "LOW"
+    "message": "Using static/fallback calendar (source='STATIC_FALLBACK') \u2014 live events unavailable",
+    "severity": "LOW",
+    "context": {
+      "source": "STATIC_FALLBACK"
+    }
   },
   {
-    "type": "MISSING_DATA",
-    "message": "CFTC API request failed: 403 Client Error: Forbidden for url: https://publicreporting.cftc.gov/resource/jun7-fc8e.json?%24where=cftc_contract_market_code%3D%27099741%27&%24order=report_date_as_yyyy_mm_dd+DESC&%24limit=1",
-    "severity": "HIGH"
-  },
-  {
-    "type": "MISSING_DATA",
-    "message": "CFTC API request failed: 403 Client Error: Forbidden for url: https://publicreporting.cftc.gov/resource/jun7-fc8e.json?%24where=cftc_contract_market_code%3D%27099741%27&%24order=report_date_as_yyyy_mm_dd+DESC&%24limit=1",
-    "severity": "HIGH"
+    "type": "MODEL_ROLLBACK",
+    "message": "Model was rolled back this week: accuracy drop",
+    "severity": "HIGH",
+    "context": {
+      "week_label": "2026-W12",
+      "timestamp_utc": "2026-03-20T01:30:35.587724+00:00",
+      "reason": "accuracy drop",
+      "baseline_accuracy": 0.7,
+      "accuracy_4w": 0.58,
+      "drift": 0.12,
+      "threshold": 0.05,
+      "folds_used": 4
+    }
   }
 ]
