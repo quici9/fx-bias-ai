@@ -1,28 +1,28 @@
 {
   "meta": {
     "weekLabel": "2026-W12",
-    "generatedAt": "2026-03-20T17:43:50.484712+00:00",
+    "generatedAt": "2026-03-21T01:36:29.784940+00:00",
     "modelVersion": "rf-v2.1",
     "featureVersion": "v2.1-28f",
-    "overallConfidence": "MEDIUM",
+    "overallConfidence": "HIGH",
     "dataSourceStatus": {
       "cot": "OK",
       "macro": "OK",
       "cross_asset": "OK",
       "calendar": "OK"
     },
-    "pipelineRuntime": 3.27
+    "pipelineRuntime": 3.47
   },
   "predictions": [
     {
       "currency": "CAD",
       "bias": "NEUTRAL",
       "probability": {
-        "bull": 0.4284,
-        "neutral": 0.561,
-        "bear": 0.0106
+        "bull": 0.4585,
+        "neutral": 0.5368,
+        "bear": 0.0047
       },
-      "confidence": "MEDIUM",
+      "confidence": "LOW",
       "rank": 1,
       "key_drivers": [
         "CPI differential",
@@ -37,9 +37,9 @@
       "currency": "AUD",
       "bias": "NEUTRAL",
       "probability": {
-        "bull": 0.0742,
-        "neutral": 0.7129,
-        "bear": 0.2128
+        "bull": 0.0809,
+        "neutral": 0.8159,
+        "bear": 0.1032
       },
       "confidence": "HIGH",
       "rank": 2,
@@ -56,9 +56,9 @@
       "currency": "USD",
       "bias": "NEUTRAL",
       "probability": {
-        "bull": 0.0813,
-        "neutral": 0.7482,
-        "bear": 0.1705
+        "bull": 0.0682,
+        "neutral": 0.8193,
+        "bear": 0.1125
       },
       "confidence": "HIGH",
       "rank": 3,
@@ -73,9 +73,9 @@
       "currency": "EUR",
       "bias": "NEUTRAL",
       "probability": {
-        "bull": 0.0754,
-        "neutral": 0.7396,
-        "bear": 0.185
+        "bull": 0.0668,
+        "neutral": 0.8164,
+        "bear": 0.1168
       },
       "confidence": "HIGH",
       "rank": 4,
@@ -90,9 +90,9 @@
       "currency": "NZD",
       "bias": "NEUTRAL",
       "probability": {
-        "bull": 0.0733,
-        "neutral": 0.703,
-        "bear": 0.2237
+        "bull": 0.0636,
+        "neutral": 0.8068,
+        "bear": 0.1296
       },
       "confidence": "HIGH",
       "rank": 5,
@@ -107,9 +107,9 @@
       "currency": "CHF",
       "bias": "NEUTRAL",
       "probability": {
-        "bull": 0.4721,
-        "neutral": 0.5183,
-        "bear": 0.0096
+        "bull": 0.4534,
+        "neutral": 0.5409,
+        "bear": 0.0057
       },
       "confidence": "LOW",
       "rank": 6,
@@ -124,9 +124,9 @@
       "currency": "GBP",
       "bias": "NEUTRAL",
       "probability": {
-        "bull": 0.078,
-        "neutral": 0.733,
-        "bear": 0.189
+        "bull": 0.0636,
+        "neutral": 0.8116,
+        "bear": 0.1248
       },
       "confidence": "HIGH",
       "rank": 7,
@@ -143,9 +143,9 @@
       "currency": "JPY",
       "bias": "NEUTRAL",
       "probability": {
-        "bull": 0.0728,
-        "neutral": 0.7199,
-        "bear": 0.2072
+        "bull": 0.0579,
+        "neutral": 0.8067,
+        "bear": 0.1355
       },
       "confidence": "HIGH",
       "rank": 8,
@@ -169,21 +169,21 @@
         "spread": 0.0,
         "base_currency": "CAD",
         "quote_currency": "AUD",
-        "confidence": "MEDIUM"
+        "confidence": "LOW"
       },
       {
         "pair": "CAD/USD",
         "spread": 0.0,
         "base_currency": "CAD",
         "quote_currency": "USD",
-        "confidence": "MEDIUM"
+        "confidence": "LOW"
       },
       {
         "pair": "CAD/EUR",
         "spread": 0.0,
         "base_currency": "CAD",
         "quote_currency": "EUR",
-        "confidence": "MEDIUM"
+        "confidence": "LOW"
       }
     ]
   },
