@@ -1,6 +1,6 @@
 # Model Card — FX Bias AI Random Forest
 
-> Generated: 2026-03-20 17:52 UTC  |  Phase: B3-02
+> Generated: 2026-03-21 01:45 UTC  |  Phase: B3-02
 
 ## Model Overview
 
