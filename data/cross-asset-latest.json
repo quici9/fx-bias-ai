@@ -1,9 +1,10 @@
 {
-  "fetchDate": "2026-03-27",
+  "fetchDate": "2026-04-03",
   "commodities": {
     "gold": {
-      "cot_index": 0.64,
+      "cot_index": 8.51,
       "trend_12w": [
+        8.51,
         0.64,
         3.68,
         0.9,
@@ -14,15 +15,15 @@
         41.87,
         79.17,
         85.3,
-        62.94,
-        66.29
+        62.94
       ],
       "trend_direction": "FALLING",
       "fx_impact": "Inverse USD (gold up \u2192 USD down)"
     },
     "oil": {
-      "cot_index": 91.79,
+      "cot_index": 99.45,
       "trend_12w": [
+        99.45,
         91.79,
         96.57,
         67.91,
@@ -33,8 +34,7 @@
         29.34,
         20.01,
         9.4,
-        9.01,
-        12.72
+        9.01
       ],
       "trend_direction": "RISING",
       "fx_impact": "Direct CAD (oil up \u2192 CAD up)"
