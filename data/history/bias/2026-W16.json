@@ -1,0 +1,234 @@
+{
+  "meta": {
+    "weekLabel": "2026-W16",
+    "generatedAt": "2026-04-18T01:37:22.438069+00:00",
+    "modelVersion": "rf-v2.1",
+    "featureVersion": "v2.1-28f",
+    "overallConfidence": "HIGH",
+    "dataSourceStatus": {
+      "cot": "OK",
+      "macro": "OK",
+      "cross_asset": "OK",
+      "calendar": "OK"
+    },
+    "pipelineRuntime": 3.5
+  },
+  "predictions": [
+    {
+      "currency": "USD",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.4214,
+        "neutral": 0.5732,
+        "bear": 0.0054
+      },
+      "confidence": "MEDIUM",
+      "rank": 1,
+      "key_drivers": [
+        "COT positioning",
+        "COT 4w momentum",
+        "Net position change"
+      ],
+      "alerts": [
+        "EXTREME_POSITIONING"
+      ]
+    },
+    {
+      "currency": "AUD",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.0673,
+        "neutral": 0.8203,
+        "bear": 0.1124
+      },
+      "confidence": "HIGH",
+      "rank": 2,
+      "key_drivers": [
+        "CPI differential",
+        "COT positioning",
+        "Leveraged funds"
+      ],
+      "alerts": [
+        "EXTREME_POSITIONING"
+      ]
+    },
+    {
+      "currency": "CHF",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.0666,
+        "neutral": 0.8058,
+        "bear": 0.1276
+      },
+      "confidence": "HIGH",
+      "rank": 3,
+      "key_drivers": [
+        "CPI differential",
+        "COT 4w momentum",
+        "Dealer contrarian"
+      ],
+      "alerts": []
+    },
+    {
+      "currency": "CAD",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.0551,
+        "neutral": 0.8103,
+        "bear": 0.1346
+      },
+      "confidence": "HIGH",
+      "rank": 4,
+      "key_drivers": [
+        "CPI differential",
+        "COT 4w momentum",
+        "Net position change"
+      ],
+      "alerts": []
+    },
+    {
+      "currency": "NZD",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.0659,
+        "neutral": 0.8086,
+        "bear": 0.1255
+      },
+      "confidence": "HIGH",
+      "rank": 5,
+      "key_drivers": [
+        "CPI differential",
+        "Spread vs USD",
+        "Dealer contrarian"
+      ],
+      "alerts": []
+    },
+    {
+      "currency": "GBP",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.0642,
+        "neutral": 0.8118,
+        "bear": 0.124
+      },
+      "confidence": "HIGH",
+      "rank": 6,
+      "key_drivers": [
+        "CPI differential",
+        "Spread vs USD",
+        "Leveraged funds"
+      ],
+      "alerts": []
+    },
+    {
+      "currency": "EUR",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.0467,
+        "neutral": 0.8124,
+        "bear": 0.1409
+      },
+      "confidence": "HIGH",
+      "rank": 7,
+      "key_drivers": [
+        "Net position change",
+        "CPI differential",
+        "Spread vs USD"
+      ],
+      "alerts": [
+        "EXTREME_POSITIONING",
+        "FLIP_DETECTED"
+      ]
+    },
+    {
+      "currency": "JPY",
+      "bias": "NEUTRAL",
+      "probability": {
+        "bull": 0.0414,
+        "neutral": 0.7959,
+        "bear": 0.1628
+      },
+      "confidence": "HIGH",
+      "rank": 8,
+      "key_drivers": [
+        "CPI differential",
+        "Spread vs USD",
+        "COT 4w momentum"
+      ],
+      "alerts": [
+        "EXTREME_POSITIONING"
+      ]
+    }
+  ],
+  "pair_recommendations": {
+    "strong_long": [],
+    "strong_short": [],
+    "avoid": [
+      {
+        "pair": "AUD/USD",
+        "spread": 0.0,
+        "base_currency": "AUD",
+        "quote_currency": "USD",
+        "confidence": "HIGH"
+      },
+      {
+        "pair": "AUD/CHF",
+        "spread": 0.0,
+        "base_currency": "AUD",
+        "quote_currency": "CHF",
+        "confidence": "HIGH"
+      },
+      {
+        "pair": "AUD/CAD",
+        "spread": 0.0,
+        "base_currency": "AUD",
+        "quote_currency": "CAD",
+        "confidence": "HIGH"
+      }
+    ]
+  },
+  "weekly_alerts": [
+    {
+      "type": "EXTREME_POSITIONING",
+      "currency": "AUD",
+      "message": "AUD COT index in extreme zone (94.1)",
+      "severity": "MEDIUM",
+      "context": {
+        "cot_index": 94.13
+      }
+    },
+    {
+      "type": "EXTREME_POSITIONING",
+      "currency": "EUR",
+      "message": "EUR COT index in extreme zone (0.0)",
+      "severity": "MEDIUM",
+      "context": {
+        "cot_index": 0.0
+      }
+    },
+    {
+      "type": "FLIP_DETECTED",
+      "currency": "EUR",
+      "message": "EUR net position flipped direction this week",
+      "severity": "MEDIUM"
+    },
+    {
+      "type": "EXTREME_POSITIONING",
+      "currency": "JPY",
+      "message": "JPY COT index in extreme zone (0.0)",
+      "severity": "MEDIUM",
+      "context": {
+        "cot_index": 0.0
+      }
+    },
+    {
+      "type": "EXTREME_POSITIONING",
+      "currency": "USD",
+      "message": "USD COT index in extreme zone (100.0)",
+      "severity": "MEDIUM",
+      "context": {
+        "cot_index": 100.0
+      }
+    }
+  ]
+}
