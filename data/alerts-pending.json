@@ -1,131 +1,131 @@
 [
   {
     "type": "EXTREME_POSITIONING",
-    "message": "JPY COT Index at extreme oversold level (3.9)",
+    "message": "JPY COT Index at extreme oversold level (0.0)",
     "severity": "MEDIUM",
     "currency": "JPY",
     "context": {
-      "cot_index": 3.86,
+      "cot_index": 0.0,
       "direction": "oversold"
     }
   },
   {
     "type": "EXTREME_POSITIONING",
-    "message": "AUD COT Index at extreme overbought level (91.0)",
+    "message": "AUD COT Index at extreme overbought level (90.8)",
     "severity": "MEDIUM",
     "currency": "AUD",
     "context": {
-      "cot_index": 90.98,
+      "cot_index": 90.84,
       "direction": "overbought"
     }
   },
   {
     "type": "EXTREME_POSITIONING",
-    "message": "USD COT Index at extreme overbought level (98.4)",
+    "message": "USD COT Index at extreme overbought level (97.6)",
     "severity": "MEDIUM",
     "currency": "USD",
     "context": {
-      "cot_index": 98.44,
+      "cot_index": 97.58,
       "direction": "overbought"
     }
   },
   {
     "type": "FLIP_DETECTED",
-    "message": "EUR net position flipped (short \u2192 long): prev=-7,541 \u2192 now=+26,018",
+    "message": "EUR net position flipped (short \u2192 long): prev=+26,018 \u2192 now=+41,324",
     "severity": "MEDIUM",
     "currency": "EUR",
     "context": {
-      "net_now": 26018,
-      "net_prev": -7541,
+      "net_now": 41324,
+      "net_prev": 26018,
       "direction": "short \u2192 long"
     }
   },
   {
     "type": "DATA_SOURCE_STALE",
-    "message": "USD policy_rates is stale: last_update=2026-03-01 (55 days ago)",
+    "message": "USD policy_rates is stale: last_update=2026-03-01 (62 days ago)",
     "severity": "MEDIUM",
     "currency": "USD",
     "context": {
       "source": "policy_rates",
       "last_update": "2026-03-01",
-      "days": 55
+      "days": 62
     }
   },
   {
     "type": "DATA_SOURCE_STALE",
-    "message": "GBP policy_rates is stale: last_update=2026-03-01 (55 days ago)",
+    "message": "GBP policy_rates is stale: last_update=2026-03-01 (62 days ago)",
     "severity": "MEDIUM",
     "currency": "GBP",
     "context": {
       "source": "policy_rates",
       "last_update": "2026-03-01",
-      "days": 55
+      "days": 62
     }
   },
   {
     "type": "DATA_SOURCE_STALE",
-    "message": "JPY policy_rates is stale: last_update=2023-12-01 (876 days ago)",
+    "message": "JPY policy_rates is stale: last_update=2023-12-01 (883 days ago)",
     "severity": "MEDIUM",
     "currency": "JPY",
     "context": {
       "source": "policy_rates",
       "last_update": "2023-12-01",
-      "days": 876
+      "days": 883
     }
   },
   {
     "type": "DATA_SOURCE_STALE",
-    "message": "AUD policy_rates is stale: last_update=2026-03-01 (55 days ago)",
+    "message": "AUD policy_rates is stale: last_update=2026-03-01 (62 days ago)",
     "severity": "MEDIUM",
     "currency": "AUD",
     "context": {
       "source": "policy_rates",
       "last_update": "2026-03-01",
-      "days": 55
+      "days": 62
     }
   },
   {
     "type": "DATA_SOURCE_STALE",
-    "message": "CAD policy_rates is stale: last_update=2023-12-01 (876 days ago)",
+    "message": "CAD policy_rates is stale: last_update=2023-12-01 (883 days ago)",
     "severity": "MEDIUM",
     "currency": "CAD",
     "context": {
       "source": "policy_rates",
       "last_update": "2023-12-01",
-      "days": 876
+      "days": 883
     }
   },
   {
     "type": "DATA_SOURCE_STALE",
-    "message": "CHF policy_rates is stale: last_update=2024-03-01 (785 days ago)",
+    "message": "CHF policy_rates is stale: last_update=2024-03-01 (792 days ago)",
     "severity": "MEDIUM",
     "currency": "CHF",
     "context": {
       "source": "policy_rates",
       "last_update": "2024-03-01",
-      "days": 785
+      "days": 792
     }
   },
   {
     "type": "DATA_SOURCE_STALE",
-    "message": "NZD policy_rates is stale: last_update=2024-12-01 (510 days ago)",
+    "message": "NZD policy_rates is stale: last_update=2024-12-01 (517 days ago)",
     "severity": "MEDIUM",
     "currency": "NZD",
     "context": {
       "source": "policy_rates",
       "last_update": "2024-12-01",
-      "days": 510
+      "days": 517
     }
   },
   {
     "type": "DATA_SOURCE_STALE",
-    "message": "EUR cpi_yoy is stale: last_update=2026-02-01 (83 days ago)",
+    "message": "EUR cpi_yoy is stale: last_update=2026-03-01 (62 days ago)",
     "severity": "MEDIUM",
     "currency": "EUR",
     "context": {
       "source": "cpi_yoy",
-      "last_update": "2026-02-01",
-      "days": 83
+      "last_update": "2026-03-01",
+      "days": 62
     }
   },
   {
