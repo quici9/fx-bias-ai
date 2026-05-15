@@ -1,9 +1,10 @@
 {
-  "fetchDate": "2026-05-08",
+  "fetchDate": "2026-05-15",
   "commodities": {
     "gold": {
-      "cot_index": 2.96,
+      "cot_index": 6.34,
       "trend_12w": [
+        6.34,
         2.96,
         6.97,
         5.63,
@@ -14,15 +15,15 @@
         3.68,
         0.9,
         0.0,
-        0.0,
         0.0
       ],
-      "trend_direction": "FLAT",
+      "trend_direction": "RISING",
       "fx_impact": "Inverse USD (gold up \u2192 USD down)"
     },
     "oil": {
-      "cot_index": 78.05,
+      "cot_index": 71.31,
       "trend_12w": [
+        71.31,
         78.05,
         78.25,
         85.56,
@@ -33,8 +34,7 @@
         96.57,
         67.91,
         68.2,
-        52.1,
-        40.03
+        52.1
       ],
       "trend_direction": "RISING",
       "fx_impact": "Direct CAD (oil up \u2192 CAD up)"
@@ -62,19 +62,19 @@
   "yield_differentials": [
     {
       "pair": "US-DE",
-      "spread": 1.4548,
+      "spread": 1.5548,
       "delta_4w": 0.0,
       "direction": "STABLE"
     },
     {
       "pair": "US-JP",
-      "spread": 2.015,
+      "spread": 2.115,
       "delta_4w": 0.0,
       "direction": "STABLE"
     },
     {
       "pair": "US-GB",
-      "spread": -0.3407,
+      "spread": -0.2407,
       "delta_4w": 0.0,
       "direction": "STABLE"
     }
