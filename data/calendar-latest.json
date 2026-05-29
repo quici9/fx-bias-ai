@@ -1,12 +1,12 @@
 {
-  "fetchDate": "2026-05-22",
+  "fetchDate": "2026-05-29",
   "source": "STATIC_FALLBACK",
   "next_fomc": {
     "date": "2026-06-17",
-    "days_until": 26
+    "days_until": 19
   },
   "next_nfp": {
     "date": "2026-06-05",
-    "days_until": 14
+    "days_until": 7
   }
 }
