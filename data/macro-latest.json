@@ -1,172 +1,172 @@
 {
-  "fetchDate": "2026-05-29",
+  "fetchDate": "2026-06-05",
   "policy_rates": [
     {
       "currency": "USD",
-      "value": 3.64,
+      "value": 3.63,
       "diff_vs_usd": 0.0,
       "trend_3m": "STABLE",
-      "last_update": "2026-04-01",
+      "last_update": "2026-05-01",
       "publication_lag_applied": 0,
-      "freshness_days": 58,
+      "freshness_days": 35,
       "is_stale": true
     },
     {
       "currency": "GBP",
       "value": 3.73,
-      "diff_vs_usd": 0.09,
+      "diff_vs_usd": 0.1,
       "trend_3m": "STABLE",
       "last_update": "2026-04-01",
       "publication_lag_applied": 0,
-      "freshness_days": 58,
+      "freshness_days": 65,
       "is_stale": true
     },
     {
       "currency": "JPY",
       "value": 0.3,
-      "diff_vs_usd": -3.34,
+      "diff_vs_usd": -3.33,
       "trend_3m": "STABLE",
       "last_update": "2023-12-01",
       "publication_lag_applied": 0,
-      "freshness_days": 910,
+      "freshness_days": 917,
       "is_stale": true
     },
     {
       "currency": "AUD",
       "value": 4.34,
-      "diff_vs_usd": 0.7,
+      "diff_vs_usd": 0.71,
       "trend_3m": "RISING",
       "last_update": "2026-04-01",
       "publication_lag_applied": 0,
-      "freshness_days": 58,
+      "freshness_days": 65,
       "is_stale": true
     },
     {
       "currency": "CAD",
       "value": 5.25,
-      "diff_vs_usd": 1.61,
+      "diff_vs_usd": 1.62,
       "trend_3m": "STABLE",
       "last_update": "2023-12-01",
       "publication_lag_applied": 0,
-      "freshness_days": 910,
+      "freshness_days": 917,
       "is_stale": true
     },
     {
       "currency": "CHF",
       "value": 1.34,
-      "diff_vs_usd": -2.3,
+      "diff_vs_usd": -2.29,
       "trend_3m": "FALLING",
       "last_update": "2024-03-01",
       "publication_lag_applied": 0,
-      "freshness_days": 819,
+      "freshness_days": 826,
       "is_stale": true
     },
     {
       "currency": "NZD",
       "value": 4.33,
-      "diff_vs_usd": 0.69,
+      "diff_vs_usd": 0.7,
       "trend_3m": "FALLING",
       "last_update": "2024-12-01",
       "publication_lag_applied": 0,
-      "freshness_days": 544,
+      "freshness_days": 551,
       "is_stale": true
     }
   ],
   "cpi_yoy": [
     {
       "currency": "USD",
-      "value": 330.293,
+      "value": 332.407,
       "diff_vs_usd": 0.0,
       "trend_3m": "RISING",
-      "last_update": "2026-03-01",
+      "last_update": "2026-04-01",
       "publication_lag_applied": 2,
-      "freshness_days": 89,
+      "freshness_days": 65,
       "is_stale": true
     },
     {
       "currency": "EUR",
-      "value": 101.98,
-      "diff_vs_usd": -228.313,
+      "value": 103.02,
+      "diff_vs_usd": -229.387,
       "trend_3m": "RISING",
-      "last_update": "2026-03-01",
+      "last_update": "2026-04-01",
       "publication_lag_applied": 2,
-      "freshness_days": 89,
+      "freshness_days": 65,
       "is_stale": true
     },
     {
       "currency": "JPY",
       "value": -62.58,
-      "diff_vs_usd": -392.873,
+      "diff_vs_usd": -394.987,
       "trend_3m": "RISING",
       "last_update": "2025-11-01",
       "publication_lag_applied": 2,
-      "freshness_days": 209,
+      "freshness_days": 216,
       "is_stale": true
     },
     {
       "currency": "AUD",
       "value": 0.5912786400591119,
-      "diff_vs_usd": -329.7017,
+      "diff_vs_usd": -331.8157,
       "trend_3m": "FALLING",
       "last_update": "2023-10-01",
       "publication_lag_applied": 2,
-      "freshness_days": 971,
+      "freshness_days": 978,
       "is_stale": true
     },
     {
       "currency": "CAD",
       "value": 126.189364115567,
-      "diff_vs_usd": -204.1036,
+      "diff_vs_usd": -206.2176,
       "trend_3m": "RISING",
       "last_update": "2023-11-01",
       "publication_lag_applied": 2,
-      "freshness_days": 940,
+      "freshness_days": 947,
       "is_stale": true
     },
     {
       "currency": "GBP",
       "value": 136.1,
-      "diff_vs_usd": -194.193,
+      "diff_vs_usd": -196.307,
       "trend_3m": "RISING",
       "last_update": "2025-03-01",
       "publication_lag_applied": 2,
-      "freshness_days": 454,
+      "freshness_days": 461,
       "is_stale": true
     },
     {
       "currency": "CHF",
       "value": 107.7312,
-      "diff_vs_usd": -222.5618,
+      "diff_vs_usd": -224.6758,
       "trend_3m": "RISING",
       "last_update": "2025-04-01",
       "publication_lag_applied": 2,
-      "freshness_days": 423,
+      "freshness_days": 430,
       "is_stale": true
     },
     {
       "currency": "NZD",
       "value": 0.4788507581803675,
-      "diff_vs_usd": -329.8141,
+      "diff_vs_usd": -331.9281,
       "trend_3m": "FALLING",
       "last_update": "2023-10-01",
       "publication_lag_applied": 2,
-      "freshness_days": 971,
+      "freshness_days": 978,
       "is_stale": true
     }
   ],
   "yields_10y": [
     {
       "country": "US",
-      "yield": 4.48,
+      "yield": 4.49,
       "spread_vs_us": 0.0,
-      "delta_1w": -0.02,
+      "delta_1w": 0.03,
       "direction": "STABLE",
-      "last_update": "2026-05-27"
+      "last_update": "2026-06-03"
     },
     {
       "country": "DE",
       "yield": 2.9963157895,
-      "spread_vs_us": -1.4837,
+      "spread_vs_us": -1.4937,
       "delta_1w": 0.0863,
       "direction": "WIDENING",
       "last_update": "2026-04-01"
@@ -174,7 +174,7 @@
     {
       "country": "GB",
       "yield": 4.8207,
-      "spread_vs_us": 0.3407,
+      "spread_vs_us": 0.3307,
       "delta_1w": 0.12,
       "direction": "WIDENING",
       "last_update": "2026-04-01"
@@ -182,15 +182,15 @@
     {
       "country": "JP",
       "yield": 2.515,
-      "spread_vs_us": -1.965,
+      "spread_vs_us": -1.975,
       "delta_1w": 0.17,
       "direction": "WIDENING",
       "last_update": "2026-04-01"
     }
   ],
   "vix": {
-    "value": 15.74,
+    "value": 15.4,
     "regime": "NORMAL",
-    "delta_1w": -0.55
+    "delta_1w": -0.66
   }
 }
