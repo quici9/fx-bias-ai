@@ -6,8 +6,8 @@
   "label_confirmation_lag": 1,
   "hyperparameters": {
     "n_estimators": 500,
-    "max_depth": 6,
-    "min_samples_leaf": 5,
+    "max_depth": 10,
+    "min_samples_leaf": 10,
     "max_features": "sqrt",
     "class_weight": "balanced",
     "random_state": 42,
@@ -16,251 +16,251 @@
   "calibration": "CalibratedClassifierCV(method='sigmoid', cv=5)",
   "walk_forward_summary": {
     "n_folds": 4,
-    "mean_accuracy": 0.5142,
-    "std_accuracy": 0.0216,
-    "min_accuracy": 0.4918,
-    "max_accuracy": 0.5472
+    "mean_accuracy": 0.5052,
+    "std_accuracy": 0.0222,
+    "min_accuracy": 0.4835,
+    "max_accuracy": 0.5391
   },
   "tuning_grid": [
     {
       "max_features": "sqrt",
       "leaf": 5,
       "depth": 6,
-      "acc": 0.5188
+      "acc": 0.5078
     },
     {
       "max_features": "sqrt",
       "leaf": 5,
       "depth": 8,
-      "acc": 0.5147
+      "acc": 0.5017
     },
     {
       "max_features": "sqrt",
       "leaf": 5,
       "depth": 10,
-      "acc": 0.512
+      "acc": 0.5004
     },
     {
       "max_features": "sqrt",
       "leaf": 5,
       "depth": 12,
-      "acc": 0.4982
+      "acc": 0.5031
     },
     {
       "max_features": "sqrt",
       "leaf": 10,
       "depth": 6,
-      "acc": 0.5133
+      "acc": 0.5084
     },
     {
       "max_features": "sqrt",
       "leaf": 10,
       "depth": 8,
-      "acc": 0.5003
+      "acc": 0.5037
     },
     {
       "max_features": "sqrt",
       "leaf": 10,
       "depth": 10,
-      "acc": 0.5038
+      "acc": 0.5169
     },
     {
       "max_features": "sqrt",
       "leaf": 10,
       "depth": 12,
-      "acc": 0.5106
+      "acc": 0.5078
     },
     {
       "max_features": "sqrt",
       "leaf": 15,
       "depth": 6,
-      "acc": 0.4969
+      "acc": 0.5037
     },
     {
       "max_features": "sqrt",
       "leaf": 15,
-      "depth": 8,
-      "acc": 0.5052
-    },
-    {
-      "max_features": "sqrt",
-      "leaf": 15,
-      "depth": 10,
-      "acc": 0.5003
-    },
-    {
-      "max_features": "sqrt",
-      "leaf": 15,
-      "depth": 12,
-      "acc": 0.5113
-    },
-    {
-      "max_features": "sqrt",
-      "leaf": 20,
-      "depth": 6,
-      "acc": 0.4995
-    },
-    {
-      "max_features": "sqrt",
-      "leaf": 20,
       "depth": 8,
       "acc": 0.5093
     },
     {
       "max_features": "sqrt",
+      "leaf": 15,
+      "depth": 10,
+      "acc": 0.5016
+    },
+    {
+      "max_features": "sqrt",
+      "leaf": 15,
+      "depth": 12,
+      "acc": 0.5004
+    },
+    {
+      "max_features": "sqrt",
       "leaf": 20,
+      "depth": 6,
+      "acc": 0.4866
+    },
+    {
+      "max_features": "sqrt",
+      "leaf": 20,
+      "depth": 8,
+      "acc": 0.4962
+    },
+    {
+      "max_features": "sqrt",
+      "leaf": 20,
+      "depth": 10,
+      "acc": 0.5087
+    },
+    {
+      "max_features": "sqrt",
+      "leaf": 20,
+      "depth": 12,
+      "acc": 0.4991
+    },
+    {
+      "max_features": "sqrt",
+      "leaf": 30,
+      "depth": 6,
+      "acc": 0.5031
+    },
+    {
+      "max_features": "sqrt",
+      "leaf": 30,
+      "depth": 8,
+      "acc": 0.5018
+    },
+    {
+      "max_features": "sqrt",
+      "leaf": 30,
+      "depth": 10,
+      "acc": 0.5046
+    },
+    {
+      "max_features": "sqrt",
+      "leaf": 30,
+      "depth": 12,
+      "acc": 0.5067
+    },
+    {
+      "max_features": "0.5",
+      "leaf": 5,
+      "depth": 6,
+      "acc": 0.4956
+    },
+    {
+      "max_features": "0.5",
+      "leaf": 5,
+      "depth": 8,
+      "acc": 0.5115
+    },
+    {
+      "max_features": "0.5",
+      "leaf": 5,
+      "depth": 10,
+      "acc": 0.5044
+    },
+    {
+      "max_features": "0.5",
+      "leaf": 5,
+      "depth": 12,
+      "acc": 0.5081
+    },
+    {
+      "max_features": "0.5",
+      "leaf": 10,
+      "depth": 6,
+      "acc": 0.4977
+    },
+    {
+      "max_features": "0.5",
+      "leaf": 10,
+      "depth": 8,
+      "acc": 0.5086
+    },
+    {
+      "max_features": "0.5",
+      "leaf": 10,
       "depth": 10,
       "acc": 0.5079
     },
     {
-      "max_features": "sqrt",
-      "leaf": 20,
+      "max_features": "0.5",
+      "leaf": 10,
       "depth": 12,
-      "acc": 0.5038
+      "acc": 0.5088
     },
     {
-      "max_features": "sqrt",
-      "leaf": 30,
+      "max_features": "0.5",
+      "leaf": 15,
       "depth": 6,
       "acc": 0.499
     },
     {
-      "max_features": "sqrt",
-      "leaf": 30,
+      "max_features": "0.5",
+      "leaf": 15,
       "depth": 8,
-      "acc": 0.497
+      "acc": 0.5031
     },
     {
-      "max_features": "sqrt",
-      "leaf": 30,
+      "max_features": "0.5",
+      "leaf": 15,
       "depth": 10,
-      "acc": 0.4991
-    },
-    {
-      "max_features": "sqrt",
-      "leaf": 30,
-      "depth": 12,
-      "acc": 0.4942
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 5,
-      "depth": 6,
-      "acc": 0.4989
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 5,
-      "depth": 8,
-      "acc": 0.5045
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 5,
-      "depth": 10,
-      "acc": 0.4997
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 5,
-      "depth": 12,
-      "acc": 0.4969
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 10,
-      "depth": 6,
-      "acc": 0.4996
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 10,
-      "depth": 8,
       "acc": 0.5101
     },
     {
       "max_features": "0.5",
-      "leaf": 10,
-      "depth": 10,
-      "acc": 0.5094
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 10,
-      "depth": 12,
-      "acc": 0.5114
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 15,
-      "depth": 6,
-      "acc": 0.4913
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 15,
-      "depth": 8,
-      "acc": 0.508
-    },
-    {
-      "max_features": "0.5",
-      "leaf": 15,
-      "depth": 10,
-      "acc": 0.4999
-    },
-    {
-      "max_features": "0.5",
       "leaf": 15,
       "depth": 12,
-      "acc": 0.5053
+      "acc": 0.5169
     },
     {
       "max_features": "0.5",
       "leaf": 20,
       "depth": 6,
-      "acc": 0.4927
+      "acc": 0.5031
     },
     {
       "max_features": "0.5",
       "leaf": 20,
       "depth": 8,
-      "acc": 0.4985
+      "acc": 0.5156
     },
     {
       "max_features": "0.5",
       "leaf": 20,
       "depth": 10,
-      "acc": 0.4963
+      "acc": 0.5073
     },
     {
       "max_features": "0.5",
       "leaf": 20,
       "depth": 12,
-      "acc": 0.4962
+      "acc": 0.5122
     },
     {
       "max_features": "0.5",
       "leaf": 30,
       "depth": 6,
-      "acc": 0.4962
+      "acc": 0.5018
     },
     {
       "max_features": "0.5",
       "leaf": 30,
       "depth": 8,
-      "acc": 0.4997
+      "acc": 0.5039
     },
     {
       "max_features": "0.5",
       "leaf": 30,
       "depth": 10,
-      "acc": 0.4964
+      "acc": 0.5066
     },
     {
       "max_features": "0.5",
       "leaf": 30,
       "depth": 12,
-      "acc": 0.4991
+      "acc": 0.5046
     }
   ],
   "folds": [
@@ -271,33 +271,33 @@
       "test_end": "2021-12-31",
       "n_train": 5388,
       "n_test": 371,
-      "accuracy": 0.5472,
+      "accuracy": 0.5391,
       "per_currency_accuracy": {
-        "AUD": 0.5472,
+        "AUD": 0.5283,
         "CAD": 0.4717,
         "CHF": 0.4717,
-        "EUR": 0.5472,
+        "EUR": 0.5094,
         "GBP": 0.5283,
         "JPY": 0.5849,
         "NZD": 0.6792
       },
       "classification_report": {
         "BEAR": {
-          "precision": 0.64,
-          "recall": 0.2909,
-          "f1-score": 0.4,
+          "precision": 0.6346,
+          "recall": 0.3,
+          "f1-score": 0.4074,
           "support": 110
         },
         "BULL": {
-          "precision": 0.4643,
-          "recall": 0.1857,
-          "f1-score": 0.2653,
+          "precision": 0.4138,
+          "recall": 0.1714,
+          "f1-score": 0.2424,
           "support": 70
         },
         "NEUTRAL": {
-          "precision": 0.5392,
-          "recall": 0.8272,
-          "f1-score": 0.6529,
+          "precision": 0.5345,
+          "recall": 0.8115,
+          "f1-score": 0.6445,
           "support": 191
         }
       }
@@ -309,33 +309,33 @@
       "test_end": "2022-12-31",
       "n_train": 5759,
       "n_test": 364,
-      "accuracy": 0.5192,
+      "accuracy": 0.511,
       "per_currency_accuracy": {
-        "AUD": 0.6154,
+        "AUD": 0.5962,
         "CAD": 0.5,
-        "CHF": 0.4615,
-        "EUR": 0.5577,
+        "CHF": 0.4423,
+        "EUR": 0.5769,
         "GBP": 0.5769,
-        "JPY": 0.4808,
+        "JPY": 0.4423,
         "NZD": 0.4423
       },
       "classification_report": {
         "BEAR": {
-          "precision": 0.6512,
-          "recall": 0.28,
-          "f1-score": 0.3916,
+          "precision": 0.6341,
+          "recall": 0.26,
+          "f1-score": 0.3688,
           "support": 100
         },
         "BULL": {
-          "precision": 0.5686,
-          "recall": 0.3053,
-          "f1-score": 0.3973,
+          "precision": 0.56,
+          "recall": 0.2947,
+          "f1-score": 0.3862,
           "support": 95
         },
         "NEUTRAL": {
-          "precision": 0.4889,
+          "precision": 0.4835,
           "recall": 0.7811,
-          "f1-score": 0.6014,
+          "f1-score": 0.5973,
           "support": 169
         }
       }
@@ -347,33 +347,33 @@
       "test_end": "2023-12-31",
       "n_train": 6123,
       "n_test": 357,
-      "accuracy": 0.4986,
+      "accuracy": 0.4874,
       "per_currency_accuracy": {
-        "AUD": 0.4902,
-        "CAD": 0.5294,
-        "CHF": 0.5294,
-        "EUR": 0.451,
+        "AUD": 0.5098,
+        "CAD": 0.4902,
+        "CHF": 0.5098,
+        "EUR": 0.4902,
         "GBP": 0.4314,
-        "JPY": 0.5882,
-        "NZD": 0.4706
+        "JPY": 0.5294,
+        "NZD": 0.451
       },
       "classification_report": {
         "BEAR": {
-          "precision": 0.5833,
-          "recall": 0.2917,
-          "f1-score": 0.3889,
+          "precision": 0.5686,
+          "recall": 0.3021,
+          "f1-score": 0.3946,
           "support": 96
         },
         "BULL": {
-          "precision": 0.4783,
-          "recall": 0.375,
-          "f1-score": 0.4204,
+          "precision": 0.4595,
+          "recall": 0.3864,
+          "f1-score": 0.4198,
           "support": 88
         },
         "NEUTRAL": {
-          "precision": 0.4875,
-          "recall": 0.6763,
-          "f1-score": 0.5666,
+          "precision": 0.4784,
+          "recall": 0.6416,
+          "f1-score": 0.5481,
           "support": 173
         }
       }
@@ -385,33 +385,33 @@
       "test_end": "2024-12-31",
       "n_train": 6480,
       "n_test": 364,
-      "accuracy": 0.4918,
+      "accuracy": 0.4835,
       "per_currency_accuracy": {
-        "AUD": 0.4808,
+        "AUD": 0.4615,
         "CAD": 0.5192,
         "CHF": 0.5769,
-        "EUR": 0.5962,
-        "GBP": 0.4808,
-        "JPY": 0.3654,
-        "NZD": 0.4231
+        "EUR": 0.5769,
+        "GBP": 0.5192,
+        "JPY": 0.3462,
+        "NZD": 0.3846
       },
       "classification_report": {
         "BEAR": {
-          "precision": 0.6333,
-          "recall": 0.1696,
-          "f1-score": 0.2676,
+          "precision": 0.6,
+          "recall": 0.1339,
+          "f1-score": 0.219,
           "support": 112
         },
         "BULL": {
-          "precision": 0.35,
-          "recall": 0.3333,
-          "f1-score": 0.3415,
+          "precision": 0.3636,
+          "recall": 0.381,
+          "f1-score": 0.3721,
           "support": 63
         },
         "NEUTRAL": {
-          "precision": 0.5073,
-          "recall": 0.7354,
-          "f1-score": 0.6004,
+          "precision": 0.5018,
+          "recall": 0.7249,
+          "f1-score": 0.5931,
           "support": 189
         }
       }
