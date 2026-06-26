@@ -1,5 +1,5 @@
 {
-  "fetchDate": "2026-06-19",
+  "fetchDate": "2026-06-26",
   "policy_rates": [
     {
       "currency": "USD",
@@ -8,7 +8,7 @@
       "trend_3m": "STABLE",
       "last_update": "2026-05-01",
       "publication_lag_applied": 0,
-      "freshness_days": 49,
+      "freshness_days": 56,
       "is_stale": true
     },
     {
@@ -18,7 +18,7 @@
       "trend_3m": "STABLE",
       "last_update": "2026-05-01",
       "publication_lag_applied": 0,
-      "freshness_days": 49,
+      "freshness_days": 56,
       "is_stale": true
     },
     {
@@ -28,7 +28,7 @@
       "trend_3m": "STABLE",
       "last_update": "2023-12-01",
       "publication_lag_applied": 0,
-      "freshness_days": 931,
+      "freshness_days": 938,
       "is_stale": true
     },
     {
@@ -38,7 +38,7 @@
       "trend_3m": "RISING",
       "last_update": "2026-05-01",
       "publication_lag_applied": 0,
-      "freshness_days": 49,
+      "freshness_days": 56,
       "is_stale": true
     },
     {
@@ -48,7 +48,7 @@
       "trend_3m": "STABLE",
       "last_update": "2023-12-01",
       "publication_lag_applied": 0,
-      "freshness_days": 931,
+      "freshness_days": 938,
       "is_stale": true
     },
     {
@@ -58,7 +58,7 @@
       "trend_3m": "FALLING",
       "last_update": "2024-03-01",
       "publication_lag_applied": 0,
-      "freshness_days": 840,
+      "freshness_days": 847,
       "is_stale": true
     },
     {
@@ -68,7 +68,7 @@
       "trend_3m": "FALLING",
       "last_update": "2024-12-01",
       "publication_lag_applied": 0,
-      "freshness_days": 565,
+      "freshness_days": 572,
       "is_stale": true
     }
   ],
@@ -80,7 +80,7 @@
       "trend_3m": "RISING",
       "last_update": "2026-04-01",
       "publication_lag_applied": 2,
-      "freshness_days": 79,
+      "freshness_days": 86,
       "is_stale": true
     },
     {
@@ -90,7 +90,7 @@
       "trend_3m": "RISING",
       "last_update": "2026-04-01",
       "publication_lag_applied": 2,
-      "freshness_days": 79,
+      "freshness_days": 86,
       "is_stale": true
     },
     {
@@ -100,7 +100,7 @@
       "trend_3m": "RISING",
       "last_update": "2025-11-01",
       "publication_lag_applied": 2,
-      "freshness_days": 230,
+      "freshness_days": 237,
       "is_stale": true
     },
     {
@@ -110,7 +110,7 @@
       "trend_3m": "FALLING",
       "last_update": "2023-10-01",
       "publication_lag_applied": 2,
-      "freshness_days": 992,
+      "freshness_days": 999,
       "is_stale": true
     },
     {
@@ -120,7 +120,7 @@
       "trend_3m": "RISING",
       "last_update": "2023-11-01",
       "publication_lag_applied": 2,
-      "freshness_days": 961,
+      "freshness_days": 968,
       "is_stale": true
     },
     {
@@ -130,7 +130,7 @@
       "trend_3m": "RISING",
       "last_update": "2025-03-01",
       "publication_lag_applied": 2,
-      "freshness_days": 475,
+      "freshness_days": 482,
       "is_stale": true
     },
     {
@@ -140,7 +140,7 @@
       "trend_3m": "RISING",
       "last_update": "2025-04-01",
       "publication_lag_applied": 2,
-      "freshness_days": 444,
+      "freshness_days": 451,
       "is_stale": true
     },
     {
@@ -150,23 +150,23 @@
       "trend_3m": "FALLING",
       "last_update": "2023-10-01",
       "publication_lag_applied": 2,
-      "freshness_days": 992,
+      "freshness_days": 999,
       "is_stale": true
     }
   ],
   "yields_10y": [
     {
       "country": "US",
-      "yield": 4.49,
+      "yield": 4.41,
       "spread_vs_us": 0.0,
-      "delta_1w": 0.06,
+      "delta_1w": -0.09,
       "direction": "STABLE",
-      "last_update": "2026-06-17"
+      "last_update": "2026-06-24"
     },
     {
       "country": "DE",
       "yield": 3.0465,
-      "spread_vs_us": -1.4435,
+      "spread_vs_us": -1.3635,
       "delta_1w": 0.0455,
       "direction": "STABLE",
       "last_update": "2026-05-01"
@@ -174,7 +174,7 @@
     {
       "country": "GB",
       "yield": 4.9416,
-      "spread_vs_us": 0.4516,
+      "spread_vs_us": 0.5316,
       "delta_1w": 0.1209,
       "direction": "WIDENING",
       "last_update": "2026-05-01"
@@ -182,15 +182,15 @@
     {
       "country": "JP",
       "yield": 2.65,
-      "spread_vs_us": -1.84,
+      "spread_vs_us": -1.76,
       "delta_1w": 0.135,
       "direction": "WIDENING",
       "last_update": "2026-05-01"
     }
   ],
   "vix": {
-    "value": 18.44,
+    "value": 18.89,
     "regime": "NORMAL",
-    "delta_1w": 2.03
+    "delta_1w": 0.26
   }
 }
