@@ -1,6 +1,6 @@
 {
   "phase": "B3-02",
-  "generated_at": "2026-06-13 01:55 UTC",
+  "generated_at": "2026-07-11 04:18 UTC",
   "gate_pass": true,
   "mean_rf_vs_cot_gap": 0.1734,
   "hyperparam_grid": {
@@ -156,7 +156,7 @@
       "random": 0.3242,
       "always_bull": 0.1731,
       "cot_rule": 0.3379,
-      "logistic_regression": 0.4423,
+      "logistic_regression": 0.4396,
       "rf_vs_cot_gap": 0.1429,
       "gate_pass": true,
       "confidence_accuracy": {
